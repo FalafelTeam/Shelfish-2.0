@@ -11,7 +11,7 @@ public class IndexController {
     @GetMapping("/")
     @ResponseBody
     public String index() {
-        return "Hello!";
+        return "Kak dilishke";
     }
 
 //    @GetMapping("/document/{id}")
