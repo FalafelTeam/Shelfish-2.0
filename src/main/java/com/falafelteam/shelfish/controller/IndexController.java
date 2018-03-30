@@ -27,8 +27,7 @@ public class IndexController {
     public String index() {
         return "Kak dilishke";
     }
-
-<<<<<<< HEAD
+    
     @GetMapping("/document/{id}")
     public String getDocument(@PathVariable("id") int id, Model model) throws Exception {
         model.addAttribute("document", documentService.getById(id));
