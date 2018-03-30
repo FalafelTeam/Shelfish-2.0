@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "documentDiscriminatorColumn")
 @Table(name = "Document")
 public abstract class Document {
