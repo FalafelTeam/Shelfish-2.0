@@ -1,6 +1,9 @@
 package com.falafelteam.shelfish.controller;
 
+import com.falafelteam.shelfish.model.AuthorKinds.Author;
 import lombok.Data;
+
+import java.util.LinkedList;
 
 @Data
 class DocumentForm {
@@ -15,4 +18,13 @@ class DocumentForm {
     private String authors;
     private String editor;
     private String publisher;
+
+    public LinkedList<Author> getParsedAuthors() {
+        LinkedList<Author> authors = new LinkedList<>();
+        String[] authorsString = this.authors.split(", ");
+        for (String author: authorsString) {
+            authors.add(new Author(author));
+        }
+        return authors;
+    }
 }

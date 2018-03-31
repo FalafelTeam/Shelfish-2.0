@@ -2,8 +2,10 @@ package com.falafelteam.shelfish.controller;
 
 import com.falafelteam.shelfish.model.AuthorKinds.Editor;
 import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
+import com.falafelteam.shelfish.model.documents.AV;
 import com.falafelteam.shelfish.model.documents.Article;
 import com.falafelteam.shelfish.model.documents.Book;
+import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.service.BookingService;
 import com.falafelteam.shelfish.service.DocumentService;
 import com.falafelteam.shelfish.service.UserService;
@@ -61,15 +63,23 @@ public class IndexController {
     }
 
     @PostMapping("/addDocument")
-    public String addDocument(@ModelAttribute("document") DocumentForm documentForm) {
-        if (documentForm.getAuthors().equals("") && !documentForm.getEditor().equals("") &&
-                !documentForm.getPublisher().equals("")) {
-            Article document = new Article(documentForm.getName(), documentForm.getIsBestseller(),
+    public String addDocument(@ModelAttribute("document") DocumentForm documentForm) throws Exception {
+        Document document;
+        if (documentForm.getType() == 1) {
+            document = new Article(documentForm.getName(), documentForm.getIsBestseller(),
                     documentForm.getCopies(), documentForm.getPrice(), documentForm.getIsReference(),
                     new Editor(documentForm.getEditor()), new Publisher(documentForm.getPublisher()));
+        } else if (documentForm.getType() == 2) {
+            document = new AV(documentForm.getName(), documentForm.getIsBestseller(), documentForm.getCopies(),
+                    documentForm.getPrice(), documentForm.getIsReference(), documentForm.getParsedAuthors());
+        } else if (documentForm.getType() == 3) {
+            document = new Book(documentForm.getName(), documentForm.getIsBestseller(), documentForm.getCopies(),
+                    documentForm.getPrice(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
+                    new Publisher(documentForm.getPublisher()));
+        } else {
+            throw new Exception("There is no such document type");
         }
-        System.out.println(documentForm.getType());
-        //documentService.save(document);
+        documentService.save(document);
         return "redirect:/";
     }
 
