@@ -30,14 +30,16 @@ public class Document {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "document", cascade = {CascadeType.MERGE})
     private List<DocumentUser> users;
     @ManyToMany(cascade = CascadeType.MERGE)
-    List<Author> authors;
+    private List<Author> authors;
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "typeId")
-    DocumentType type;
+    private DocumentType type;
 
     //Book
-    Publisher publisher;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Publisher publisher;
 
     //Article
-    Editor editor;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Editor editor;
 }

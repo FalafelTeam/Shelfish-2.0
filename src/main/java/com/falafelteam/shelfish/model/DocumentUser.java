@@ -23,15 +23,9 @@ public class DocumentUser {
     private Document document;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @Getter
     private User user;
-    @Getter
-    @Setter
     private Date date;
-    @Getter
-    @Setter
     private Integer weekNum;
-    @Getter
     private String status;
 
     public DocumentUser(Document document, User user, int weekNum) {
