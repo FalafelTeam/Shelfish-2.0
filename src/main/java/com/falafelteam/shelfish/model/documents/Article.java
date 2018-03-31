@@ -9,6 +9,7 @@ import javax.persistence.Table;
 @Data
 @Table(name = "Document")
 public class Article extends Document {
+
     Editor editor;
     Publisher publisher;
 

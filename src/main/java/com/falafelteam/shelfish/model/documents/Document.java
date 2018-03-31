@@ -13,6 +13,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "documentDiscriminatorColumn")
 @Table(name = "Document")
 public abstract class Document {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -25,13 +26,18 @@ public abstract class Document {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "document", cascade = {CascadeType.ALL})
     private List<DocumentUser> users;
 
-    public Document(String name, boolean isBestseller, int copies, int price, boolean isReference) {
+    Document() {
+        users = new LinkedList<>();
+        this.description = "There is no description yet";
+    }
+
+    Document(String name, boolean isBestseller, int copies, int price, boolean isReference) {
         this.name = name;
         this.isBestseller = isBestseller;
         this.copies = copies;
         this.price = price;
         this.isReference = isReference;
-        users = new LinkedList<DocumentUser>();
-        this.description = "";
+        users = new LinkedList<>();
+        this.description = "There is no description yet";
     }
 }

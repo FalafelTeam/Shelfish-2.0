@@ -1,7 +1,6 @@
 package com.falafelteam.shelfish.controller;
 
 import com.falafelteam.shelfish.model.documents.Book;
-import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.service.BookingService;
 import com.falafelteam.shelfish.service.DocumentService;
 import com.falafelteam.shelfish.service.UserService;
@@ -14,19 +13,22 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class IndexController {
 
-    @Autowired
-    private DocumentService documentService;
+    private final DocumentService documentService;
+
+    private final UserService userService;
+
+    private final BookingService bookingService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private BookingService bookingService;
+    public IndexController(DocumentService documentService, UserService userService, BookingService bookingService) {
+        this.documentService = documentService;
+        this.userService = userService;
+        this.bookingService = bookingService;
+    }
 
     @GetMapping("/")
-    @ResponseBody
     public String index() {
-        return "Kak dilishke";
+        return "index";
     }
 
     @GetMapping("/allDocuments")
@@ -50,13 +52,14 @@ public class IndexController {
     }
 
     @GetMapping("/addDocument")
-    public String addDocument() {
+    public String addDocument(Model model) {
+        model.addAttribute("document", new DocumentForm());
         return "add_document";
     }
 
     @PostMapping("/addDocument")
-    public String addDocument(@ModelAttribute("document") Document document) {
-        documentService.save(document);
+    public String addDocument(@ModelAttribute("document") DocumentForm documentForm) {
+        //documentService.save(document);
         return "redirect:/addDocument";
     }
 

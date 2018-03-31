@@ -17,9 +17,8 @@ public class Book extends Document {
 
     @ManyToMany
     @JoinTable(name = "document_author", joinColumns = @JoinColumn(name = "document_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id")) // почитать
-            List<Author> authors;
-
+            inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
+    List<Author> authors;
     Publisher publisher;
 
     public Book(String name, boolean isBestseller, int copies, int price, boolean isReference, Author author, Publisher publisher) {

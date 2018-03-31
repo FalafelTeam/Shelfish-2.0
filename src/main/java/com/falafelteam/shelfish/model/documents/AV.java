@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @Table(name = "Document")
 public class AV extends Document {
+
     List<Author> authors;
 
     public AV(String name, boolean isBestseller, int copies, int price, boolean isReference, Author author) {

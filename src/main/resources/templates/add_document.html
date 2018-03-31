@@ -6,24 +6,15 @@
 </head>
 <body>
     <h1>Add document</h1>
-    <form>
-        <input type="text" name="name" value="Name"/><br>
-        <input type="text" name="description" value="Description"><br>
-        <input type="checkbox" name="isBestseller"> Is a bestseller <br>
-        <input type="checkbox" name="isReference"> Is reference material <br>
-        <input type="number" name="copies"> Number of copies <br>
-        <input type="number" name="price"> Price <br>
-        <input type="submit" value="Submit">
-    <!--
-    <form action="#" th:action="@{/addDocument}" method="post">
-        <input type="text" name="name" value="Name" th:object="name" /><br>
-        <input type="text" name="description" value="Description" th:object="description"><br>
-        <input type="checkbox" name="isBestseller" th:object="isBestseller"> Is a bestseller <br>
-        <input type="checkbox" name="isReference" th:object="isReference"> Is reference material <br>
-        <input type="number" name="copies" th:object="copies"> Number of copies <br>
-        <input type="number" name="price" th:object="price"> Price <br>
-        <input type="submit" value="Submit">
+    <form action="#" th:action="@{/addDocument}" th:object="${document}" method="post">
+        <p>Name:</p><input type="text" th:field="*{name}" name="name"/><br>
+        <p>Description:</p><textarea name="description" th:field="*{description}" rows="5" cols="30"></textarea><br>
+        <p><input type="checkbox" th:field="*{isBestseller}" name="isBestseller"> Is a bestseller <br></p>
+        <p><input type="checkbox" th:field="*{isReference}" name="isReference"> Is reference material <br></p>
+        <p><input type="number" th:field="*{copies}" name="copies"> Number of copies <br></p>
+        <p><input type="number" th:field="*{price}" name="price"> Price <br></p>
+        <p><input type="submit" value="Submit"></p>
     </form>
-    !-->
+    <p><a href="http://localhost:8080/">To the main page</a></p>
 </body>
 </html>
