@@ -1,18 +1,23 @@
 package com.falafelteam.shelfish.model.documents;
 
+import com.falafelteam.shelfish.model.AuthorKinds.Author;
+import com.falafelteam.shelfish.model.AuthorKinds.Editor;
+import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
 import com.falafelteam.shelfish.model.DocumentUser;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.LinkedList;
 import java.util.List;
 
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "documentDiscriminatorColumn")
-@Table(name = "Document")
-public abstract class Document {
+@Table
+@AllArgsConstructor
+@NoArgsConstructor
+public class Document {
+    //Common
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -22,16 +27,18 @@ public abstract class Document {
     private Integer copies;
     private Integer price;
     private Boolean isReference;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "document", cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "document", cascade = {CascadeType.MERGE})
     private List<DocumentUser> users;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    List<Author> authors;
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "typeId")
+    DocumentType type;
 
-    public Document(String name, boolean isBestseller, int copies, int price, boolean isReference) {
-        this.name = name;
-        this.isBestseller = isBestseller;
-        this.copies = copies;
-        this.price = price;
-        this.isReference = isReference;
-        users = new LinkedList<DocumentUser>();
-        this.description = "";
-    }
+    //Book
+    Publisher publisher;
+
+    //Article
+    Editor editor;
+
 }
