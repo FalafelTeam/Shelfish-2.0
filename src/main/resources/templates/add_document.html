@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Add document</title>
 </head>
 <body>
-$END$
+    <h1>Add document</h1>
+    <form>
+        <input type="text" name="name" value="Name"/><br>
+        <input type="text" name="description" value="Description"><br>
+        <input type="checkbox" name="isBestseller"> Is a bestseller <br>
+        <input type="checkbox" name="isReference"> Is reference material <br>
+        <input type="number" name="copies"> Number of copies <br>
+        <input type="number" name="price"> Price <br>
+        <input type="submit" value="Submit">
+    <!--
+    <form action="#" th:action="@{/addDocument}" method="post">
+        <input type="text" name="name" value="Name" th:object="name" /><br>
+        <input type="text" name="description" value="Description" th:object="description"><br>
+        <input type="checkbox" name="isBestseller" th:object="isBestseller"> Is a bestseller <br>
+        <input type="checkbox" name="isReference" th:object="isReference"> Is reference material <br>
+        <input type="number" name="copies" th:object="copies"> Number of copies <br>
+        <input type="number" name="price" th:object="price"> Price <br>
+        <input type="submit" value="Submit">
+    </form>
+    !-->
 </body>
 </html>

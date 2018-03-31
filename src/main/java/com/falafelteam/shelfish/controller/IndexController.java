@@ -1,5 +1,6 @@
 package com.falafelteam.shelfish.controller;
 
+import com.falafelteam.shelfish.model.documents.Book;
 import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.service.BookingService;
 import com.falafelteam.shelfish.service.DocumentService;
@@ -27,10 +28,18 @@ public class IndexController {
     public String index() {
         return "Kak dilishke";
     }
+
+    @GetMapping("/allDocuments")
+    public String allDocuments() {
+        return "all_documents";
+    }
     
     @GetMapping("/document/{id}")
     public String getDocument(@PathVariable("id") int id, Model model) throws Exception {
         model.addAttribute("document", documentService.getById(id));
+        if (documentService.getById(id) instanceof Book) {
+            return "book";
+        }
         return "document";
     }
 

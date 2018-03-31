@@ -12,9 +12,8 @@ public class DocumentService {
     private DocumentRepository documentRepository;
 
     public Document getById(int id) throws Exception {
-        Document found = documentRepository.findById(id);
-        if (found != null) {
-            return found;
+        if (documentRepository.findById(id) != null) {
+            return documentRepository.findById(id);
         } else throw new Exception("Document not found");
     }
 
