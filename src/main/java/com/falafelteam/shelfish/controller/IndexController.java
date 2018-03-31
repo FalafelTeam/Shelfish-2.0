@@ -1,11 +1,5 @@
 package com.falafelteam.shelfish.controller;
 
-import com.falafelteam.shelfish.model.AuthorKinds.Editor;
-import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
-import com.falafelteam.shelfish.model.documents.AV;
-import com.falafelteam.shelfish.model.documents.Article;
-import com.falafelteam.shelfish.model.documents.Book;
-import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.service.BookingService;
 import com.falafelteam.shelfish.service.DocumentService;
 import com.falafelteam.shelfish.service.UserService;
@@ -40,13 +34,13 @@ public class IndexController {
     public String allDocuments() {
         return "all_documents";
     }
-    
+
     @GetMapping("/document/{id}")
     public String getDocument(@PathVariable("id") int id, Model model) throws Exception {
         model.addAttribute("document", documentService.getById(id));
-        if (documentService.getById(id) instanceof Book) {
+        /*if (documentService.getById(id) instanceof Book) {
             return "book";
-        }
+        }*/
         return "document";
     }
 
@@ -64,7 +58,7 @@ public class IndexController {
 
     @PostMapping("/addDocument")
     public String addDocument(@ModelAttribute("document") DocumentForm documentForm) throws Exception {
-        Document document;
+        /*Document document;
         if (documentForm.getType() == 1) {
             document = new Article(documentForm.getName(), documentForm.getIsBestseller(),
                     documentForm.getCopies(), documentForm.getPrice(), documentForm.getIsReference(),
@@ -79,7 +73,7 @@ public class IndexController {
         } else {
             throw new Exception("There is no such document type");
         }
-        documentService.save(document);
+        documentService.save(document);*/
         return "redirect:/";
     }
 
