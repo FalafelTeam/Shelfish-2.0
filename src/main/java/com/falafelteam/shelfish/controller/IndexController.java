@@ -1,5 +1,8 @@
 package com.falafelteam.shelfish.controller;
 
+import com.falafelteam.shelfish.model.AuthorKinds.Editor;
+import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
+import com.falafelteam.shelfish.model.documents.Article;
 import com.falafelteam.shelfish.model.documents.Book;
 import com.falafelteam.shelfish.service.BookingService;
 import com.falafelteam.shelfish.service.DocumentService;
@@ -59,8 +62,15 @@ public class IndexController {
 
     @PostMapping("/addDocument")
     public String addDocument(@ModelAttribute("document") DocumentForm documentForm) {
+        if (documentForm.getAuthors().equals("") && !documentForm.getEditor().equals("") &&
+                !documentForm.getPublisher().equals("")) {
+            Article document = new Article(documentForm.getName(), documentForm.getIsBestseller(),
+                    documentForm.getCopies(), documentForm.getPrice(), documentForm.getIsReference(),
+                    new Editor(documentForm.getEditor()), new Publisher(documentForm.getPublisher()));
+        }
+        System.out.println(documentForm.getType());
         //documentService.save(document);
-        return "redirect:/addDocument";
+        return "redirect:/";
     }
 
     @GetMapping("/modifyDocument/{id}")

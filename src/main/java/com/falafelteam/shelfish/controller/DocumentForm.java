@@ -11,6 +11,7 @@ class DocumentForm {
     private Integer copies;
     private Integer price;
     private Boolean isReference;
+    private int type;
     private String authors;
     private String editor;
     private String publisher;
