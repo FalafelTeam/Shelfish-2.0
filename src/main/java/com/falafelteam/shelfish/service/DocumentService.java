@@ -38,28 +38,32 @@ public class DocumentService {
         } else throw new Exception("Document not found");
     }
 
+    public Document getByName(String name) throws Exception {
+        if (documentRepository.findByName(name) != null) {
+            return documentRepository.findByName(name);
+        } else throw new Exception("Document not found");
+    }
+
     /**
      * method that adds document to the database
      *
      * @param document - the document that is being added
      */
     public void add(Document document) {
-        if (documentRepository.findById(document.getId()) == null) {
-            if (document.getAuthors() != null) {
-                for (Author author : document.getAuthors()) {
-                    if (authorKindsService.getAuthorByName(author.getName()) != null) {
-                        authorKindsService.saveAuthor(author);
-                    }
+        if (document.getAuthors() != null) {
+            for (Author author : document.getAuthors()) {
+                if (authorKindsService.getAuthorByName(author.getName()) == null) {
+                    authorKindsService.saveAuthor(author);
                 }
             }
-            if (document.getEditor() != null && authorKindsService.getEditorByName(document.getEditor().getName()) != null) {
-                authorKindsService.saveEditor(document.getEditor());
-            }
-            if (document.getPublisher() != null) {
-                authorKindsService.savePublisher(document.getPublisher());
-            }
-            documentRepository.save(document);
         }
+        if (document.getEditor() != null && authorKindsService.getEditorByName(document.getEditor().getName()) == null) {
+            authorKindsService.saveEditor(document.getEditor());
+        }
+        if (document.getPublisher() != null && authorKindsService.getPublisherByName(document.getPublisher().getName()) == null) {
+            authorKindsService.savePublisher(document.getPublisher());
+        }
+        documentRepository.save(document);
     }
 
     /**
