@@ -13,12 +13,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotEmpty
     private String name;
-    @Email
     private String login;
     private String password;
-    @NotEmpty
     private String address;
     private String phoneNumber;
     @OneToOne(cascade = CascadeType.DETACH)
@@ -32,6 +29,4 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.role = role;
     }
-
-    // регулярочка для юзерЛогина: Pattern namePattern = Pattern.compile("[a-z]*[.][a-z]*@innopolis.ru")
 }
