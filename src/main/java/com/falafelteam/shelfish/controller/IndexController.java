@@ -1,5 +1,6 @@
 package com.falafelteam.shelfish.controller;
 
+import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.service.BookingService;
 import com.falafelteam.shelfish.service.DocumentService;
 import com.falafelteam.shelfish.service.UserService;
@@ -58,8 +59,8 @@ public class IndexController {
 
     @PostMapping("/addDocument")
     public String addDocument(@ModelAttribute("document") DocumentForm documentForm) throws Exception {
-        /*Document document;
-        if (documentForm.getType() == 1) {
+        Document document;
+        /*if (documentForm.getType() == 1) {
             document = new Article(documentForm.getName(), documentForm.getIsBestseller(),
                     documentForm.getCopies(), documentForm.getPrice(), documentForm.getIsReference(),
                     new Editor(documentForm.getEditor()), new Publisher(documentForm.getPublisher()));
@@ -72,8 +73,8 @@ public class IndexController {
                     new Publisher(documentForm.getPublisher()));
         } else {
             throw new Exception("There is no such document type");
-        }
-        documentService.save(document);*/
+        }*/
+        //documentService.save(document);
         return "redirect:/";
     }
 

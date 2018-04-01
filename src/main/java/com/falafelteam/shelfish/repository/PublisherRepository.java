@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PublisherRepository extends CrudRepository<Publisher, Integer>{
+
+    Publisher findByName(String name);
 }
