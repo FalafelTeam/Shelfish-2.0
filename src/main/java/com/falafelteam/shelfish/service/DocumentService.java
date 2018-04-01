@@ -45,6 +45,19 @@ public class DocumentService {
      */
     public void add(Document document) {
         if (documentRepository.findById(document.getId()) == null) {
+            if (document.getAuthors() != null) {
+                for (Author author : document.getAuthors()) {
+                    if (authorKindsService.getAuthorByName(author.getName()) != null) {
+                        authorKindsService.saveAuthor(author);
+                    }
+                }
+            }
+            if (document.getEditor() != null && authorKindsService.getEditorByName(document.getEditor().getName()) != null) {
+                authorKindsService.saveEditor(document.getEditor());
+            }
+            if (document.getPublisher() != null) {
+                authorKindsService.savePublisher(document.getPublisher());
+            }
             documentRepository.save(document);
         }
     }

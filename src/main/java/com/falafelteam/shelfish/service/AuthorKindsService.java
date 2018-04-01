@@ -32,6 +32,18 @@ public class AuthorKindsService {
         this.documentRepository = documentRepository;
     }
 
+    Author getAuthorByName(String name) {
+        return authorRepository.findByName(name);
+    }
+
+    Editor getEditorByName(String name) {
+        return editorRepository.findByName(name);
+    }
+
+    Publisher getPublisherByName(String name) {
+        return publisherRepository.findByName(name);
+    }
+
     /**
      * method that saves author to the database
      * does not save if such author already exists
