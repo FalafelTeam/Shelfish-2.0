@@ -97,7 +97,7 @@ public class BookingService {
         }
 
         if(docUser.getStatus() == docUser.getStatusNEW()) {
-            if(checkIfAvailableToCheck(document, user)){
+            if(checkIfAvailableToCheckOut(document, user)){
                 docUser.setStatus(docUser.getStatusTAKEN());
                 docUser.setDate(new Date());
                 documentUserRepository.save(docUser);
@@ -119,8 +119,8 @@ public class BookingService {
         }
         else{
             document.removeFromQueue(docUser);
+            // здесь рассчитывать fine
             documentUserRepository.delete(docUser);
-
             emailSendService.sendEmail(user, RETURNED_SUBJ, RETURNED_MESSAGE);
         }
     }
@@ -143,9 +143,24 @@ public class BookingService {
         }
     }
 
-    private boolean checkIfAvailableToCheck(Document document, User user){
-        return false; // АНЯ СДЕЛАТЬ НАДА СДЕЛАЙ ПОЖАЛУСТА СПАСИБА
+    private boolean checkIfAvailableToCheckOut(Document document, User user){
+        return false; // АНЯ СДЕЛАТЬ НАДА СДЕЛАЙ ПОЖАЛУСТА СПАСИБА (ТУТ НАДА СДЕЛАТЬ ЧТОБЫ ЕСЛИ ЧУВАК ВВЕРХУ ОЧЕРЕДИ НАХОДИТСЯ ТО ОН МОЖЕТ ВЗЯТЬ КНИГУ)
     }
+
+    private int calculateFine(DocumentUser docUser){
+        long diff = Math.abs(new Date().getTime() - docUser.getDate().getTime());
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        if(diffDays > 0){
+            return 0;
+        }
+        int fine = (int) diffDays*100;
+        if(fine > docUser.getDocument().getPrice()){
+            return docUser.getDocument().getPrice();
+        }
+        return fine;
+    }
+
 
     private final String BOOKED_SUBJ = "Document booking";
     private final String BOOKED_MESSAGE = "Dear customer, \n\nYou've successfully booked a book in Shelfish library! \n"+
