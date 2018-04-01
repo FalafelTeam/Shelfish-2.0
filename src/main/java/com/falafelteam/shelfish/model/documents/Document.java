@@ -99,15 +99,19 @@ public class Document {
         this.hasOutstanding = false;
     }
 
-    public LinkedList<String> getTags(){
+    public LinkedList<String> getTags() {
         LinkedList<String> tagArr = new LinkedList();
         tagArr.addAll(Arrays.asList(tags.split(", ")));
         return tagArr;
     }
 
-    public void setTags(LinkedList<String> tags){
-        for(String tag : tags){
+    public void setTags(LinkedList<String> tags) {
+        for (String tag : tags) {
             this.tags = this.tags + tag;
         }
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

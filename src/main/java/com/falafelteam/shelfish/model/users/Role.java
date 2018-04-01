@@ -12,12 +12,12 @@ import javax.persistence.Id;
  * Class for the role entity
  *
  * Priority of roles:
- * 0 - "librarian"
- * 1 - "student"
- * 2 - "instructor"
- * 3 - "ta"
- * 4 - "visiting professor"
- * 5 - "professor"
+ * 0 - "Librarian"
+ * 1 - "Student"
+ * 2 - "Instructor"
+ * 3 - "TA"
+ * 4 - "Visiting Professor"
+ * 5 - "Professor"
  */
 @Data
 @Entity

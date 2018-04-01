@@ -37,9 +37,6 @@ public class IndexController {
     @GetMapping("/document/{id}")
     public String getDocument(@PathVariable("id") int id, Model model) throws Exception {
         model.addAttribute("document", documentService.getById(id));
-        /*if (documentService.getById(id) instanceof Book) {
-            return "book";
-        }*/
         return "document";
     }
 

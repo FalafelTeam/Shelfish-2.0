@@ -33,8 +33,9 @@ class DocumentForm {
     @Positive
     private int price;
     private boolean isReference;
-    @Positive
     private final List<String> TYPE;
+    @Positive
+    private String type;
     private String tags;
     private String authors;
     private String editor;
@@ -43,7 +44,7 @@ class DocumentForm {
     public DocumentForm() {
         TYPE = new LinkedList<>();
         for (DocumentType document : docType.findAll()) {
-
+            TYPE.add(document.getName());
         }
     }
 

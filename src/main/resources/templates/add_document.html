@@ -15,10 +15,11 @@
         <p> Price: <input type="number" th:field="*{price}" name="price"><br></p>
         <p>Type:
         <select name="type" th:field="*{type}">
-            <option th:value="1">Article</option>
-            <option th:value="2">Audio/Video Material</option>
-            <option th:value="3">Book</option>
-        </select></p>
+            <option th:each="t : ${document.TYPE}"
+                    th:value="${t}"
+                    th:utext="${t}">Type</option>
+        </select>
+        </p>
         <p>Leave empty if not stated:<br></p>
         <p>Authors:<input type="text" th:field="*{authors}" name="name"/></p>
         <p>Editor:<input type="text" th:field="*{editor}" name="name"/></p>
