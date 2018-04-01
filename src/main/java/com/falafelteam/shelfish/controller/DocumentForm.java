@@ -47,6 +47,15 @@ class DocumentForm {
         return authors;
     }
 
+    public LinkedList<String> getParsedTags() {
+        LinkedList<String> tags = new LinkedList<>();
+        String[] tagsString = this.tags.split(", ");
+        for (String tag : tagsString) {
+            tags.add(tag);
+        }
+        return tags;
+    }
+
     public void validate() throws Exception {
         Pattern tagPattern = Pattern.compile("[a-z]+(, s*[a-z]+)*");
         Matcher tagMatcher = tagPattern.matcher(tags);
