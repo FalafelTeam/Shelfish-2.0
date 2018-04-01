@@ -4,6 +4,7 @@ import com.falafelteam.shelfish.model.AuthorKinds.Author;
 import com.falafelteam.shelfish.model.AuthorKinds.Editor;
 import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
 import com.falafelteam.shelfish.model.DocumentUser;
+import com.falafelteam.shelfish.model.users.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -113,5 +114,16 @@ public class Document {
 
     public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    public LinkedList<User> deleteNotTakenFromQueue(){
+        LinkedList<User> deleted = new LinkedList<>();
+        for(DocumentUser toDelete : users){
+            if(toDelete.getStatus() == toDelete.getStatusNEW()){
+                deleted.add(toDelete.getUser());
+                users.remove(toDelete);
+            }
+        }
+        return deleted;
     }
 }
