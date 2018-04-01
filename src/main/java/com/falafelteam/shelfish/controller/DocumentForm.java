@@ -67,7 +67,7 @@ class DocumentForm {
         Pattern authorPattern = Pattern.compile("[A-Za-z ]+(, s*[A-Za-z ]+)*");
         Matcher authorMatcher = authorPattern.matcher(authors);
         if (!authorMatcher.matches()) {
-            throw new Exception("Authors should be separated by a comma and a spacek[");
+            throw new Exception("Authors should be separated by a comma and a space");
         }
 
         Pattern editorPublisherPattern = Pattern.compile("[A-Za-z ]+");
@@ -79,6 +79,12 @@ class DocumentForm {
         editorPublisherMatcher = editorPublisherPattern.matcher(publisher);
         if (!editorPublisherMatcher.matches()) {
             throw new Exception("There can be only ONE publisher");
+        }
+
+        Pattern descriptionPattern = Pattern.compile("(.*?){0,2000}", Pattern.DOTALL);
+        Matcher descriptionMatcher = descriptionPattern.matcher(description);
+        if (!descriptionMatcher.matches()) {
+            throw new Exception("Too many bukaf");
         }
     }
 }

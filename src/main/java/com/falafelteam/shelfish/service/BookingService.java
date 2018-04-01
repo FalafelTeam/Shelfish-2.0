@@ -91,8 +91,50 @@ public class BookingService {
         }
     }
 
-    public void checkOut(Document document, User user) {
-        
+    public void checkOut(Document document, User user) throws Exception {
+        DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
+        if(docUser == null){
+            throw new Exception("Document wasn't booked at all. Trying to cheat?");
+        }
+
+        if(docUser.getStatus() == docUser.getStatusNEW()) {
+            if(checkIfAvailableToCheck(document, user)){
+                docUser.setStatus(docUser.getStatusTAKEN());
+                docUser.setDate(new Date());
+                documentUserRepository.save(docUser);
+                emailSendService.sendEmail(user, CHECKOUT_SUBJ, CHECKOUT_MESSAGE);
+            }
+            else{
+                throw new Exception("Not yet available. Too far in a queue");
+            }
+        }
+        else if(docUser.getStatus() == docUser.getStatusRENEWED() || docUser.getStatus() == docUser.getStatusTAKEN()){
+            throw new Exception("You have the document on hands! Don't cheat with us!");
+        }
+    }
+
+    public void returnDocument(Document document, User user) throws Exception {
+        DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
+        if(docUser.getStatus() == null || docUser.getStatus() == docUser.getStatusNEW()){
+            throw new Exception("Document wasn't booked");
+        }
+        else{
+            // remove user from queue of document;
+            documentUserRepository.delete(docUser);
+
+            emailSendService.sendEmail(user, RETURNED_SUBJ, RETURNED_MESSAGE);
+        }
+    }
+
+    public void renewDocument(Document document, User user) throws Exception {
+        DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
+        if(docUser == null || docUser.getStatus() == docUser.getStatusNEW()){
+            throw new Exception("Document wasn't booked");
+        }
+        docUser.setStatus(docUser.getStatusRENEWED());
+        docUser.setDate(new Date());
+
+        emailSendService.sendEmail(user, RENEW_SUBJ, RENEW_MESSAGE);
     }
 
     private void outstandingRequest(Document document) {
@@ -100,6 +142,10 @@ public class BookingService {
         for(User user: deleted){
             emailSendService.sendEmail(user, OUTSTANDING_SUBJ, OUTSTANDING_MESSAGE);
         }
+    }
+
+    private boolean checkIfAvailableToCheck(Document document, User user){
+        return false; // АНЯ СДЕЛАТЬ НАДА СДЕЛАЙ ПОЖАЛУСТА СПАСИБА
     }
 
     private final String BOOKED_SUBJ = "Document booking";
