@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+    body {
+        background: #f2f2f2 fixed;
+        background-size: cover;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgb(90, 145, 194);
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    li {
+        float: left;
+    }
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        background-color: rgb(41, 93, 139);
+    }
+    .active {
+        background-color: rgb(90, 145, 194);
+    }
+    select {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    input {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+</style>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Add user</title>
+</head>
+<body>
+<ul>
+    <li><a>Search</a></li>
+    <li style="float:right"><a class="active">Exit</a></li>
+</ul>
+<div align="center">
+    <h1>Add user</h1>
+    <form action="#" th:action="@{/addUser}" th:object="${user}" method="post">
+        <p>Name:<input type="text" style="width: 90px;" th:field="*{name}" name="name"/></p>
+        <p>Login:<input type="text" style="width: 90px;" th:field="*{login}" name="name"/></p>
+        <p>Password:<input type="text" style="width: 90px;" th:field="*{password}" name="name"/></p>
+        <p>Address:<input type="text" style="width: 90px;" th:field="*{address}" name="name"/></p>
+        <p>Phone number:<input type="text" style="width: 90px;" th:field="*{phoneNumber}" name="name"/></p>
+        <p><input type="submit" style="width: 90px;" value="Submit"></p>
+    </form>
+    <p><a href="http://localhost:8080/">To the main page</a></p>
+</div>
+</body>
+</htm
