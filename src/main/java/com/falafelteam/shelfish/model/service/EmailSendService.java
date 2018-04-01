@@ -12,7 +12,8 @@ public class EmailSendService {
     private String PASSWORD = "shelfish1";
     private int PORT = 465;
     private String HOST = "smtp.gmail.com";
-    private void sendEmail(User user, String subject, String message) {
+
+    public void sendEmail(User user, String subject, String message) {
         try {
             Email email = new SimpleEmail();
             email.setHostName(HOST);

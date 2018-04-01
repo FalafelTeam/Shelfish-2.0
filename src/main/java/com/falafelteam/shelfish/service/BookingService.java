@@ -2,6 +2,7 @@ package com.falafelteam.shelfish.service;
 
 import com.falafelteam.shelfish.model.DocumentUser;
 import com.falafelteam.shelfish.model.documents.Document;
+import com.falafelteam.shelfish.model.service.EmailSendService;
 import com.falafelteam.shelfish.model.users.User;
 import com.falafelteam.shelfish.repository.DocumentRepository;
 import com.falafelteam.shelfish.repository.DocumentUserRepository;
@@ -18,12 +19,37 @@ public class BookingService {
     private final DocumentUserRepository documentUserRepository;
     private final DocumentRepository documentRepository;
     private final UserRepository userRepository;
+    private final EmailSendService emailSendService;
+    private final String BOOKED_SUBJ = "Document booking";
+    private final String BOOKED_MESSAGE = "Dear customer, \n\nYou've successfully booked a book in Shelfish library! \n"+
+                                            "When you will be able to take the document, we will send you a message."+
+                                                "you will have only 1 day to pick it up. \n\n Kind regards,\n\nShelfish Team";
+
+    private final String AVAIL_SUBJ = "Time to take your book!";
+    private final String AVAIL_MESSAGE ="Document that you booked is available! So come take it :) \n\nNote: You have only one day, after"+
+                                            "which your booking will expire. Hurry up!\n\nKinds regards,\n\nShelfish Team";
+
+    private final String CHECKOUT_SUBJ ="You have successfully checked out document!";
+    private final String CHECKOUT_MESSAGE="Have a nice read! \\\\n\\nKinds regards,\\n\\nShelfish Team\"";
+
+    private final String DAYTILLRETURN_SUBJ="You have only 1 day left of reading!";
+    private final String DAYTILLRETURN_MESSAGE="Please come to return or renew your document tomorrow.\"+\n" +
+                                            "\\n\\nNote: In case you don't return or renew tomorrow, we will apply a fine of 100 rub" +
+                                            "per day\nNote: Maximum fine is the price of the book."+
+                                            "\\n\\nKinds regards,\\n\\nShelfish Team\"";
+    private final String FIRSTFINE_SUBJ="";
+    private final String FIRSTFINE_MESSAGE="\\n\\nKinds regards,\\n\\nShelfish Team\"";
+    private final String RETURNED_SUBJ="";
+    private final String RETURNED_MESSAGE="\\n\\nKinds regards,\\n\\nShelfish Team\"";
+    private final String RENEW_SUBJ="";
+    private final String RENEW_MESSAGE="\\n\\nKinds regards,\\n\\nShelfish Team\"";
 
     @Autowired
     public BookingService(DocumentUserRepository documentUserRepository, DocumentRepository documentRepository, UserRepository userRepository) {
         this.documentUserRepository = documentUserRepository;
         this.documentRepository = documentRepository;
         this.userRepository = userRepository;
+        this.emailSendService = new EmailSendService();
     }
 
     public void book(Document document, User user, Integer preferredWeeksNum) throws Exception {
@@ -45,6 +71,8 @@ public class BookingService {
         documentUserRepository.save(documentUser);
         document.getUsers().add(documentUser);
         documentRepository.save(document);
+
+        emailSendService.sendEmail(user, BOOKED_SUBJ, BOOKED_MESSAGE);
     }
 
     /**
@@ -89,5 +117,8 @@ public class BookingService {
     }
 
     private void outstandingRequest(Document document) {
+
     }
+
+
 }
