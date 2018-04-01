@@ -1,8 +1,10 @@
 package com.falafelteam.shelfish.controller;
 
 import com.falafelteam.shelfish.model.documents.Document;
+import com.falafelteam.shelfish.repository.DocumentTypeRepository;
 import com.falafelteam.shelfish.service.BookingService;
 import com.falafelteam.shelfish.service.DocumentService;
+import com.falafelteam.shelfish.service.DocumentTypeService;
 import com.falafelteam.shelfish.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,12 +18,15 @@ public class IndexController {
     private final DocumentService documentService;
     private final UserService userService;
     private final BookingService bookingService;
+    private final DocumentTypeService documentTypeService;
 
     @Autowired
-    public IndexController(DocumentService documentService, UserService userService, BookingService bookingService) {
+    public IndexController(DocumentService documentService, UserService userService, BookingService bookingService,
+                           DocumentTypeService documentTypeService) {
         this.documentService = documentService;
         this.userService = userService;
         this.bookingService = bookingService;
+        this.documentTypeService = documentTypeService;
     }
 
     @GetMapping("/")
@@ -47,8 +52,10 @@ public class IndexController {
     }
 
     @GetMapping("/addDocument")
-    public String addDocument(Model model) {
-        model.addAttribute("document", new DocumentForm());
+    public String addDocument(Model model) throws Exception {
+        DocumentForm form = new DocumentForm();
+        model.addAttribute("document", form);
+        model.addAttribute("types", documentTypeService.getAllTypes());
         return "add_document";
     }
 

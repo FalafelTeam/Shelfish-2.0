@@ -67,7 +67,7 @@
         <p> Price: <input type="number" style="width: 90px;" th:field="*{price}" name="price"><br></p>
         <p>Type:
         <select name="type" style="width: 120px;" th:field="*{type}">
-            <option th:each="t : ${document.TYPE}"
+            <option th:each="t : ${types}"
                     th:value="${t}"
                     th:utext="${t}">Type</option>
         </select>

@@ -1,7 +1,6 @@
 package com.falafelteam.shelfish.controller;
 
 import com.falafelteam.shelfish.model.AuthorKinds.Author;
-import com.falafelteam.shelfish.model.documents.DocumentType;
 import com.falafelteam.shelfish.repository.DocumentTypeRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,26 +25,18 @@ class DocumentForm {
     @NotEmpty
     private String name;
     private String description;
-    private boolean isBestseller;
+    private Boolean isBestseller;
     @Positive
     private int copies;
     @Positive
     private int price;
-    private boolean isReference;
-    private final List<String> TYPE;
+    private Boolean isReference;
     @Positive
     private String type;
     private String tags;
     private String authors;
     private String editor;
     private String publisher;
-
-    public DocumentForm() {
-        TYPE = new LinkedList<>();
-        for (DocumentType document : docType.findAll()) {
-            TYPE.add(document.getName());
-        }
-    }
 
     public LinkedList<Author> getParsedAuthors() {
         LinkedList<Author> authors = new LinkedList<>();
