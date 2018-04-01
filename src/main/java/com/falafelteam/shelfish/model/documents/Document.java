@@ -27,7 +27,7 @@ public class Document {
     private boolean isBestseller;
     private int copies;
     private int price;
-    private Boolean isReference;
+    private boolean isReference;
     private List<String> tags;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "document", cascade = {CascadeType.MERGE})
     private List<DocumentUser> users;

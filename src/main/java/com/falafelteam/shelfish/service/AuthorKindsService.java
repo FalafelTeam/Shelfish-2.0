@@ -35,12 +35,13 @@ public class AuthorKindsService {
     /**
      * method that saves author to the database
      * does not save if such author already exists
+     *
      * @param author - author that is being saved
      */
     void saveAuthor(Author author) {
         if (authorRepository.findByName(author.getName()) == null) {
             authorRepository.save(author);
-        } else if (authorRepository.findByName(author.getName()).getId().equals(author.getId())) {
+        } else if (authorRepository.findByName(author.getName()).getId() == (author.getId())) {
             authorRepository.save(author);
         }
     }
@@ -48,12 +49,13 @@ public class AuthorKindsService {
     /**
      * method that saves editor to the database
      * does not add if such editor already exists
+     *
      * @param editor - editor that is being saved
      */
     void saveEditor(Editor editor) {
         if (editorRepository.findByName(editor.getName()) == null) {
             editorRepository.save(editor);
-        } else if (editorRepository.findByName(editor.getName()).getId().equals(editor.getId())) {
+        } else if (editorRepository.findByName(editor.getName()).getId() == (editor.getId())) {
             editorRepository.save(editor);
         }
     }
@@ -61,24 +63,26 @@ public class AuthorKindsService {
     /**
      * method that saves publisher to the database
      * does not add if such publisher already exists
+     *
      * @param publisher - publisher that is being saved
      */
     void savePublisher(Publisher publisher) {
         if (publisherRepository.findByName(publisher.getName()) == null) {
             publisherRepository.save(publisher);
-        } else if (publisherRepository.findByName(publisher.getName()).getId().equals(publisher.getId())) {
+        } else if (publisherRepository.findByName(publisher.getName()).getId() == (publisher.getId())) {
             publisherRepository.save(publisher);
         }
     }
 
     /**
      * method that checks and deletes redundant entities
-     * @param authors - authors that are being checked
-     * @param editor - editir that is being checked
+     *
+     * @param authors   - authors that are being checked
+     * @param editor    - editir that is being checked
      * @param publisher - publisher that is being checked
      */
     void deleteRedundant(List<Author> authors, Editor editor, Publisher publisher) {
-        for (Author author: authors) {
+        for (Author author : authors) {
             if (documentRepository.findAllByAuthorsContaining(author) == null) {
                 authorRepository.delete(author);
             }
