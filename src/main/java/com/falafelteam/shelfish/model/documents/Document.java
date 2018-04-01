@@ -37,6 +37,7 @@ public class Document {
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "typeId")
     private DocumentType type;
+    private boolean hasOutstanding;
 
     //Book
     @ManyToOne(fetch = FetchType.EAGER)
@@ -63,6 +64,7 @@ public class Document {
         this.users = new LinkedList<>();
         this.tags = new LinkedList<>();
         this.tags.addAll(tags);
+        this.hasOutstanding = false;
     }
 
     // for Article
@@ -79,6 +81,7 @@ public class Document {
         this.users = new LinkedList<>();
         this.tags = new LinkedList<>();
         this.tags.addAll(tags);
+        this.hasOutstanding = false;
     }
 
     // for AV
@@ -95,6 +98,7 @@ public class Document {
         this.users = new LinkedList<>();
         this.tags = new LinkedList<>();
         this.tags.addAll(tags);
+        this.hasOutstanding = false;
     }
 
 }

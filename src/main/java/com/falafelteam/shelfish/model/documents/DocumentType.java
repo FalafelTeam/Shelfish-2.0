@@ -15,9 +15,9 @@ public class DocumentType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
-    String type;
+    String name;
 
-    public DocumentType(String type) {
-        this.type = type;
+    public DocumentType(String name) {
+        this.name = name;
     }
 }

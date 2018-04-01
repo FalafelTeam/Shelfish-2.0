@@ -78,7 +78,7 @@ public class DocumentService {
     /**
      * method that deletes the document
      *
-     * @param id - id od=f the document that is being deleted
+     * @param id - id of the document that is being deleted
      */
     public void deleteById(int id) {
         Document found = documentRepository.findById(id);
