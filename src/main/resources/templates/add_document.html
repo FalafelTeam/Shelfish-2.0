@@ -5,6 +5,7 @@
     <title>Add document</title>
 </head>
 <body>
+<div align="center">
     <h1>Add document</h1>
     <form action="#" th:action="@{/addDocument}" th:object="${document}" method="post">
         <p>Name:<input type="text" th:field="*{name}" name="name"/></p>
@@ -27,5 +28,6 @@
         <p><input type="submit" value="Submit"></p>
     </form>
     <p><a href="http://localhost:8080/">To the main page</a></p>
+</div>
 </body>
 </html>
