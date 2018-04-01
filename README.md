@@ -40,5 +40,4 @@ Our application is a web application. Our idea is that the system is going to be
   * Put your new type of document into the first line, also put an incremental value.
 * In Document class:
   * Create new attributes (if needed) and create a constructor for a document type.
-
-_**Note:** Easy adding a new type of document is being worked on._
+* If new attributes are needed, add them to html templates, to DocumentForm etc (being updated)

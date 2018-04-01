@@ -46,6 +46,11 @@
         border-radius: 5px;
         background-color: #ffffff;
     }
+    .log{
+        font-size: 60px;
+        font-family: Arial;
+        color : #5A91C2;
+    }
 </style>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -57,7 +62,7 @@
     <li style="float:right"><a class="active">Exit</a></li>
 </ul>
 <div align="center">
-    <h1>Add document</h1>
+    <h1 class="log">Add document</h1>
     <form action="#" th:action="@{/addDocument}" th:object="${document}" method="post">
         <p>Name:<input type="text" style="width: 90px;" th:field="*{name}" name="name"/></p>
         <p>Description:</p><textarea name="description" th:field="*{description}" rows="5" cols="30"></textarea><br>
