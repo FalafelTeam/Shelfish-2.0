@@ -119,7 +119,7 @@ public class BookingService {
             throw new Exception("Document wasn't booked");
         }
         else{
-            // remove user from queue of document;
+            document.removeFromQueue(docUser);
             documentUserRepository.delete(docUser);
 
             emailSendService.sendEmail(user, RETURNED_SUBJ, RETURNED_MESSAGE);

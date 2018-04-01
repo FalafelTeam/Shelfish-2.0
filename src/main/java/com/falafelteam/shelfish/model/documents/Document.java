@@ -5,14 +5,15 @@ import com.falafelteam.shelfish.model.AuthorKinds.Editor;
 import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
 import com.falafelteam.shelfish.model.DocumentUser;
 import com.falafelteam.shelfish.model.users.User;
+import com.falafelteam.shelfish.repository.DocumentUserRepository;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import javax.validation.constraints.*;
 
 
 @Data
@@ -116,14 +117,18 @@ public class Document {
         this.tags = tags;
     }
 
-    public LinkedList<User> deleteNotTakenFromQueue(){
+    public LinkedList<User> deleteNotTakenFromQueue() {
         LinkedList<User> deleted = new LinkedList<>();
-        for(DocumentUser toDelete : users){
-            if(toDelete.getStatus() == toDelete.getStatusNEW()){
+        for (DocumentUser toDelete : users) {
+            if (toDelete.getStatus() == toDelete.getStatusNEW()) {
                 deleted.add(toDelete.getUser());
                 users.remove(toDelete);
             }
         }
         return deleted;
+    }
+
+    public void removeFromQueue(DocumentUser docUser) {
+        users.remove(docUser);
     }
 }

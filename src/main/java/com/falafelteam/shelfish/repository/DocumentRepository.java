@@ -19,4 +19,6 @@ public interface DocumentRepository extends CrudRepository<Document, Integer>{
     List<Document> findAllByEditor(Editor editor);
 
     List<Document> findAllByPublisher(Publisher publisher);
+
+    Document findByName(String name);
 }
