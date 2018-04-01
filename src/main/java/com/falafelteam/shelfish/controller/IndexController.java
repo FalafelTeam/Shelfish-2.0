@@ -59,22 +59,7 @@ public class IndexController {
 
     @PostMapping("/addDocument")
     public String addDocument(@ModelAttribute("document") DocumentForm documentForm) throws Exception {
-        Document document;
-        /*if (documentForm.getType() == 1) {
-            document = new Article(documentForm.getName(), documentForm.getIsBestseller(),
-                    documentForm.getCopies(), documentForm.getPrice(), documentForm.getIsReference(),
-                    new Editor(documentForm.getEditor()), new Publisher(documentForm.getPublisher()));
-        } else if (documentForm.getType() == 2) {
-            document = new AV(documentForm.getName(), documentForm.getIsBestseller(), documentForm.getCopies(),
-                    documentForm.getPrice(), documentForm.getIsReference(), documentForm.getParsedAuthors());
-        } else if (documentForm.getType() == 3) {
-            document = new Book(documentForm.getName(), documentForm.getIsBestseller(), documentForm.getCopies(),
-                    documentForm.getPrice(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
-                    new Publisher(documentForm.getPublisher()));
-        } else {
-            throw new Exception("There is no such document type");
-        }*/
-        //documentService.save(document);
+
         return "redirect:/";
     }
 

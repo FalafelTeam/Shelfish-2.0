@@ -32,4 +32,6 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.role = role;
     }
+
+    // регулярочка для юзерЛогина: Pattern namePattern = Pattern.compile("[a-z]*[.][a-z]*@innopolis.ru")
 }
