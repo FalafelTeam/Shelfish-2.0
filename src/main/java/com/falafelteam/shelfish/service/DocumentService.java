@@ -25,16 +25,36 @@ public class DocumentService {
         this.authorKindsService = authorKindsService;
     }
 
+    /**
+     * method that gets document with stated id
+     *
+     * @param id - id of the document
+     * @return document with stated id
+     * @throws Exception if there is no document with such id
+     */
     public Document getById(int id) throws Exception {
         if (documentRepository.findById(id) != null) {
             return documentRepository.findById(id);
         } else throw new Exception("Document not found");
     }
 
-    public void save(Document document) {
-        documentRepository.save(document);
+    /**
+     * method that adds document to the database
+     *
+     * @param document - the document that is being added
+     */
+    public void add(Document document) {
+        if (documentRepository.findById(document.getId()) == null) {
+            documentRepository.save(document);
+        }
     }
 
+    /**
+     * method that modifies the document
+     *
+     * @param document    - the document that is being modified
+     * @param newDocument - document that has attributes that are being assigned to the modified document
+     */
     public void modify(Document document, Document newDocument) {
         document.setName(newDocument.getName());
         document.setDescription(newDocument.getDescription());
@@ -52,8 +72,14 @@ public class DocumentService {
         if (document.getPublisher() != null) {
             document.setPublisher(newDocument.getPublisher());
         }
+        documentRepository.save(document);
     }
 
+    /**
+     * method that deletes the document
+     *
+     * @param id - id od=f the document that is being deleted
+     */
     public void deleteById(int id) {
         Document found = documentRepository.findById(id);
         List<Author> authors = found.getAuthors();

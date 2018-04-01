@@ -78,7 +78,7 @@ public class AuthorKindsService {
      * method that checks and deletes redundant entities
      *
      * @param authors   - authors that are being checked
-     * @param editor    - editir that is being checked
+     * @param editor    - editor that is being checked
      * @param publisher - publisher that is being checked
      */
     void deleteRedundant(List<Author> authors, Editor editor, Publisher publisher) {

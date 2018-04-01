@@ -8,6 +8,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Class for the role entity
+ *
+ * Priority of roles:
+ * 0 - "librarian"
+ * 1 - "student"
+ * 2 - "instructor"
+ * 3 - "ta"
+ * 4 - "visiting professor"
+ * 5 - "professor"
+ */
 @Data
 @Entity
 @NoArgsConstructor

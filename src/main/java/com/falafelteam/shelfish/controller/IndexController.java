@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class IndexController {
 
     private final DocumentService documentService;
-
     private final UserService userService;
-
     private final BookingService bookingService;
 
     @Autowired
@@ -66,7 +64,7 @@ public class IndexController {
     @GetMapping("/modifyDocument/{id}")
     public String modifyDocumet(@PathVariable("id") int id, Model model) throws Exception {
         model.addAttribute("document", documentService.getById(id));
-        documentService.save(documentService.getById(id));
+        //documentService.save(documentService.getById(id));
         return "redirect:/document/" + id;
     }
 
@@ -87,12 +85,6 @@ public class IndexController {
     public String deleteUser(@PathVariable("id") int id) {
         userService.deleteById(id);
         return "redirect:/";
-    }
-
-    @GetMapping("/outstanding/{documentId}")
-    public String outstandingRequest(@PathVariable("documentId") int id) {
-        bookingService.outstandingRequest(id);
-        return "redirect:/document/" + id;
     }
 
     @GetMapping("/search")
