@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import javax.validation.constraints.*;
@@ -28,7 +29,7 @@ public class Document {
     private int copies;
     private int price;
     private boolean isReference;
-    private List<String> tags;
+    private String tags;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "document", cascade = {CascadeType.MERGE})
     private List<DocumentUser> users;
     @ManyToMany(cascade = CascadeType.DETACH)
@@ -51,7 +52,7 @@ public class Document {
 
     // for Book (Multiple Authors)
     public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, List<Author> authors,
-                    Publisher publisher, DocumentType type, List<String> tags) {
+                    Publisher publisher, DocumentType type, String tags) {
         this.name = name;
         this.description = description;
         this.isBestseller = isBestseller;
@@ -62,14 +63,13 @@ public class Document {
         this.authors = new LinkedList<>();
         this.authors.addAll(authors);
         this.users = new LinkedList<>();
-        this.tags = new LinkedList<>();
-        this.tags.addAll(tags);
+        this.tags = tags;
         this.hasOutstanding = false;
     }
 
     // for Article
     public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, Publisher publisher,
-                    Editor editor, DocumentType type, List<String> tags) {
+                    Editor editor, DocumentType type, String tags) {
         this.name = name;
         this.description = description;
         this.isBestseller = isBestseller;
@@ -79,14 +79,13 @@ public class Document {
         this.publisher = publisher;
         this.editor = editor;
         this.users = new LinkedList<>();
-        this.tags = new LinkedList<>();
-        this.tags.addAll(tags);
+        this.tags = tags;
         this.hasOutstanding = false;
     }
 
     // for AV
     public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, Author author,
-                    DocumentType type, List<String> tags) {
+                    DocumentType type, String tags) {
         this.name = name;
         this.description = description;
         this.isBestseller = isBestseller;
@@ -96,9 +95,19 @@ public class Document {
         this.authors = new LinkedList<>();
         this.authors.add(author);
         this.users = new LinkedList<>();
-        this.tags = new LinkedList<>();
-        this.tags.addAll(tags);
+        this.tags = tags;
         this.hasOutstanding = false;
     }
 
+    public LinkedList<String> getTags(){
+        LinkedList<String> tagArr = new LinkedList();
+        tagArr.addAll(Arrays.asList(tags.split(", ")));
+        return tagArr;
+    }
+
+    public void setTags(LinkedList<String> tags){
+        for(String tag : tags){
+            this.tags = this.tags + tag;
+        }
+    }
 }

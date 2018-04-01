@@ -66,7 +66,7 @@ class DocumentForm {
         Pattern authorPattern = Pattern.compile("[A-Za-z ]+(, s*[A-Za-z ]+)*");
         Matcher authorMatcher = authorPattern.matcher(authors);
         if (!authorMatcher.matches()) {
-            throw new Exception("Authors should be separated by a comma and a space");
+            throw new Exception("Authors should be separated by a comma and a spacek[");
         }
 
         Pattern editorPublisherPattern = Pattern.compile("[A-Za-z ]+");
