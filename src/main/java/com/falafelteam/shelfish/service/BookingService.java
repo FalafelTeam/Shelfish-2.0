@@ -2,7 +2,6 @@ package com.falafelteam.shelfish.service;
 
 import com.falafelteam.shelfish.model.DocumentUser;
 import com.falafelteam.shelfish.model.documents.Document;
-import com.falafelteam.shelfish.model.service.EmailSendService;
 import com.falafelteam.shelfish.model.users.User;
 import com.falafelteam.shelfish.repository.DocumentRepository;
 import com.falafelteam.shelfish.repository.DocumentUserRepository;

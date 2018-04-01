@@ -1,4 +1,4 @@
-package com.falafelteam.shelfish.model.service;
+package com.falafelteam.shelfish.service;
 
 import com.falafelteam.shelfish.model.users.User;
 import lombok.extern.java.Log;
