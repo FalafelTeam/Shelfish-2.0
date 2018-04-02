@@ -62,15 +62,30 @@ public class ShelfishApplicationTests {
 		assert(userRepository.findByName("Alexey Karachev") != null);
 
 		bookingService.book(doc, user, 2);
-
 		DocumentUser docUser = documentUserRepository.findByDocumentAndUser(doc, user);
+
 		assert(docUser != null);
 		assert(docUser.getStatus().equals("new"));
 		assert(docUser.getStatus().equals(docUser.getStatusNEW()));
 
 		bookingService.checkOut(doc, user);
+		docUser = documentUserRepository.findByDocumentAndUser(doc, user);
+		doc = documentRepository.findByName("War and Peace");
 
-		assert (docUser.getStatus().equals(docUser.getStatusNEW()));
+
+		assert (docUser.getStatus().equals(docUser.getStatusTAKEN()));
+
+		bookingService.renewDocument(doc, user);
+		docUser = documentUserRepository.findByDocumentAndUser(doc, user);
+		doc = documentRepository.findByName("War and Peace");
+
+		assert(docUser.getStatus().equals(docUser.getStatusRENEWED()));
+
+		bookingService.returnDocument(doc, user);
+		docUser = documentUserRepository.findByDocumentAndUser(doc, user);
+
+
+		assert(docUser == null);
 	}
 
 }

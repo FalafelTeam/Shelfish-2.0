@@ -119,10 +119,9 @@ public class BookingService {
             throw new Exception("Document wasn't booked");
         }
         else{
-            document.removeFromQueue(docUser);
-            // здесь рассчитывать fine
-            documentUserRepository.delete(docUser);
-            emailSendService.sendEmail(user, RETURNED_SUBJ, RETURNED_MESSAGE);
+            documentRepository.save(document);
+            userRepository.save(user);
+            documentUserRepository.deleteById(docUser.getId());
         }
     }
 
@@ -133,6 +132,7 @@ public class BookingService {
         }
         docUser.setStatus(docUser.getStatusRENEWED());
         docUser.setDate(new Date());
+        documentUserRepository.save(docUser);
 
         emailSendService.sendEmail(user, RENEW_SUBJ, RENEW_MESSAGE);
     }

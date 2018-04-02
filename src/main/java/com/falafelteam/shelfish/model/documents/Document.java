@@ -7,14 +7,15 @@ import com.falafelteam.shelfish.model.DocumentUser;
 import com.falafelteam.shelfish.model.users.User;
 import com.falafelteam.shelfish.repository.DocumentUserRepository;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
 
-@Data
 @Entity
 @Table
 @NoArgsConstructor
@@ -22,28 +23,28 @@ public class Document {
     //Common
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private String name;
-    private String description;
-    private boolean isBestseller;
-    private int copies;
-    private int price;
-    private boolean isReference;
-    private String tags;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "document", cascade = {CascadeType.MERGE})
-    private List<DocumentUser> users;
+    @Getter private Integer id;
+    @Getter @Setter private String name;
+    @Getter @Setter private String description;
+    @Getter @Setter private boolean isBestseller;
+    @Getter @Setter private int copies;
+    @Getter @Setter private int price;
+    @Getter @Setter private boolean isReference;
+    @Getter @Setter private String tags;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "document", cascade = {CascadeType.ALL})
+    @Getter private List<DocumentUser> users;
     @ManyToMany(cascade = CascadeType.DETACH)
-    private List<Author> authors;
+    @Getter @Setter private List<Author> authors;
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "typeId")
-    private DocumentType type;
-    private boolean hasOutstanding;
+    @Getter @Setter private DocumentType type;
+    @Getter @Setter private boolean hasOutstanding;
     @ManyToOne(fetch = FetchType.EAGER)
-    private Publisher publisher;
+    @Getter @Setter private Publisher publisher;
     @ManyToOne(fetch = FetchType.EAGER)
-    private Editor editor;
-    private int edition;
-    private Date publishingDate;
+    @Getter @Setter private Editor editor;
+    @Getter @Setter private int edition;
+    @Getter @Setter private Date publishingDate;
 
     // for Book
     public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, List<Author> authors,
@@ -131,8 +132,8 @@ public class Document {
         users.remove(docUser);
     }
 
-    @Override
-    public String toString() {
-        return "";
-    }
+//    @Override
+//    public String toString() {
+//        return "";
+//    }
 }

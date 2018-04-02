@@ -1,7 +1,9 @@
 package com.falafelteam.shelfish.model.users;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,18 +21,23 @@ import javax.persistence.Id;
  * 4 - "Visiting Professor"
  * 5 - "Professor"
  */
-@Data
+
 @Entity
 @NoArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private String name;
-    private int priority;
+    @Getter private Integer id;
+    @Getter @Setter private String name;
+    @Getter @Setter private int priority;
 
     public Role(String name, int priority) {
         this.name = name;
         this.priority = priority;
     }
+
+//    @Override
+//    public String toString(){
+//        return "";
+//    }
 }
