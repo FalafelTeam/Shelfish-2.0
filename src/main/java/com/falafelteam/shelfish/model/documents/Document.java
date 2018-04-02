@@ -123,7 +123,16 @@ public class Document {
         return deleted;
     }
 
+    public void addToQueue(DocumentUser docUser) {
+        users.add(docUser);
+    }
+
     public void removeFromQueue(DocumentUser docUser) {
         users.remove(docUser);
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 }

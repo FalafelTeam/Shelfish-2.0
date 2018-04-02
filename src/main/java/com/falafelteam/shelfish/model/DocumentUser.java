@@ -31,7 +31,7 @@ public class DocumentUser {
     public DocumentUser(Document document, User user, int weekNum) {
         this.document = document;
         this.user = user;
-        this.status = statusNEW;
+        this.status = this.statusNEW;
         this.date = new Date();
         this.weekNum = weekNum;
     }

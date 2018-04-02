@@ -46,7 +46,7 @@ public class BookingService {
         }
         DocumentUser documentUser = new DocumentUser(document, user, preferredWeeksNum);
         documentUserRepository.save(documentUser);
-        document.getUsers().add(documentUser);
+        document.addToQueue(documentUser);
         documentRepository.save(document);
 
         emailSendService.sendEmail(user, BOOKED_SUBJ, BOOKED_MESSAGE);
@@ -98,6 +98,7 @@ public class BookingService {
 
         if(docUser.getStatus().equals(docUser.getStatusNEW())) {
             if(checkIfAvailableToCheckOut(document, user)){
+                //DANGER ZONE//
                 docUser.setStatus(docUser.getStatusTAKEN());
                 docUser.setDate(new Date());
                 documentUserRepository.save(docUser);
