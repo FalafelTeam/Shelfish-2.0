@@ -62,13 +62,14 @@
     <li style="float:right"><a class="active">Exit</a></li>
 </ul>
 <div align="center">
-    <h1 class="log">Add user</h1>
-    <form action="#" th:action="@{/addUser}" th:object="${user}" method="post">
-        <p>Name:<input type="text" style="width: 90px;" th:field="*{name}" name="name"/></p>
-        <p>Login:<input type="text" style="width: 90px;" th:field="*{login}" name="name"/></p>
-        <p>Password:<input type="text" style="width: 90px;" th:field="*{password}" name="name"/></p>
-        <p>Address:<input type="text" style="width: 90px;" th:field="*{address}" name="name"/></p>
-        <p>Phone number:<input type="text" style="width: 90px;" th:field="*{phoneNumber}" name="name"/></p>
+    <h1 class="log">Search user</h1>
+    <form action="#" th:action="@{/user/{id}}" th:object="${id}" method="post">
+        <p> ID: <input type="number" style="width: 90px;" th:field="*{id}" name="price"><br></p>
+        <p><input type="submit]" style="width: 90px;" value="Submit"></p>
+    </form>
+    <h1 class="log">Search book</h1>
+    <form action="#" th:action="@{/document/{id}}" th:object="${id}" method="post">
+        <p> ID: <input type="number" style="width: 90px;" th:field="*{id}" name="price"><br></p>
         <p><input type="submit" style="width: 90px;" value="Submit"></p>
     </form>
     <p><a href="http://localhost:8080/">To the main page</a></p>
