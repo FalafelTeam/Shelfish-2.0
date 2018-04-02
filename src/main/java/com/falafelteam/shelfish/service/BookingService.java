@@ -96,7 +96,7 @@ public class BookingService {
             throw new Exception("Document wasn't booked at all. Trying to cheat?");
         }
 
-        if(docUser.getStatus() == docUser.getStatusNEW()) {
+        if(docUser.getStatus().equals(docUser.getStatusNEW())) {
             if(checkIfAvailableToCheckOut(document, user)){
                 docUser.setStatus(docUser.getStatusTAKEN());
                 docUser.setDate(new Date());
@@ -107,14 +107,14 @@ public class BookingService {
                 throw new Exception("Not yet available. Too far in a queue");
             }
         }
-        else if(docUser.getStatus() == docUser.getStatusRENEWED() || docUser.getStatus() == docUser.getStatusTAKEN()){
+        else if(docUser.getStatus().equals(docUser.getStatusRENEWED()) || docUser.getStatus() == docUser.getStatusTAKEN()){
             throw new Exception("You have the document on hands! Don't cheat with us!");
         }
     }
 
     public void returnDocument(Document document, User user) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
-        if(docUser.getStatus() == null || docUser.getStatus() == docUser.getStatusNEW()){
+        if(docUser.getStatus() == null || docUser.getStatus().equals(docUser.getStatusNEW())){
             throw new Exception("Document wasn't booked");
         }
         else{
@@ -127,7 +127,7 @@ public class BookingService {
 
     public void renewDocument(Document document, User user) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
-        if(docUser == null || docUser.getStatus() == docUser.getStatusNEW()){
+        if(docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())){
             throw new Exception("Document wasn't booked");
         }
         docUser.setStatus(docUser.getStatusRENEWED());
@@ -144,7 +144,7 @@ public class BookingService {
     }
 
     private boolean checkIfAvailableToCheckOut(Document document, User user){
-        return false; // АНЯ СДЕЛАТЬ НАДА СДЕЛАЙ ПОЖАЛУСТА СПАСИБА (ТУТ НАДА СДЕЛАТЬ ЧТОБЫ ЕСЛИ ЧУВАК ВВЕРХУ ОЧЕРЕДИ НАХОДИТСЯ ТО ОН МОЖЕТ ВЗЯТЬ КНИГУ)
+        return true; // АНЯ СДЕЛАТЬ НАДА СДЕЛАЙ ПОЖАЛУСТА СПАСИБА (ТУТ НАДА СДЕЛАТЬ ЧТОБЫ ЕСЛИ ЧУВАК ВВЕРХУ ОЧЕРЕДИ НАХОДИТСЯ ТО ОН МОЖЕТ ВЗЯТЬ КНИГУ)
     }
 
     private int calculateFine(DocumentUser docUser){

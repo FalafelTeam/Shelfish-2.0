@@ -14,7 +14,7 @@ import javax.persistence.Id;
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
     private String name;
 
     public Publisher(String name) {

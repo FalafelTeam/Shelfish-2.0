@@ -24,7 +24,7 @@ public class Document {
     //Common
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
     private String name;
     private String description;
     private boolean isBestseller;

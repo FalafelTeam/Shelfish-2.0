@@ -17,7 +17,7 @@ public class DocumentUser {
     private final String statusRENEWED = "renewed";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
     @ManyToOne
     @JoinColumn(name = "document_id")
     private Document document;
