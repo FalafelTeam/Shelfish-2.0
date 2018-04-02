@@ -131,9 +131,4 @@ public class Document {
     public void removeFromQueue(DocumentUser docUser) {
         users.remove(docUser);
     }
-
-//    @Override
-//    public String toString() {
-//        return "";
-//    }
 }
