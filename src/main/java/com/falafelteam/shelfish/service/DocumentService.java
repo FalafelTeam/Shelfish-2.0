@@ -57,10 +57,10 @@ public class DocumentService {
                 }
             }
         }
-        if (document.getEditor() != null && authorKindsService.getEditorByName(document.getEditor().getName()) == null) {
+        if (document.getEditor() != null) {
             authorKindsService.saveEditor(document.getEditor());
         }
-        if (document.getPublisher() != null && authorKindsService.getPublisherByName(document.getPublisher().getName()) == null) {
+        if (document.getPublisher() != null) {
             authorKindsService.savePublisher(document.getPublisher());
         }
         documentRepository.save(document);

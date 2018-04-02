@@ -4,9 +4,11 @@ import com.falafelteam.shelfish.model.AuthorKinds.Author;
 import com.falafelteam.shelfish.repository.DocumentTypeRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -35,6 +37,7 @@ class DocumentForm {
     private String authors;
     private String editor;
     private String publisher;
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date date;
 
     public LinkedList<Author> getParsedAuthors() {

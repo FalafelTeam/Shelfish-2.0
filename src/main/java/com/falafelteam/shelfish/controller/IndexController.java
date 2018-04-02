@@ -73,7 +73,7 @@ public class IndexController {
                 document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
                         documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
                         new Publisher(documentForm.getPublisher()), new Editor(documentForm.getEditor()), documentType,
-                        documentForm.getTags(), null);
+                        documentForm.getTags(), documentForm.getDate());
                 break;
             case "AV":
                 document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
@@ -83,7 +83,7 @@ public class IndexController {
             case "Book":
                 document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
                         documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
-                        new Publisher(documentForm.getPublisher()), documentType, documentForm.getTags(), null);
+                        new Publisher(documentForm.getPublisher()), documentType, documentForm.getTags(), documentForm.getDate());
                 break;
             default: throw new Exception("Wrong document type");
         }
