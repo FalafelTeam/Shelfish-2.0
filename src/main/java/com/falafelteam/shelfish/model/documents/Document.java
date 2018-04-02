@@ -102,6 +102,10 @@ public class Document {
         return tagArr;
     }
 
+    public String getTagsToString() {
+        return tags;
+    }
+
     public void setTags(String tags) {
         this.tags = tags;
     }
