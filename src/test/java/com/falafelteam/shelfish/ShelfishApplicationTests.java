@@ -50,7 +50,7 @@ public class ShelfishApplicationTests {
 		author.add(new Author("Lev Tolstoy"));
 		Document doc = new Document("War and Peace", "About war and peace", false, 1, false,
 				author, new Publisher("RusKniga"),
-				documentType, "kik, lol, haha, war, peace, obviously");
+				documentType, "kik, lol, haha, war, peace, obviously", null);
 		documentService.add(doc);
 		assert(documentRepository.findByName("War and Peace") != null);
 		assert(authorRepository.findByName("Lev Tolstoy") != null);
