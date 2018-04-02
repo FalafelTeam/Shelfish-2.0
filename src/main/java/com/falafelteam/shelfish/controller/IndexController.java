@@ -1,11 +1,13 @@
 package com.falafelteam.shelfish.controller;
 
+import com.falafelteam.shelfish.model.AuthorKinds.Editor;
+import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
 import com.falafelteam.shelfish.model.documents.Document;
+import com.falafelteam.shelfish.model.documents.DocumentType;
+import com.falafelteam.shelfish.model.users.Role;
+import com.falafelteam.shelfish.model.users.User;
 import com.falafelteam.shelfish.repository.DocumentTypeRepository;
-import com.falafelteam.shelfish.service.BookingService;
-import com.falafelteam.shelfish.service.DocumentService;
-import com.falafelteam.shelfish.service.DocumentTypeService;
-import com.falafelteam.shelfish.service.UserService;
+import com.falafelteam.shelfish.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,14 +21,16 @@ public class IndexController {
     private final UserService userService;
     private final BookingService bookingService;
     private final DocumentTypeService documentTypeService;
+    private final RoleService roleService;
 
     @Autowired
     public IndexController(DocumentService documentService, UserService userService, BookingService bookingService,
-                           DocumentTypeService documentTypeService) {
+                           DocumentTypeService documentTypeService, RoleService roleService) {
         this.documentService = documentService;
         this.userService = userService;
         this.bookingService = bookingService;
         this.documentTypeService = documentTypeService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/")
@@ -61,7 +65,47 @@ public class IndexController {
 
     @PostMapping("/addDocument")
     public String addDocument(@ModelAttribute("document") DocumentForm documentForm) throws Exception {
+        documentForm.validate();
+        Document document;
+        DocumentType documentType = documentTypeService.getByName(documentForm.getType());
+        switch (documentForm.getType()) {
+            case "Article":
+                document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
+                        documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
+                        new Publisher(documentForm.getPublisher()), new Editor(documentForm.getEditor()), documentType,
+                        documentForm.getTags(), null);
+                break;
+            case "AV":
+                document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
+                        documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(), documentType,
+                        documentForm.getTags());
+                break;
+            case "Book":
+                document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
+                        documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
+                        new Publisher(documentForm.getPublisher()), documentType, documentForm.getTags(), null);
+                break;
+            default: throw new Exception("Wrong document type");
+        }
+        documentService.add(document);
+        return "redirect:/";
+    }
 
+    @GetMapping("/signUp")
+    public String signUp(Model model) {
+        UserForm form = new UserForm();
+        model.addAttribute("user", form);
+        model.addAttribute("roles", roleService.gelAllRoles());
+        return "sign_up";
+    }
+
+    @PostMapping("/signUp")
+    public String signUp(@ModelAttribute("user") UserForm form) throws Exception {
+        form.validate();
+        Role role = roleService.getByName(form.getRole());
+        User user = new User(form.getName(), form.getLogin(), form.getPassword(), form.getAddress(),
+                form.getPhoneNumber(), role);
+        userService.save(user);
         return "redirect:/";
     }
 

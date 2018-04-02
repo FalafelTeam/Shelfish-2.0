@@ -13,8 +13,6 @@ import java.util.regex.Pattern;
 
 @Data
 public class UserForm {
-    @Autowired
-    RoleRepository roleRepository;
 
     @NotEmpty
     private String name;
@@ -25,18 +23,9 @@ public class UserForm {
     private String role;
     private String phoneNumber;
 
-    final List<String> ROLES;
-
-    public UserForm() {
-        ROLES = new LinkedList<>();
-        for (Role role :roleRepository.findAll()){
-            ROLES.add(role.getName());
-        }
-    }
-
     public void validate() throws Exception {
         Pattern loginPattern = Pattern.compile("[a-z]*[.][a-z]*@innopolis.ru");
-        Matcher loginMatcher = loginPattern.matcher(name);
+        Matcher loginMatcher = loginPattern.matcher(login);
         if(!loginMatcher.matches()){
             throw new Exception("Login should be in format \"m.khazeev@innopolis.ru\"");
         }
@@ -50,15 +39,6 @@ public class UserForm {
         Matcher phoneMatcher = phonePattern.matcher(phoneNumber);
         if(!phoneMatcher.matches()){
             throw new Exception("Password should contain at least 6 characters, that includes upper/lower case letters and digits 0-9");
-        }
-        boolean roleOK = false;
-        for(String role : ROLES){
-            if(role.equals(this.role)){
-                roleOK = true;
-            }
-        }
-        if(!roleOK){
-            throw new Exception("Such type of User doesn't exist!");
         }
     }
 

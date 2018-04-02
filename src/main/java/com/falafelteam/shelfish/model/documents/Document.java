@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 @Data
@@ -40,18 +38,16 @@ public class Document {
     @JoinColumn(name = "typeId")
     private DocumentType type;
     private boolean hasOutstanding;
-
-    //Book
     @ManyToOne(fetch = FetchType.EAGER)
     private Publisher publisher;
-
-    //Article
     @ManyToOne(fetch = FetchType.EAGER)
     private Editor editor;
+    private int edition;
+    private Date publishingDate;
 
-    // for Book (Multiple Authors)
+    // for Book
     public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, List<Author> authors,
-                    Publisher publisher, DocumentType type, String tags) {
+                    Publisher publisher, DocumentType type, String tags, Date publishingDate) {
         this.name = name;
         this.description = description;
         this.isBestseller = isBestseller;
@@ -63,12 +59,13 @@ public class Document {
         this.authors.addAll(authors);
         this.users = new LinkedList<>();
         this.tags = tags;
+        this.publishingDate = publishingDate;
         this.hasOutstanding = false;
     }
 
     // for Article
-    public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, Publisher publisher,
-                    Editor editor, DocumentType type, String tags) {
+    public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, List<Author> authors,
+                    Publisher publisher, Editor editor, DocumentType type, String tags, Date publishingDate) {
         this.name = name;
         this.description = description;
         this.isBestseller = isBestseller;
@@ -79,11 +76,12 @@ public class Document {
         this.editor = editor;
         this.users = new LinkedList<>();
         this.tags = tags;
+        this.publishingDate = publishingDate;
         this.hasOutstanding = false;
     }
 
     // for AV
-    public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, Author author,
+    public Document(String name, String description, boolean isBestselle, int copies, boolean isReference, List<Author> authors,
                     DocumentType type, String tags) {
         this.name = name;
         this.description = description;
@@ -92,7 +90,7 @@ public class Document {
         this.isReference = isReference;
         this.type = type;
         this.authors = new LinkedList<>();
-        this.authors.add(author);
+        this.authors.addAll(authors);
         this.users = new LinkedList<>();
         this.tags = tags;
         this.hasOutstanding = false;

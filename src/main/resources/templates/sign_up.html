@@ -63,10 +63,17 @@
 </ul>
 <div align="center">
     <h1 class="log">Add user</h1>
-    <form action="#" th:action="@{/addUser}" th:object="${user}" method="post">
+    <form action="#" th:action="@{/signUp}" th:object="${user}" method="post">
         <p>Name:<input type="text" style="width: 90px;" th:field="*{name}" name="name"/></p>
         <p>Login:<input type="text" style="width: 90px;" th:field="*{login}" name="name"/></p>
         <p>Password:<input type="text" style="width: 90px;" th:field="*{password}" name="name"/></p>
+        <p>Role:
+            <select name="type" style="width: 120px;" th:field="*{role}">
+                <option th:each="r : ${roles}"
+                        th:value="${r}"
+                        th:utext="${r}">Type</option>
+            </select>
+        </p>
         <p>Address:<input type="text" style="width: 90px;" th:field="*{address}" name="name"/></p>
         <p>Phone number:<input type="text" style="width: 90px;" th:field="*{phoneNumber}" name="name"/></p>
         <p><input type="submit" style="width: 90px;" value="Submit"></p>
