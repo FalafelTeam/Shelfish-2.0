@@ -67,19 +67,26 @@ public class IndexController {
         documentForm.validate();
         Document document;
         DocumentType documentType = documentTypeService.getByName(documentForm.getType());
-        if (documentForm.getType().equals("Article")) {
-            document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
-                    documentForm.getCopies(), documentForm.getIsReference(), new Publisher(documentForm.getPublisher()),
-                    new Editor(documentForm.getEditor()), documentType, documentForm.getTags());
-        } else if (documentForm.getType().equals("AV")) {
-            document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
-                    documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(), documentType,
-                    documentForm.getTags());
-        } else if (documentForm.getType().equals("Book")) {
-            document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
-                    documentForm.getCopies(),documentForm.getIsReference(), documentForm.getParsedAuthors(),
-                    new Publisher(documentForm.getPublisher()), documentType, documentForm.getTags());
+        switch (documentForm.getType()) {
+            case "Article":
+                document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
+                        documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
+                        new Publisher(documentForm.getPublisher()), new Editor(documentForm.getEditor()), documentType,
+                        documentForm.getTags(), null);
+                break;
+            case "AV":
+                document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
+                        documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(), documentType,
+                        documentForm.getTags());
+                break;
+            case "Book":
+                document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
+                        documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
+                        new Publisher(documentForm.getPublisher()), documentType, documentForm.getTags(), null);
+                break;
+            default: throw new Exception("Wrong document type");
         }
+        documentService.add(document);
         return "redirect:/";
     }
 
