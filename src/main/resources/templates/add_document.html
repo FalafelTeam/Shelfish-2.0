@@ -77,6 +77,7 @@
                     th:utext="${t}">Type</option>
         </select>
         </p>
+        <p>Tags:</p><textarea name="tags" th:field="*{tags}" rows="5" cols="30"></textarea><br>
         <p>Leave empty if not stated:<br></p>
         <p>Authors:<input type="text" style="width: 90px;" th:field="*{authors}" name="name"/></p>
         <p>Editor:<input type="text" style="width: 90px;" th:field="*{editor}" name="name"/></p>

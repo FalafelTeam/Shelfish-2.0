@@ -81,7 +81,7 @@ public class Document {
     }
 
     // for AV
-    public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, List<Author> authors,
+    public Document(String name, String description, boolean isBestselle, int copies, boolean isReference, List<Author> authors,
                     DocumentType type, String tags) {
         this.name = name;
         this.description = description;

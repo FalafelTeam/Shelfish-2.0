@@ -29,7 +29,6 @@ class DocumentForm {
     @Positive
     private int price;
     private Boolean isReference;
-    @Positive
     private String type;
     private String tags;
     private String authors;
@@ -58,7 +57,7 @@ class DocumentForm {
             throw new Exception("Authors should be separated by a comma and a space");
         }
 
-        Pattern editorPublisherPattern = Pattern.compile("[A-Za-z ]+");
+        Pattern editorPublisherPattern = Pattern.compile("[A-Za-z ]*");
         Matcher editorPublisherMatcher = editorPublisherPattern.matcher(editor);
         if (!editorPublisherMatcher.matches()) {
             throw new Exception("There can be only ONE editor");
