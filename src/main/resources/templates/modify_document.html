@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+    body {
+        background: #f2f2f2 fixed;
+        background-size: cover;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgb(90, 145, 194);
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    li {
+        float: left;
+    }
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        background-color: rgb(41, 93, 139);
+    }
+    .active {
+        background-color: rgb(90, 145, 194);
+    }
+    select {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    input {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    .log{
+        font-size: 60px;
+        font-family: Arial;
+        color : #5A91C2;
+    }
+</style>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Add document</title>
+</head>
+<body>
+<ul>
+    <li><a>Search</a></li>
+    <li style="float:right"><a class="active">Exit</a></li>
+</ul>
+<div align="center">
+    <h1 class="log">Modify document</h1>
+    <form action="#" th:action="@{/modifyDocument}" th:object="${document}" method="post">
+        <p>Name:<input type="text" style="width: 90px;" th:field="*{name}" th:value="${old.name}" name="name"/></p>
+        <p>Description:</p><textarea name="description" th:field="*{description}" th:value="${old.description}" rows="5" cols="30"></textarea><br>
+        <p> Is a bestseller <input type="checkbox" style="width: 90px;" th:field="*{isBestseller}" th:value="${old.isBestseller()}" name="isBestseller"><br></p>
+        <p> Is reference material <input type="checkbox" style="width: 90px;" th:field="*{isReference}" th:value="${old.isReference()}" name="isReference"><br></p>
+        <p> Number of copies: <input type="number" style="width: 90px;" th:field="*{copies}" th:value="${old.copies}" name="copies"><br></p>
+        <p> Price: <input type="number" style="width: 90px;" th:field="*{price}" th:value="${old.price}" name="price"><br></p>
+        <p>Tags:</p><textarea name="tags" th:field="*{tags}" th:value="${old.tags}" rows="5" cols="30"></textarea><br>
+        <p>Leave empty if not stated:<br></p>
+        <p>Authors:<input type="text" style="width: 90px;" th:field="*{authors}" th:value="${old.authorsToString()}" name="name"/></p>
+        <p>Editor:<input type="text" style="width: 90px;" th:field="*{editor}" th:value="${old.editor.getName()}" name="name"/></p>
+        <p>Publisher:<input type="text" style="width: 90px;" th:field="*{publisher}" th:value="${old.publisher.getName()}" name="name"/></p>
+        <p>Date:<input type="date" style="width: 150px;" th:field="*{date}" th:value="${old.publishingDate}" name="name"/></p>
+        <p><input type="submit" style="width: 90px;" value="Submit"></p>
+    </form>
+    <p><a href="http://localhost:8080/">To the main page</a></p>
+</div>
+</body>
+</html>

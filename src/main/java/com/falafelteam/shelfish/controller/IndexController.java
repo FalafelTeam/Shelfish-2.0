@@ -66,6 +66,31 @@ public class IndexController {
     @PostMapping("/addDocument")
     public String addDocument(@ModelAttribute("document") DocumentForm documentForm) throws Exception {
         documentForm.validate();
+        Document document = documentFormToDocument(documentForm);
+        documentService.add(document);
+        document = documentService.getByName(document.getName());
+        return "redirect:/document/" + document.getId();
+    }
+
+    @GetMapping("/modifyDocument/{id}")
+    public String modifyDocument(@PathVariable("id") int id, Model model) throws Exception {
+        DocumentForm form = new DocumentForm();
+        model.addAttribute("old", documentService.getById(id));
+        model.addAttribute("document", form);
+        return "modify_document";
+    }
+
+    @PostMapping("/modifyDocument/{id}")
+    public String modifyDocument(@ModelAttribute("document") DocumentForm documentForm,
+                                 @ModelAttribute("old") Document oldDocument,
+                                 @PathVariable("id") int id) throws Exception {
+        documentForm.validate();
+        Document document = documentFormToDocument(documentForm);
+        documentService.modify(oldDocument, document);
+        return "redirect:/document/" + id;
+    }
+
+    private Document documentFormToDocument(DocumentForm documentForm) throws Exception {
         Document document;
         DocumentType documentType = documentTypeService.getByName(documentForm.getType());
         switch (documentForm.getType()) {
@@ -87,7 +112,12 @@ public class IndexController {
                 break;
             default: throw new Exception("Wrong document type");
         }
-        documentService.add(document);
+        return document;
+    }
+
+    @GetMapping("/deleteDocument/{id}")
+    public String deleteDocument(@PathVariable("id") int id) {
+        documentService.deleteById(id);
         return "redirect:/";
     }
 
@@ -109,24 +139,11 @@ public class IndexController {
         return "redirect:/";
     }
 
-    @GetMapping("/modifyDocument/{id}")
-    public String modifyDocumet(@PathVariable("id") int id, Model model) throws Exception {
-        model.addAttribute("document", documentService.getById(id));
-        //documentService.save(documentService.getById(id));
-        return "redirect:/document/" + id;
-    }
-
     @PostMapping("/modifyUser/{id}")
     public String modifyUsers(@PathVariable("id") int id, Model model) throws Exception {
         model.addAttribute("user", userService.getById(id));
         userService.save(userService.getById(id));
         return "redirect:/user/" + id;
-    }
-
-    @GetMapping("/deleteDocument/{id}")
-    public String deleteDocument(@PathVariable("id") int id) {
-        documentService.deleteById(id);
-        return "redirect:/";
     }
 
     @GetMapping("/deleteUser/{id}")
@@ -138,5 +155,11 @@ public class IndexController {
     @GetMapping("/search")
     public String search() {
         return "search";
+    }
+
+    @GetMapping("/searchById")
+    public String searchById(Model model) {
+        model.addAttribute("form", new SearchByIdForm());
+        return "search_by_id";
     }
 }
