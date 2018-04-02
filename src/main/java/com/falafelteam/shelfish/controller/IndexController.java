@@ -4,6 +4,8 @@ import com.falafelteam.shelfish.model.AuthorKinds.Editor;
 import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
 import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.model.documents.DocumentType;
+import com.falafelteam.shelfish.model.users.Role;
+import com.falafelteam.shelfish.model.users.User;
 import com.falafelteam.shelfish.repository.DocumentTypeRepository;
 import com.falafelteam.shelfish.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +102,10 @@ public class IndexController {
     @PostMapping("/signUp")
     public String signUp(@ModelAttribute("user") UserForm form) throws Exception {
         form.validate();
-        //
+        Role role = roleService.getByName(form.getRole());
+        User user = new User(form.getName(), form.getLogin(), form.getPassword(), form.getAddress(),
+                form.getPhoneNumber(), role);
+        userService.save(user);
         return "redirect:/";
     }
 
