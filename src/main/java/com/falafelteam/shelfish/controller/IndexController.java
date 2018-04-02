@@ -1,6 +1,9 @@
 package com.falafelteam.shelfish.controller;
 
+import com.falafelteam.shelfish.model.AuthorKinds.Editor;
+import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
 import com.falafelteam.shelfish.model.documents.Document;
+import com.falafelteam.shelfish.model.documents.DocumentType;
 import com.falafelteam.shelfish.repository.DocumentTypeRepository;
 import com.falafelteam.shelfish.service.BookingService;
 import com.falafelteam.shelfish.service.DocumentService;
@@ -61,7 +64,22 @@ public class IndexController {
 
     @PostMapping("/addDocument")
     public String addDocument(@ModelAttribute("document") DocumentForm documentForm) throws Exception {
-
+        documentForm.validate();
+        Document document;
+        DocumentType documentType = documentTypeService.getByName(documentForm.getType());
+        if (documentForm.getType().equals("Article")) {
+            document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
+                    documentForm.getCopies(), documentForm.getIsReference(), new Publisher(documentForm.getPublisher()),
+                    new Editor(documentForm.getEditor()), documentType, documentForm.getTags());
+        } else if (documentForm.getType().equals("AV")) {
+            document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
+                    documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(), documentType,
+                    documentForm.getTags());
+        } else if (documentForm.getType().equals("Book")) {
+            document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
+                    documentForm.getCopies(),documentForm.getIsReference(), documentForm.getParsedAuthors(),
+                    new Publisher(documentForm.getPublisher()), documentType, documentForm.getTags());
+        }
         return "redirect:/";
     }
 

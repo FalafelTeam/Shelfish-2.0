@@ -49,7 +49,7 @@ public class Document {
     @ManyToOne(fetch = FetchType.EAGER)
     private Editor editor;
 
-    // for Book (Multiple Authors)
+    // for Book
     public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, List<Author> authors,
                     Publisher publisher, DocumentType type, String tags) {
         this.name = name;
@@ -83,7 +83,7 @@ public class Document {
     }
 
     // for AV
-    public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, Author author,
+    public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, List<Author> authors,
                     DocumentType type, String tags) {
         this.name = name;
         this.description = description;
@@ -92,7 +92,7 @@ public class Document {
         this.isReference = isReference;
         this.type = type;
         this.authors = new LinkedList<>();
-        this.authors.add(author);
+        this.authors.addAll(authors);
         this.users = new LinkedList<>();
         this.tags = tags;
         this.hasOutstanding = false;

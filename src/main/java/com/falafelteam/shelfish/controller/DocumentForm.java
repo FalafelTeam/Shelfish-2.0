@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,9 +19,6 @@ import java.util.regex.Pattern;
  */
 @Data
 class DocumentForm {
-
-    @Autowired
-    DocumentTypeRepository docType;
 
     @NotEmpty
     private String name;
@@ -45,15 +43,6 @@ class DocumentForm {
             authors.add(new Author(author));
         }
         return authors;
-    }
-
-    public LinkedList<String> getParsedTags() {
-        LinkedList<String> tags = new LinkedList<>();
-        String[] tagsString = this.tags.split(", ");
-        for (String tag : tagsString) {
-            tags.add(tag);
-        }
-        return tags;
     }
 
     public void validate() throws Exception {
