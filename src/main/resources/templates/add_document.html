@@ -71,17 +71,18 @@
         <p> Number of copies: <input type="number" style="width: 90px;" th:field="*{copies}" name="copies"><br></p>
         <p> Price: <input type="number" style="width: 90px;" th:field="*{price}" name="price"><br></p>
         <p>Type:
-        <select name="type" style="width: 120px;" th:field="*{type}">
-            <option th:each="t : ${types}"
-                    th:value="${t}"
-                    th:utext="${t}">Type</option>
-        </select>
+            <select name="type" style="width: 120px;" th:field="*{type}">
+                <option th:each="t : ${types}"
+                        th:value="${t}"
+                        th:utext="${t}">Type</option>
+            </select>
         </p>
         <p>Tags:</p><textarea name="tags" th:field="*{tags}" rows="5" cols="30"></textarea><br>
         <p>Leave empty if not stated:<br></p>
         <p>Authors:<input type="text" style="width: 90px;" th:field="*{authors}" name="name"/></p>
         <p>Editor:<input type="text" style="width: 90px;" th:field="*{editor}" name="name"/></p>
         <p>Publisher:<input type="text" style="width: 90px;" th:field="*{publisher}" name="name"/></p>
+        <p>Date:<input type="date" style="width: 150px;" th:field="*{date}" name="name"/></p>
         <p><input type="submit" style="width: 90px;" value="Submit"></p>
     </form>
     <p><a href="http://localhost:8080/">To the main page</a></p>
