@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,6 +35,7 @@ class DocumentForm {
     private String authors;
     private String editor;
     private String publisher;
+    private Date date;
 
     public LinkedList<Author> getParsedAuthors() {
         LinkedList<Author> authors = new LinkedList<>();

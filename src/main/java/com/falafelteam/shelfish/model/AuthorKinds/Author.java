@@ -1,6 +1,5 @@
 package com.falafelteam.shelfish.model.AuthorKinds;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,11 +11,12 @@ import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter private Integer id;
-    @Getter @Setter
+    private Integer id;
     private String name;
 
     public Author(String name) {

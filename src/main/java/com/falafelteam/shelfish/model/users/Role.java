@@ -1,6 +1,5 @@
 package com.falafelteam.shelfish.model.users;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +11,7 @@ import javax.persistence.Id;
 
 /**
  * Class for the role entity
- *
+ * <p>
  * Priority of roles:
  * 0 - "Librarian"
  * 1 - "Student"
@@ -24,12 +23,14 @@ import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter private Integer id;
-    @Getter @Setter private String name;
-    @Getter @Setter private int priority;
+    private Integer id;
+    private String name;
+    private int priority;
 
     public Role(String name, int priority) {
         this.name = name;
