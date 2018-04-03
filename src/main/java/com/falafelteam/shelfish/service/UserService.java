@@ -25,4 +25,9 @@ public class UserService {
     public void deleteById(int id) {
         userRepository.deleteById(id);
     }
+
+    public User getByName(String name) throws Exception { User found = userRepository.findByName(name);
+        if (found != null) {
+            return found;
+        } else throw new Exception("User not found"); }
 }
