@@ -143,6 +143,9 @@ public class BookingService {
     // new feature: choose number of weeks to renew a document for
     public void renewDocument(Document document, User user, Date date) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
+        if (docUser.getDocument().isHasOutstanding()) {
+            throw new Exception("Renew of the document is currently unavailable. Please return the document to the library as soon as possible");
+        }
         if (docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
             throw new Exception("Document wasn't booked");
         }
@@ -167,6 +170,7 @@ public class BookingService {
         for (User user : deleted) {
             emailSendService.sendEmail(user, OUTSTANDING_SUBJ, OUTSTANDING_MESSAGE);
         }
+        documentRepository.save(document);
     }
 
     private boolean checkIfAvailableToCheckOut(Document document, User user) throws Exception {
@@ -233,7 +237,13 @@ public class BookingService {
     }
 
     public void deleteNotTakenFromQueue(Document document) {
-        document.getUsers().clear();
+        LinkedList<DocumentUser> toBeDeleted = new LinkedList<>();
+        for (DocumentUser documentUser : document.getUsers()) {
+            if (documentUser.getStatus().equals(documentUser.getStatusNEW())) {
+                toBeDeleted.add(documentUser);
+            }
+        }
+        document.getUsers().removeAll(toBeDeleted);
         documentRepository.save(document);
     }
 

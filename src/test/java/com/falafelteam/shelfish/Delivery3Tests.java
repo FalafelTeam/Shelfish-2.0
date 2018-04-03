@@ -260,29 +260,49 @@ public class Delivery3Tests {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         User p1 = userService.getByName("Sergey Afonso");
         Document d1 = documentService.getByName("Introduction to Algorithms");
-        bookingService.book(d1, p1, 4);
+        bookingService.book(d1, p1);
         bookingService.checkOut(d1, p1, simpleDateFormat.parse("2018-03-29"));
         User s = userService.getByName("Andrey Velo");
         Document d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
-        bookingService.book(d2, s, 2);
+        bookingService.book(d2, s);
         bookingService.checkOut(d2, s, simpleDateFormat.parse("2018-03-29"));
         User v = userService.getByName("Veronika Rama");
         d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
-        bookingService.book(d2, v, 1);
+        bookingService.book(d2, v);
         bookingService.checkOut(d2, v, simpleDateFormat.parse("2018-03-29"));
 
         // action
+        d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
         bookingService.outstandingRequest(d2);
-        bookingService.renewDocument(d1, p1, simpleDateFormat.parse("2018-04-02"));
-        bookingService.renewDocument(d2, s, simpleDateFormat.parse("2018-04-02"));
+        d1 = documentService.getByName("Introduction to Algorithms");
+        try {
+            bookingService.renewDocument(d1, p1, simpleDateFormat.parse("2018-04-02"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        try {
+            bookingService.renewDocument(d2, s, simpleDateFormat.parse("2018-04-02"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         d2 = documentRepository.findByName("Design Patterns: Elements of Reusable Object-Oriented Software");
-        bookingService.renewDocument(d2, v, simpleDateFormat.parse("2018-04-02"));
+        try {
+            bookingService.renewDocument(d2, v, simpleDateFormat.parse("2018-04-02"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
+        d1 = documentService.getByName("Introduction to Algorithms");
+        d2 = documentRepository.findByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        String date1 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d1, p1)));
+        String date2 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, s)));
+        String date3 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, v)));
 
         //check
-        assert (bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d1, p1)) == simpleDateFormat.parse("2018-4-30"));
-        assert (bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, s)) == simpleDateFormat.parse("2018-4-16"));
-        assert (bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, v)) == simpleDateFormat.parse("2018-4-09"));
+        assert (date1.equals("2018-04-30"));
+        assert (date2.equals("2018-04-12"));
+        assert (date3.equals("2018-04-05"));
 
         deleteVseK_huyam();
     }
@@ -316,6 +336,10 @@ public class Delivery3Tests {
 
         // check
 
+        assert (bookingService.getWaitingList(d3).contains(v));
+        assert (!bookingService.getWaitingList(d3).contains(p1));
+        assert (!bookingService.getWaitingList(d3).contains(s));
+
         deleteVseK_huyam();
     }
 
@@ -330,6 +354,7 @@ public class Delivery3Tests {
     @Test
     public void test7() throws Exception {
         initialState();
+
 
 
         deleteVseK_huyam();
