@@ -65,16 +65,48 @@ public class Delivery3Tests {
         roleService.add("Professor", 5);
 
         // documents
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+
         List<Author> authors = new LinkedList<>();
         authors.add(new Author("Thomas H. Cormen"));
         authors.add(new Author("Charles E. Leiserson"));
         authors.add(new Author("Ronald L. Rives"));
         authors.add(new Author("Clifford Stein"));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
         Document d1 = new Document("Introduction to Algorithms", "", false, 3,
-                false, authors, new Publisher("MIT Press"), documentTypeService.getByName("Book"),
-                "", simpleDateFormat.parse("2009"));
+                5000, false, authors, new Publisher("MIT Press"),
+                documentTypeService.getByName("Book"), "", simpleDateFormat.parse("2009"));
         documentService.add(d1);
+
+        authors = new LinkedList<>();
+        authors.add(new Author("Erich Gamma"));
+        authors.add(new Author("Ralph Johnson"));
+        authors.add(new Author("John Vlissides"));
+        authors.add(new Author("Richard Helm"));
+        Document d2 = new Document("Design Patterns: Elements of Reusable Object-Oriented Software", "",
+                true, 3, 1700, false, authors,
+                new Publisher("Addison-Wesley Professional"), documentTypeService.getByName("Book"),
+                "", simpleDateFormat.parse("2003"));
+        documentService.add(d2);
+
+        authors = new LinkedList<>();
+        authors.add(new Author("Tony Hoare"));
+        Document d3 = new Document("Null References: The Billion Dollar Mistake", "", 2,
+                700, false, authors, documentTypeService.getByName("Audio/Video Material"), "");
+        documentService.add(d3);
+
+        // users
+
+        userService.save(new User("Sergey Afonso", "s.afonso@inoopolis.ru", "123456",
+                "Via Margutta, 3", "30001", roleService.getByName("Professor")));
+        userService.save(new User("Nadia Teixeira", "n.teixeira@innopolis.ru", "123456",
+                "Via Sacra, 13", "30002", roleService.getByName("Professor")));
+        userService.save(new User("Elvira Espindola", "e.espindola@innopolis.ru", "123456",
+                "Via del Corso, 22", "30003", roleService.getByName("Professor")));
+        userService.save(new User("Andrey Velo", "a.velo@innopolis.ru", "123456",
+                "Avenida Mazatlan, 250", "30004", roleService.getByName("Student")));
+        userService.save(new User("Veronika Rama", "v.rama@innopolis.ru", "123456",
+                "Stret Atocha, 27", "30005", roleService.getByName("Visiting Professor")));
     }
 
     public void deleteVseK_huyam(){

@@ -46,7 +46,7 @@ public class Document {
     private Date publishingDate;
 
     // for Book
-    public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, List<Author> authors,
+    public Document(String name, String description, boolean isBestseller, int copies, int price, boolean isReference, List<Author> authors,
                     Publisher publisher, DocumentType type, String tags, Date publishingDate) {
         this.name = name;
         this.description = description;
@@ -64,7 +64,7 @@ public class Document {
     }
 
     // for Article
-    public Document(String name, String description, boolean isBestseller, int copies, boolean isReference, List<Author> authors,
+    public Document(String name, String description, boolean isBestseller, int copies, int price, boolean isReference, List<Author> authors,
                     Publisher publisher, Editor editor, DocumentType type, String tags, Date publishingDate) {
         this.name = name;
         this.description = description;
@@ -81,11 +81,11 @@ public class Document {
     }
 
     // for AV
-    public Document(String name, String description, boolean isBestselle, int copies, boolean isReference, List<Author> authors,
+    public Document(String name, String description, int copies, int price, boolean isReference, List<Author> authors,
                     DocumentType type, String tags) {
         this.name = name;
         this.description = description;
-        this.isBestseller = isBestseller;
+        this.isBestseller = false;
         this.copies = copies;
         this.isReference = isReference;
         this.type = type;

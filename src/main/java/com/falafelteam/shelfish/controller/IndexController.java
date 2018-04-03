@@ -95,19 +95,20 @@ public class IndexController {
         switch (documentForm.getType()) {
             case "Article":
                 document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
-                        documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
-                        new Publisher(documentForm.getPublisher()), new Editor(documentForm.getEditor()), documentType,
-                        documentForm.getTags(), documentForm.getDate());
+                        documentForm.getCopies(), documentForm.getPrice(), documentForm.getIsReference(),
+                        documentForm.getParsedAuthors(), new Publisher(documentForm.getPublisher()),
+                        new Editor(documentForm.getEditor()), documentType, documentForm.getTags(), documentForm.getDate());
                 break;
             case "AV":
-                document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
-                        documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(), documentType,
-                        documentForm.getTags());
+                document = new Document(documentForm.getName(), documentForm.getDescription(),
+                        documentForm.getCopies(), documentForm.getPrice(), documentForm.getIsReference(),
+                        documentForm.getParsedAuthors(), documentType, documentForm.getTags());
                 break;
             case "Book":
                 document = new Document(documentForm.getName(), documentForm.getDescription(), documentForm.getIsBestseller(),
-                        documentForm.getCopies(), documentForm.getIsReference(), documentForm.getParsedAuthors(),
-                        new Publisher(documentForm.getPublisher()), documentType, documentForm.getTags(), documentForm.getDate());
+                        documentForm.getCopies(), documentForm.getPrice(), documentForm.getIsReference(),
+                        documentForm.getParsedAuthors(), new Publisher(documentForm.getPublisher()), documentType,
+                        documentForm.getTags(), documentForm.getDate());
                 break;
             default: throw new Exception("Wrong document type");
         }
