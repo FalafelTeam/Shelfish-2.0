@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+    body {
+        background: #f2f2f2 fixed;
+        background-size: cover;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgb(90, 145, 194);
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    li {
+        float: left;
+    }
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        background-color: rgb(41, 93, 139);
+    }
+    .active {
+        background-color: rgb(90, 145, 194);
+    }
+    select {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    input {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    .log{
+        font-size: 60px;
+        font-family: Arial;
+        color : #5A91C2;
+    }
+</style>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title th:text="${user.name}">User Name</title>
+</head>na
+<body>
+<ul>
+    <li><a>Shelfish</a></li>
+    <li style="float:right"><a class="active">Exit</a></li>
+</ul>
+<div align="center">
+    <br>
+    <p th:text="'Name: '+${user.name}"></p>
+    <br>
+    <p th:text="'Login: '+${user.login}"></p>
+    <br>
+    <p th:text="'Address: '+${user.address}"></p>
+    <br>
+    <p th:text="'Phone Number: '+${user.phoneNumber}"></p>
+    <br>
+    <p th:text="'Role: '+${user.getRole().name}"></p>
+</div>
+</body>
+</html>

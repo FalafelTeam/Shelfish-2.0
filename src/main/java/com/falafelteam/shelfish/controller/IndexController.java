@@ -162,4 +162,11 @@ public class IndexController {
         model.addAttribute("form", new SearchByIdForm());
         return "search_by_id";
     }
+
+    @PostMapping("/book")
+    public String book(@ModelAttribute("document") Document document, @ModelAttribute("user") User user,
+                       @ModelAttribute("weeksNum") int weeksNum) throws Exception {
+        bookingService.book(document, user, weeksNum);
+        return "redirect:/user/" + user.getId();
+    }
 }
