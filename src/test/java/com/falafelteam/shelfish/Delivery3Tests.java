@@ -22,8 +22,6 @@ import java.util.List;
 public class Delivery3Tests {
 
     @Autowired
-    private DocumentUserRepository documentUserRepository;
-    @Autowired
     private BookingService bookingService;
     @Autowired
     private DocumentService documentService;
@@ -40,6 +38,8 @@ public class Delivery3Tests {
     DocumentRepository documentRepository;
     @Autowired
     DocumentTypeRepository documentTypeRepository;
+    @Autowired
+    private DocumentUserRepository documentUserRepository;
     @Autowired
     EditorRepository editorRepository;
     @Autowired
