@@ -126,6 +126,10 @@ public class BookingService {
         if (docUser.getStatus().equals(docUser.getStatusNEW())) {
             if (checkIfAvailableToCheckOut(document, user)) {
                 docUser.setStatus(docUser.getStatusTAKEN());
+                if(new Date().getTime()-docUser.getDate().getTime() / (24 * 60 * 60 * 1000) > 1){
+                    docUser.getDocument().removeFromQueue(docUser);
+                    throw new Exception("Your booking has expired! You have been deleted from the queue.");
+                }
                 docUser.setDate(date);
                 documentUserRepository.save(docUser);
                 emailSendService.sendEmail(user, CHECKOUT_SUBJ, CHECKOUT_MESSAGE);
@@ -235,6 +239,13 @@ public class BookingService {
             return docUser.getDocument().getPrice();
         }
         return fine;
+    }
+
+    public Date getDueDate(DocumentUser docUser){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(docUser.getDate());
+        calendar.add(Calendar.DAY_OF_YEAR, docUser.getWeekNum()*7);
+        return calendar.getTime();
     }
 
 

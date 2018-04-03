@@ -234,7 +234,7 @@ public class Delivery3Tests {
     @Test
     public void test4() throws Exception {
         initialState();
-
+        
 
 
         deleteVseK_huyam();
