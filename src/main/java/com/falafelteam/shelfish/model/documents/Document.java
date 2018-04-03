@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 @Entity
@@ -105,6 +102,10 @@ public class Document {
         return tagArr;
     }
 
+    public String getTagsToString() {
+        return tags;
+    }
+
     public void setTags(String tags) {
         this.tags = tags;
     }
@@ -132,5 +133,19 @@ public class Document {
 
     public void removeFromQueue(DocumentUser docUser) {
         users.remove(docUser);
+    }
+
+    public String authorsToString() {
+        String result = "";
+        ListIterator<Author> iterator = authors.listIterator();
+        Author author;
+        while (iterator.hasNext()) {
+            author = iterator.next();
+            result += author.getName();
+            if (iterator.hasNext()) {
+                result += ", ";
+            }
+        }
+        return result;
     }
 }

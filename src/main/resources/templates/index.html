@@ -5,6 +5,47 @@
         background: #f2f2f2 fixed;
         background-size: cover;
     }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgb(90, 145, 194);
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    li {
+        float: left;
+    }
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        background-color: rgb(41, 93, 139);
+    }
+    .active {
+        background-color: rgb(90, 145, 194);
+    }
+    select {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    input {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
     .log{
         font-size: 60px;
         font-family: Arial;
@@ -16,9 +57,23 @@
     <title>Shelfish</title>
 </head>
 <body>
-    <h1 class="log">Kak dilishke</h1>
-    <a href="http://localhost:8080/addDocument">Add document</a>
-    <a href="http://localhost:8080/signUp">Add user</a>
-    <a href="http://localhost:8080/searchById"> Search by id</a>
+<ul>
+    <li><a>Kak dilishke</a></li>
+    <li style="float:right"><a class="active">Exit</a></li>
+</ul>
+<div align="center">
+    <br>
+    <form action="#" th:action="@{/addDocument}" method="get">
+        <input type="submit" style="width: 190px;" value="Add Document">
+    </form>
+    <br>
+    <form action="#" th:action="@{/signUp}" method="get">
+        <input type="submit" style="width: 190px;" value="Sign Up">
+    </form>
+    <br>
+    <form action="#" th:action="@{/searchById}" method="get">
+        <input type="submit" style="width: 190px;" value="Search By Id">
+    </form>
+</div>
 </body>
 </html>

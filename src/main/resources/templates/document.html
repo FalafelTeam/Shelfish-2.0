@@ -1,10 +1,89 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+    body {
+        background: #f2f2f2 fixed;
+        background-size: cover;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgb(90, 145, 194);
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    li {
+        float: left;
+    }
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        background-color: rgb(41, 93, 139);
+    }
+    .active {
+        background-color: rgb(90, 145, 194);
+    }
+    select {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    input {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    .log{
+        font-size: 60px;
+        font-family: Arial;
+        color : #5A91C2;
+    }
+</style>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Title</title>
-</head>
+    <title th:text="${document.name}">Document Name</title>
+</head>na
 <body>
-    <h1 th:text="${document.name}">Document Name</h1>
+<ul>
+    <li><a>Shelfish</a></li>
+    <li style="float:right"><a class="active">Exit</a></li>
+</ul>
+<div align="center">
+    <br>
+    <p th:text="'Name: '+${document.name}"></p>
+    <p th:text="'Description: '+${document.description}"></p>
+    <p th:text="'Type: '+${document.type.name}"></p>
+    <div th:switch="${document.type.name}">
+        <p th:case="'Book'" th:text="'Is Bestseller: '+(${document.bestseller}?'Yes':'No')"></p>
+        <p th:case="*" th:text="'Is Bestseller: '+'The document cannot be a bestseller'" ></p>
+    </div>
+    <p th:text="'Tags: '+${document.tagsToString}"></p>
+    <p th:text="'Authors: '+${document.authorsToString()}"></p>
+    <div th:switch="${document.type.name}">
+        <p th:case="'Article'" th:text="'Publisher: '+${document.publisher.name}"></p>
+        <p th:case="'Book'" th:text="'Publisher: '+${document.publisher.name}"></p>
+        <p th:case="*" th:text="'Publisher: '+'The document has no ublisher'"></p>
+    </div>
+    <div th:switch="${document.type.name}">
+        <p th:case="'Article'" th:text="'Editor: '+${document.editor.name}"></p>
+        <p th:case="*" th:text="'Editor: '+'The document has no editor'"></p>
+    </div>
+    <p th:text="'Publishing Date: '+${document.publishingDate.toString()}"></p>
+    <p th:text="'Is Reference: '+(${document.reference}?'Yes':'No')"></p>
+    <br>
+</div>
 </body>
 </html>
