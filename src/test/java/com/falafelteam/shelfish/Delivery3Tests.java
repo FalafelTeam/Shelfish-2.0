@@ -7,7 +7,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class Delivary3Tests {
+public class Delivery3Tests {
+    
     @Test
     public void test1(){
         
