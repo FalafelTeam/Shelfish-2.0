@@ -245,7 +245,7 @@ public class Delivery3Tests {
         String date2 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, s)));
         String date3 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, v)));
 
-        //check
+        // check
 
         assert (date1.equals("2018-04-30"));
         assert (date2.equals("2018-04-16"));
@@ -265,9 +265,32 @@ public class Delivery3Tests {
 
     @Test
     public void test5() throws Exception {
+
+        // init
+
         initialState();
 
+        // i
 
+        User p1 = userService.getByName("Sergey Afonso");
+        Document d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        bookingService.book(d3, p1);
+        bookingService.checkOut(d3, p1);
+
+        // ii
+
+        User s = userService.getByName("Andrey Velo");
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        bookingService.book(d3, s);
+        bookingService.checkOut(d3, s);
+
+        // iii
+
+        User v = userService.getByName("Veronika Rama");
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        bookingService.book(d3, v);
+
+        // check
 
         deleteVseK_huyam();
     }

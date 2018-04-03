@@ -53,6 +53,10 @@ public class BookingService {
         emailSendService.sendEmail(user, BOOKED_SUBJ, BOOKED_MESSAGE);
     }
 
+    public void book(Document document, User user) throws Exception {
+        book(document, user, maxWeeksNum(document, user));
+    }
+
     /**
      * supporting method that adds weeks to the date
      *
@@ -133,23 +137,10 @@ public class BookingService {
     }
 
     public void renewDocument(Document document, User user) throws Exception {
-        DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
-        if (docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
-            throw new Exception("Document wasn't booked");
-        }
-        if (docUser.getStatus().equals(docUser.getStatusRENEWED()) && !docUser.getUser().getRole().equals("Visiting Professor")) {
-            throw new Exception("Document was already renewed once");
-        }
-        if (calculateFine(docUser) != 0) {
-            throw new Exception("The document is overdue, renew is forbidden");
-        }
-        docUser.setStatus(docUser.getStatusRENEWED());
-        docUser.setDate(new Date());
-        documentUserRepository.save(docUser);
-
-        emailSendService.sendEmail(user, RENEW_SUBJ, RENEW_MESSAGE);
+        renewDocument(document, user, new Date());
     }
 
+    // new feature: choose number of weeks to renew a document for
     public void renewDocument(Document document, User user, Date date) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
         if (docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
@@ -162,6 +153,7 @@ public class BookingService {
             throw new Exception("The document is overdue, renew is forbidden");
         }
         docUser.setStatus(docUser.getStatusRENEWED());
+        docUser.setWeekNum(maxWeeksNum(document, user));
         docUser.setDate(date);
         documentUserRepository.save(docUser);
 
