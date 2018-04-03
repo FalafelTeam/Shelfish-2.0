@@ -23,7 +23,7 @@ public class DocumentUser {
     @ManyToOne
     @JoinColumn(name = "document_id")
     private Document document;
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
     private Date date;

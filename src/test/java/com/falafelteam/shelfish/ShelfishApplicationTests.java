@@ -48,7 +48,7 @@ public class ShelfishApplicationTests {
 		DocumentType documentType = documentTypeService.getByName("Book");
 		LinkedList<Author> author = new LinkedList<Author>();
 		author.add(new Author("Lev Tolstoy"));
-		Document doc = new Document("War and Peace", "About war and peace", false, 1, false,
+		Document doc = new Document("War and Peace", "About war and peace", false, 1, 2000, false,
 				author, new Publisher("RusKniga"),
 				documentType, "kik, lol, haha, war, peace, obviously", null);
 		documentService.add(doc);

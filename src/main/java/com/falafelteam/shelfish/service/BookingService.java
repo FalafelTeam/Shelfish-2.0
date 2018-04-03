@@ -200,10 +200,10 @@ public class BookingService {
     }
 
     public int calculateFine(DocumentUser docUser) {
-        long diff = Math.abs(new Date().getTime() - docUser.getDate().getTime());
+        long diff = new Date().getTime() - docUser.getDate().getTime();
         long diffDays = diff / (24 * 60 * 60 * 1000);
 
-        if (diffDays > 0) {
+        if (diffDays <= 0) {
             return 0;
         }
         int fine = (int) diffDays * 100;

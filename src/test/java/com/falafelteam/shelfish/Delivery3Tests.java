@@ -2,6 +2,7 @@ package com.falafelteam.shelfish;
 
 import com.falafelteam.shelfish.model.AuthorKinds.Author;
 import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
+import com.falafelteam.shelfish.model.DocumentUser;
 import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.model.users.User;
 import com.falafelteam.shelfish.repository.*;
@@ -107,17 +108,18 @@ public class Delivery3Tests {
                 "Avenida Mazatlan, 250", "30004", roleService.getByName("Student")));
         userService.save(new User("Veronika Rama", "v.rama@innopolis.ru", "123456",
                 "Stret Atocha, 27", "30005", roleService.getByName("Visiting Professor")));
+        
     }
 
     public void deleteVseK_huyam(){
         authorRepository.deleteAll();
+        documentUserRepository.deleteAll();
         documentRepository.deleteAll();
         documentTypeRepository.deleteAll();
-        documentUserRepository.deleteAll();
         editorRepository.deleteAll();
         publisherRepository.deleteAll();
-        roleRepository.deleteAll();
         userRepository.deleteAll();
+        roleRepository.deleteAll();
     }
 
     @Test
@@ -125,13 +127,15 @@ public class Delivery3Tests {
         // init
 
         initialState();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/mm/dd");
+
         User p1 = userService.getByName("Sergey Afonso");
         Document d1 = documentService.getByName("Introduction to Algorithms");
         Document d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
         bookingService.book(d1, p1, 4);
         bookingService.book(d2, p1, 4);
-        bookingService.checkOut(d1, p1, new Date(2018, 3, 5));
-        bookingService.checkOut(d2, p1, new Date(2018, 3, 5));
+        bookingService.checkOut(d1, p1, simpleDateFormat.parse("2018-03-05"));
+        bookingService.checkOut(d2, p1, simpleDateFormat.parse("2018-03-05"));
 
         // action
 
@@ -150,31 +154,36 @@ public class Delivery3Tests {
     public void test2() throws Exception {
         // init
         initialState();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         // i
         User p1 = userService.getByName("Sergey Afonso");
         Document d1 = documentService.getByName("Introduction to Algorithms");
         Document d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
         bookingService.book(d1, p1, 4);
         bookingService.book(d2, p1, 4);
-        bookingService.checkOut(d1, p1, new Date(2018, 3, 5));
-        bookingService.checkOut(d2, p1, new Date(2018, 3, 5));
+        bookingService.checkOut(d1, p1, simpleDateFormat.parse("2018-03-5"));
+        bookingService.checkOut(d2, p1, simpleDateFormat.parse("2018-03-05"));
         //ii
         User s = userService.getByName("Andrey Velo");
         bookingService.book(d1, s, 2);
         bookingService.book(d2, s, 2);
-        bookingService.checkOut(d1, s, new Date(2018, 3, 5));
-        bookingService.checkOut(d2, s, new Date(2018, 3, 5));
+        bookingService.checkOut(d1, s, simpleDateFormat.parse("2018-03-05"));
+        bookingService.checkOut(d2, s, simpleDateFormat.parse("2018-03-05"));
+        DocumentUser docUs700 = documentUserRepository.findByDocumentAndUser(d1, s);
         //iii
         User v = userService.getByName("Veronika Rama");
-        bookingService.book(d1, v, 2);
-        bookingService.book(d2, v, 2);
-        bookingService.checkOut(d1, v, new Date(2018, 3, 5));
-        bookingService.checkOut(d2, v, new Date(2018, 3, 5));
+        bookingService.book(d1, v, 1);
+        docUs700 = documentUserRepository.findByDocumentAndUser(d1, s);
+        bookingService.book(d2, v, 1);
+        bookingService.checkOut(d1, v, simpleDateFormat.parse("2018-03-05"));
+        bookingService.checkOut(d2, v, simpleDateFormat.parse("2018-03-05"));
 
         // action
         int fine1 = bookingService.calculateFine(documentUserRepository.findByDocumentAndUser(d1, p1));
         int fine2 = bookingService.calculateFine(documentUserRepository.findByDocumentAndUser(d2, p1));
+        docUs700 = documentUserRepository.findByDocumentAndUser(d1, s);
         int fine3 = bookingService.calculateFine(documentUserRepository.findByDocumentAndUser(d1, s));
+        docUs700 = documentUserRepository.findByDocumentAndUser(d1, s);
         int fine4 = bookingService.calculateFine(documentUserRepository.findByDocumentAndUser(d2, s));
         int fine5 = bookingService.calculateFine(documentUserRepository.findByDocumentAndUser(d1, v));
         int fine6 = bookingService.calculateFine(documentUserRepository.findByDocumentAndUser(d2, v));
