@@ -205,28 +205,51 @@ public class Delivery3Tests {
 
     @Test
     public void test3() throws Exception {
+
         // init
+
         initialState();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         // i
+
         User p1 = userService.getByName("Sergey Afonso");
         Document d1 = documentService.getByName("Introduction to Algorithms");
         bookingService.book(d1, p1, 4);
         bookingService.checkOut(d1, p1, simpleDateFormat.parse("2018-03-29"));
+
         //ii
+
         User s = userService.getByName("Andrey Velo");
         Document d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
         bookingService.book(d2, s, 2);
         bookingService.checkOut(d2, s, simpleDateFormat.parse("2018-03-29"));
+
         //iii
+
         User v = userService.getByName("Veronika Rama");
         d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
         bookingService.book(d2, v, 1);
         bookingService.checkOut(d2, v, simpleDateFormat.parse("2018-03-29"));
 
         // action
-        
 
+        d1 = documentService.getByName("Introduction to Algorithms");
+        bookingService.renewDocument(d1, p1, simpleDateFormat.parse("2018-04-02"));
+        d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        bookingService.renewDocument(d2, s, simpleDateFormat.parse("2018-04-02"));
+        d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        bookingService.renewDocument(d2, v, simpleDateFormat.parse("2018-04-02"));
+
+        String date1 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d1, p1)));
+        String date2 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, s)));
+        String date3 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, v)));
+
+        //check
+
+        assert (date1.equals("2018-04-30"));
+        assert (date2.equals("2018-04-16"));
+        assert (date3.equals("2018-04-09"));
 
         deleteVseK_huyam();
     }

@@ -94,27 +94,7 @@ public class BookingService {
     }
 
     public void checkOut(Document document, User user) throws Exception {
-        DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
-        if (docUser == null) {
-            throw new Exception("Document wasn't booked at all. Trying to cheat?");
-        }
-
-        if (docUser.getStatus().equals(docUser.getStatusNEW())) {
-            if (checkIfAvailableToCheckOut(document, user)) {
-                docUser.setStatus(docUser.getStatusTAKEN());
-                if(new Date().getTime()-docUser.getDate().getTime() / (24 * 60 * 60 * 1000) > 1){
-                    docUser.getDocument().removeFromQueue(docUser);
-                    throw new Exception("Your booking has expired! You have been deleted from the queue.");
-                }
-                docUser.setDate(new Date());
-                documentUserRepository.save(docUser);
-                emailSendService.sendEmail(user, CHECKOUT_SUBJ, CHECKOUT_MESSAGE);
-            } else {
-                throw new Exception("Not yet available. Too far in a queue");
-            }
-        } else if (docUser.getStatus().equals(docUser.getStatusRENEWED()) || docUser.getStatus() == docUser.getStatusTAKEN()) {
-            throw new Exception("You have the document on hands! Don't cheat with us!");
-        }
+        checkOut(document, user, new Date());
     }
 
     public void checkOut(Document document, User user, Date date) throws Exception {
@@ -126,7 +106,7 @@ public class BookingService {
         if (docUser.getStatus().equals(docUser.getStatusNEW())) {
             if (checkIfAvailableToCheckOut(document, user)) {
                 docUser.setStatus(docUser.getStatusTAKEN());
-                if(new Date().getTime()-docUser.getDate().getTime() / (24 * 60 * 60 * 1000) > 1){
+                if((new Date().getTime()-docUser.getDate().getTime()) / (24 * 60 * 60 * 1000) > 1){
                     docUser.getDocument().removeFromQueue(docUser);
                     throw new Exception("Your booking has expired! You have been deleted from the queue.");
                 }
