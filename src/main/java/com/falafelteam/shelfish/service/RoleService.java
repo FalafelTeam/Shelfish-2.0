@@ -18,7 +18,13 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public List<String> gelAllRoles() {
+    public void add(String name, int priority) {
+        if (!getAllRoles().contains(name)) {
+            roleRepository.save(new Role(name, priority));
+        }
+    }
+
+    public List<String> getAllRoles() {
         List<String> result = new LinkedList<>();
         roleRepository.findAll().forEach(role -> result.add(role.getName()));
         return result;

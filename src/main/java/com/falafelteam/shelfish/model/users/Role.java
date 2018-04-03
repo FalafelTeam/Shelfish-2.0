@@ -11,7 +11,7 @@ import javax.persistence.Id;
 
 /**
  * Class for the role entity
- * <p>
+ *
  * Priority of roles:
  * 0 - "Librarian"
  * 1 - "Student"
@@ -26,6 +26,7 @@ import javax.persistence.Id;
 @Getter
 @Setter
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -36,9 +37,4 @@ public class Role {
         this.name = name;
         this.priority = priority;
     }
-
-//    @Override
-//    public String toString(){
-//        return "";
-//    }
 }

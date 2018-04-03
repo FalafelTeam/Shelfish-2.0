@@ -6,7 +6,6 @@ import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.model.documents.DocumentType;
 import com.falafelteam.shelfish.model.users.Role;
 import com.falafelteam.shelfish.model.users.User;
-import com.falafelteam.shelfish.repository.DocumentTypeRepository;
 import com.falafelteam.shelfish.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -125,7 +124,7 @@ public class IndexController {
     public String signUp(Model model) {
         UserForm form = new UserForm();
         model.addAttribute("user", form);
-        model.addAttribute("roles", roleService.gelAllRoles());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "sign_up";
     }
 
