@@ -136,7 +136,7 @@ public class IndexController {
         User user = new User(form.getName(), form.getLogin(), form.getPassword(), form.getAddress(),
                 form.getPhoneNumber(), role);
         userService.save(user);
-        return "redirect:/";
+        return "redirect:/user" + user.getId();
     }
 
     @PostMapping("/modifyUser/{id}")
