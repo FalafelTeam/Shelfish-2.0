@@ -160,8 +160,10 @@ public class BookingService {
         emailSendService.sendEmail(user, RENEW_SUBJ, RENEW_MESSAGE);
     }
 
-    private void outstandingRequest(Document document) {
-        LinkedList<User> deleted = document.deleteNotTakenFromQueue();
+    public void outstandingRequest(Document document) {
+        LinkedList<User> deleted = getWaitingList(document);
+        deleteNotTakenFromQueue(document);
+        document.setHasOutstanding(true);
         for (User user : deleted) {
             emailSendService.sendEmail(user, OUTSTANDING_SUBJ, OUTSTANDING_MESSAGE);
         }
@@ -220,6 +222,20 @@ public class BookingService {
         return calendar.getTime();
     }
 
+    public LinkedList<User> getWaitingList(Document document){
+        LinkedList<User> waitingList = new LinkedList<>();
+        for(DocumentUser docUs : document.getUsers()){
+            if(docUs.getStatus().equals(docUs.getStatusNEW())){
+                waitingList.add(docUs.getUser());
+            }
+        }
+        return waitingList;
+    }
+
+    public void deleteNotTakenFromQueue(Document document) {
+        document.getUsers().clear();
+        documentRepository.save(document);
+    }
 
     private final String BOOKED_SUBJ = "Document booking";
     private final String BOOKED_MESSAGE = "Dear customer, \n\nYou've successfully booked a book in Shelfish library! \n" +

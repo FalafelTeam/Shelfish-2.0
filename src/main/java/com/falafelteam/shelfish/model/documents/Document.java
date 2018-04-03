@@ -119,17 +119,6 @@ public class Document {
         }
     }
 
-    public LinkedList<User> deleteNotTakenFromQueue() {
-        LinkedList<User> deleted = new LinkedList<>();
-        for (DocumentUser toDelete : users) {
-            if (toDelete.getStatus() == toDelete.getStatusNEW()) {
-                deleted.add(toDelete.getUser());
-                users.remove(toDelete);
-            }
-        }
-        return deleted;
-    }
-
     public void addToQueue(DocumentUser docUser) {
         users.add(docUser);
     }

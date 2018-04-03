@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -108,10 +107,10 @@ public class Delivery3Tests {
                 "Avenida Mazatlan, 250", "30004", roleService.getByName("Student")));
         userService.save(new User("Veronika Rama", "v.rama@innopolis.ru", "123456",
                 "Stret Atocha, 27", "30005", roleService.getByName("Visiting Professor")));
-        
+
     }
 
-    public void deleteVseK_huyam(){
+    public void deleteVseK_huyam() {
         authorRepository.deleteAll();
         documentUserRepository.deleteAll();
         documentRepository.deleteAll();
@@ -161,7 +160,7 @@ public class Delivery3Tests {
         Document d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
         bookingService.book(d1, p1, 4);
         bookingService.book(d2, p1, 4);
-        bookingService.checkOut(d1, p1, simpleDateFormat.parse("2018-03-5"));
+        bookingService.checkOut(d1, p1, simpleDateFormat.parse("2018-03-05"));
         bookingService.checkOut(d2, p1, simpleDateFormat.parse("2018-03-05"));
         //ii
         User s = userService.getByName("Andrey Velo");
@@ -256,9 +255,34 @@ public class Delivery3Tests {
 
     @Test
     public void test4() throws Exception {
+        // init
         initialState();
-        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        User p1 = userService.getByName("Sergey Afonso");
+        Document d1 = documentService.getByName("Introduction to Algorithms");
+        bookingService.book(d1, p1, 4);
+        bookingService.checkOut(d1, p1, simpleDateFormat.parse("2018-03-29"));
+        User s = userService.getByName("Andrey Velo");
+        Document d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        bookingService.book(d2, s, 2);
+        bookingService.checkOut(d2, s, simpleDateFormat.parse("2018-03-29"));
+        User v = userService.getByName("Veronika Rama");
+        d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        bookingService.book(d2, v, 1);
+        bookingService.checkOut(d2, v, simpleDateFormat.parse("2018-03-29"));
 
+        // action
+        bookingService.outstandingRequest(d2);
+        bookingService.renewDocument(d1, p1, simpleDateFormat.parse("2018-04-02"));
+        bookingService.renewDocument(d2, s, simpleDateFormat.parse("2018-04-02"));
+        d2 = documentRepository.findByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        bookingService.renewDocument(d2, v, simpleDateFormat.parse("2018-04-02"));
+
+
+        //check
+        assert (bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d1, p1)) == simpleDateFormat.parse("2018-4-30"));
+        assert (bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, s)) == simpleDateFormat.parse("2018-4-16"));
+        assert (bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d2, v)) == simpleDateFormat.parse("2018-4-09"));
 
         deleteVseK_huyam();
     }
@@ -300,14 +324,12 @@ public class Delivery3Tests {
         initialState();
 
 
-
         deleteVseK_huyam();
     }
 
     @Test
     public void test7() throws Exception {
         initialState();
-
 
 
         deleteVseK_huyam();
@@ -318,7 +340,6 @@ public class Delivery3Tests {
         initialState();
 
 
-
         deleteVseK_huyam();
     }
 
@@ -327,14 +348,12 @@ public class Delivery3Tests {
         initialState();
 
 
-
         deleteVseK_huyam();
     }
 
     @Test
     public void test10() throws Exception {
         initialState();
-
 
 
         deleteVseK_huyam();
