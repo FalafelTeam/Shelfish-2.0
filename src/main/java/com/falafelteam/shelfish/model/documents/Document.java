@@ -52,6 +52,7 @@ public class Document {
         this.description = description;
         this.isBestseller = isBestseller;
         this.copies = copies;
+        this.price = price;
         this.isReference = isReference;
         this.type = type;
         this.publisher = publisher;
@@ -70,6 +71,7 @@ public class Document {
         this.description = description;
         this.isBestseller = isBestseller;
         this.copies = copies;
+        this.price = price;
         this.isReference = isReference;
         this.type = type;
         this.publisher = publisher;
@@ -87,6 +89,7 @@ public class Document {
         this.description = description;
         this.isBestseller = false;
         this.copies = copies;
+        this.price = price;
         this.isReference = isReference;
         this.type = type;
         this.authors = new LinkedList<>();

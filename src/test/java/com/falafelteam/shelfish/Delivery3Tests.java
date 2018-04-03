@@ -127,7 +127,7 @@ public class Delivery3Tests {
         // init
 
         initialState();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/mm/dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         User p1 = userService.getByName("Sergey Afonso");
         Document d1 = documentService.getByName("Introduction to Algorithms");
@@ -144,7 +144,7 @@ public class Delivery3Tests {
 
         // check
 
-        assert (fine == 0);
+        assert (fine == 200);
         assert (documentUserRepository.findByDocumentAndUser(d2, p1) == null);
         assert (!d2.getUsers().contains(p1));
         deleteVseK_huyam();
@@ -165,13 +165,17 @@ public class Delivery3Tests {
         bookingService.checkOut(d2, p1, simpleDateFormat.parse("2018-03-05"));
         //ii
         User s = userService.getByName("Andrey Velo");
-        bookingService.book(d1, s, 2);
+        d1 = documentService.getByName("Introduction to Algorithms");
+        d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        bookingService.book(d1, s, 3);
         bookingService.book(d2, s, 2);
         bookingService.checkOut(d1, s, simpleDateFormat.parse("2018-03-05"));
         bookingService.checkOut(d2, s, simpleDateFormat.parse("2018-03-05"));
         DocumentUser docUs700 = documentUserRepository.findByDocumentAndUser(d1, s);
         //iii
         User v = userService.getByName("Veronika Rama");
+        d1 = documentService.getByName("Introduction to Algorithms");
+        d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
         bookingService.book(d1, v, 1);
         docUs700 = documentUserRepository.findByDocumentAndUser(d1, s);
         bookingService.book(d2, v, 1);
@@ -189,11 +193,11 @@ public class Delivery3Tests {
         int fine6 = bookingService.calculateFine(documentUserRepository.findByDocumentAndUser(d2, v));
 
         //check
-        assert (fine1 == 0);
-        assert (fine2 == 0);
-        assert (fine3 == 700);
-        assert (fine4 == 1400);
-        assert (fine5 == 2100);
+        assert (fine1 == 200);
+        assert (fine2 == 200);
+        assert (fine3 == 900);
+        assert (fine4 == 1600);
+        assert (fine5 == 2300);
         assert (fine6 == 1700);
 
         deleteVseK_huyam();
@@ -201,8 +205,27 @@ public class Delivery3Tests {
 
     @Test
     public void test3() throws Exception {
+        // init
         initialState();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        // i
+        User p1 = userService.getByName("Sergey Afonso");
+        Document d1 = documentService.getByName("Introduction to Algorithms");
+        bookingService.book(d1, p1, 4);
+        bookingService.checkOut(d1, p1, simpleDateFormat.parse("2018-03-29"));
+        //ii
+        User s = userService.getByName("Andrey Velo");
+        Document d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        bookingService.book(d2, s, 2);
+        bookingService.checkOut(d2, s, simpleDateFormat.parse("2018-03-29"));
+        //iii
+        User v = userService.getByName("Veronika Rama");
+        d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
+        bookingService.book(d2, v, 1);
+        bookingService.checkOut(d2, v, simpleDateFormat.parse("2018-03-29"));
 
+        // action
+        
 
 
         deleteVseK_huyam();

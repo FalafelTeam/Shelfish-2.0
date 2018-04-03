@@ -153,8 +153,32 @@ public class BookingService {
         if (docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
             throw new Exception("Document wasn't booked");
         }
+        if (docUser.getStatus().equals(docUser.getStatusRENEWED()) && !docUser.getUser().getRole().equals("Visiting Professor")) {
+            throw new Exception("Document was already renewed once");
+        }
+        if (calculateFine(docUser) != 0) {
+            throw new Exception("The document is overdue, renew is forbidden");
+        }
         docUser.setStatus(docUser.getStatusRENEWED());
         docUser.setDate(new Date());
+        documentUserRepository.save(docUser);
+
+        emailSendService.sendEmail(user, RENEW_SUBJ, RENEW_MESSAGE);
+    }
+
+    public void renewDocument(Document document, User user, Date date) throws Exception {
+        DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
+        if (docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
+            throw new Exception("Document wasn't booked");
+        }
+        if (docUser.getStatus().equals(docUser.getStatusRENEWED()) && !docUser.getUser().getRole().equals("Visiting Professor")) {
+            throw new Exception("Document was already renewed once");
+        }
+        if (calculateFine(docUser) != 0) {
+            throw new Exception("The document is overdue, renew is forbidden");
+        }
+        docUser.setStatus(docUser.getStatusRENEWED());
+        docUser.setDate(date);
         documentUserRepository.save(docUser);
 
         emailSendService.sendEmail(user, RENEW_SUBJ, RENEW_MESSAGE);
@@ -203,10 +227,10 @@ public class BookingService {
         long diff = new Date().getTime() - docUser.getDate().getTime();
         long diffDays = diff / (24 * 60 * 60 * 1000);
 
-        if (diffDays <= 0) {
+        if (diffDays <= docUser.getWeekNum() * 7) {
             return 0;
         }
-        int fine = (int) diffDays * 100;
+        int fine = (int) (diffDays - docUser.getWeekNum() * 7) * 100;
         if (fine > docUser.getDocument().getPrice()) {
             return docUser.getDocument().getPrice();
         }
