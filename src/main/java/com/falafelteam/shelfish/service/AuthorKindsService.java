@@ -50,11 +50,12 @@ public class AuthorKindsService {
      *
      * @param author - author that is being saved
      */
-    void saveAuthor(Author author) {
+    Author saveAuthor(Author author) {
         if (authorRepository.findByName(author.getName()) == null) {
             authorRepository.save(author);
-        } else if (authorRepository.findByName(author.getName()).getId() == (author.getId())) {
-            authorRepository.save(author);
+            return author;
+        } else {
+            return authorRepository.findByName(author.getName());
         }
     }
 
@@ -64,11 +65,12 @@ public class AuthorKindsService {
      *
      * @param editor - editor that is being saved
      */
-    void saveEditor(Editor editor) {
+    Editor saveEditor(Editor editor) {
         if (editorRepository.findByName(editor.getName()) == null) {
             editorRepository.save(editor);
-        } else if (editorRepository.findByName(editor.getName()).getId() == (editor.getId())) {
-            editorRepository.save(editor);
+            return editor;
+        } else {
+            return editorRepository.findByName(editor.getName());
         }
     }
 
@@ -78,11 +80,12 @@ public class AuthorKindsService {
      *
      * @param publisher - publisher that is being saved
      */
-    void savePublisher(Publisher publisher) {
+    Publisher savePublisher(Publisher publisher) {
         if (publisherRepository.findByName(publisher.getName()) == null) {
             publisherRepository.save(publisher);
-        } else if (publisherRepository.findByName(publisher.getName()).getId() == (publisher.getId())) {
-            publisherRepository.save(publisher);
+            return publisher;
+        } else {
+            return publisherRepository.findByName(publisher.getName());
         }
     }
 

@@ -8,6 +8,7 @@ import com.falafelteam.shelfish.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -51,17 +52,22 @@ public class DocumentService {
      */
     public void add(Document document) {
         if (document.getAuthors() != null) {
+            LinkedList<Author> authors = new LinkedList<>();
             for (Author author : document.getAuthors()) {
                 if (authorKindsService.getAuthorByName(author.getName()) == null) {
-                    authorKindsService.saveAuthor(author);
+                    author = authorKindsService.saveAuthor(author);
                 }
+                authors.add(author);
             }
+            document.setAuthors(authors);
         }
         if (document.getEditor() != null) {
-            authorKindsService.saveEditor(document.getEditor());
+            Editor editor = authorKindsService.saveEditor(document.getEditor());
+            document.setEditor(editor);
         }
         if (document.getPublisher() != null) {
-            authorKindsService.savePublisher(document.getPublisher());
+            Publisher publisher = authorKindsService.savePublisher(document.getPublisher());
+            document.setPublisher(publisher);
         }
         documentRepository.save(document);
     }
