@@ -360,26 +360,39 @@ public class Delivery3Tests {
         User s = userService.getByName("Andrey Velo");
         d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
         bookingService.book(d3, s);
-        bookingService.checkOut(d3, s);
+        try {
+            bookingService.checkOut(d3, s);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
 
         User v = userService.getByName("Veronika Rama");
         d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
         bookingService.book(d3, v);
-        bookingService.checkOut(d3, v);
+        try {
+            bookingService.checkOut(d3, v);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
 
         User p3 = userService.getByName("Elvira Espindola");
         bookingService.book(d3, p3);
-        bookingService.checkOut(d3, p3);
+        try {
+            bookingService.checkOut(d3, p3);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
 
         // checks
 
         assert(bookingService.getWaitingList(d3).size() == 3);
-        assert(bookingService.getWaitingList(d3).get(0) == s);
-        assert(bookingService.getWaitingList(d3).get(1) == v);
-        assert(bookingService.getWaitingList(d3).get(2) == p3);
+        assert(bookingService.getWaitingList(d3).get(0).getId() == s.getId());
+        assert(bookingService.getWaitingList(d3).get(1).getId() == v.getId());
+        assert(bookingService.getWaitingList(d3).get(2).getId() == p3.getId());
 
         deleteVseK_huyam();
     }

@@ -143,7 +143,7 @@ public class BookingService {
     // new feature: choose number of weeks to renew a document for
     public void renewDocument(Document document, User user, Date date) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
-        if (docUser.getDocument().isHasOutstanding()) {
+        if (document.isHasOutstanding()) {
             throw new Exception("Renew of the document is currently unavailable. Please return the document to the library as soon as possible");
         }
         if (docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
@@ -188,7 +188,7 @@ public class BookingService {
                 upper.add(documentUser);
             }
         }
-        if (upper.size() <= availableCopies(document)) {
+        if (upper.size() < availableCopies(document)) {
             return true;
         } else return false;
     }
