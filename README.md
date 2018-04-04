@@ -28,11 +28,13 @@ Our application is a web application. Our idea is that the system is going to be
  * Download the project itself ([Our project page](https://github.com/FalafelTeam/Shelfish))
  * Import the project into the IDE with Maven import (point to the pom.xml file in the project if asked to)
  * In application.properties:
-   * change the second line to "spring.jpa.hibernate.ddl-auto=create"
+   * change the second line to `spring.jpa.hibernate.ddl-auto=create`
  * Launch MySQL in command line
-   * create database Shelfish
-   * CREATE USER 'shelfishuser'@'localhost' IDENTIFIED BY 'shelfish';
-   * GRANT ALL PRIVILEGES ON Shelfish.* TO 'shelfishuser'@'localhost';
+    ```
+    create database Shelfish
+    CREATE USER 'shelfishuser'@'localhost' IDENTIFIED BY 'shelfish';
+    GRANT ALL PRIVILEGES ON Shelfish.* TO 'shelfishuser'@'localhost';
+    ```
  * launch main/java/com.FalafelTeam.Shelfish/ShelfishApplication.java;
  
  _**Note:** Easier process of installation is being worked on._
@@ -42,7 +44,10 @@ Our application is a web application. Our idea is that the system is going to be
    * type use shelfish (or any name of database that you use for the project)
  * launch main/java/com.FalafelTeam.Shelfish/ShelfishApplication.java
  * In MySQL command line:
-   * type "source 'full path to init.sql (in project root)' "
+   * type :
+   ```
+   source 'full path to init.sql (in project root)'
+   ``` 
  
  
 # How to add a new type of user
