@@ -457,31 +457,69 @@ public class Delivery3Tests {
     public void test8() throws Exception {
         //init
         initialState();
-        test6();
+        User p1 = userService.getByName("Sergey Afonso");
+        Document d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        bookingService.book(d3, p1);
+        bookingService.checkOut(d3, p1);
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+
+        User p2 = userService.getByName("Nadia Teixeira");
+        bookingService.book(d3, p2);
+        bookingService.checkOut(d3, p2);
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+
+        User s = userService.getByName("Andrey Velo");
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        bookingService.book(d3, s);
+        try {
+            bookingService.checkOut(d3, s);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+
+        User v = userService.getByName("Veronika Rama");
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        bookingService.book(d3, v);
+        try {
+            bookingService.checkOut(d3, v);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+
+        User p3 = userService.getByName("Elvira Espindola");
+        bookingService.book(d3, p3);
+        try {
+            bookingService.checkOut(d3, p3);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         //action
-        Document d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
-        User p2 = userService.getByName("Nadia Teixeira");
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        p2 = userService.getByName("Nadia Teixeira");
         bookingService.returnDocument(d3, p2);
 
         //checks
         LinkedList<Document> documentsByP2 = new LinkedList<>();
         for(Document doc : documentRepository.findAll()){
             for(DocumentUser docUs : doc.getUsers()){
-                if(docUs.getUser() == p2){
+                if(docUs.getUser() == p2 && docUs.getStatus().equals(docUs.getStatusTAKEN())){
                     documentsByP2.add(doc);
                 }
             }
         }
         assert(documentsByP2.isEmpty());
 
-        User s = userService.getByName("Andrey Velo");
-        User v = userService.getByName("Veronika Rama");
-        User p3 = userService.getByName("Elvira Espindola");
+        s = userService.getByName("Andrey Velo");
+        v = userService.getByName("Veronika Rama");
+        p3 = userService.getByName("Elvira Espindola");
 
-        assert(bookingService.getWaitingList(d3).get(0) == s);
-        assert(bookingService.getWaitingList(d3).get(1) == v);
-        assert(bookingService.getWaitingList(d3).get(2) == p3);
+        assert(bookingService.getWaitingList(d3).get(0).getId() == s.getId());
+        assert(bookingService.getWaitingList(d3).get(1).getId() == v.getId());
+        assert(bookingService.getWaitingList(d3).get(2).getId() == p3.getId());
 
         deleteVseK_huyam();
     }
