@@ -280,5 +280,8 @@ public class BookingService {
     private final String OUTSTANDING_MESSAGE = "An outstanding request has been sent, so everyone has been deleted from the queue" +
             "\n\n Don't worry! You will be able to book your document again soon." +
             "\nSorry for the trouble.\\n\\nKinds regards,\\n\\nShelfish Team";
+    private final String OUTSTAND_RETURN_REQUEST_SUBJ = "Outstanding request :( Please return the document immediately";
+    private final String OUTSTAND_RETURN_REQUEST_MESSAGE = "The document that you have on hands is not going to be available anymore." +
+            " Please return it as soon as possible. \nSorry for the trouble.\\n\\nKinds regards,\\n\\nShelfish Team";
 
 }

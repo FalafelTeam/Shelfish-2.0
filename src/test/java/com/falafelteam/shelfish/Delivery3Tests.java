@@ -346,15 +346,56 @@ public class Delivery3Tests {
     @Test
     public void test6() throws Exception {
         initialState();
+        User p1 = userService.getByName("Sergey Afonso");
+        Document d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        bookingService.book(d3, p1);
+        bookingService.checkOut(d3, p1);
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
 
+        User p2 = userService.getByName("Nadia Teixeira");
+        bookingService.book(d3, p2);
+        bookingService.checkOut(d3, p2);
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+
+        User s = userService.getByName("Andrey Velo");
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        bookingService.book(d3, s);
+        bookingService.checkOut(d3, s);
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+
+        User v = userService.getByName("Veronika Rama");
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        bookingService.book(d3, v);
+        bookingService.checkOut(d3, v);
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+
+        User p3 = userService.getByName("Elvira Espindola");
+        bookingService.book(d3, p3);
+        bookingService.checkOut(d3, p3);
+        d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+
+        // checks
+
+        assert(bookingService.getWaitingList(d3).size() == 3);
+        assert(bookingService.getWaitingList(d3).get(0) == s);
+        assert(bookingService.getWaitingList(d3).get(1) == v);
+        assert(bookingService.getWaitingList(d3).get(2) == p3);
 
         deleteVseK_huyam();
     }
 
     @Test
     public void test7() throws Exception {
+        // init
         initialState();
+        test6();
+        Document d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
 
+        // action
+        bookingService.outstandingRequest(d3);
+
+        //checks
+        assert(bookingService.getWaitingList(d3).isEmpty());
 
 
         deleteVseK_huyam();
@@ -362,17 +403,71 @@ public class Delivery3Tests {
 
     @Test
     public void test8() throws Exception {
+        //init
         initialState();
+        test6();
 
+        //action
+        Document d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        User p2 = userService.getByName("Nadia Teixeira");
+        bookingService.returnDocument(d3, p2);
+
+        //checks
+        LinkedList<Document> documentsByP2 = new LinkedList<>();
+        for(Document doc : documentRepository.findAll()){
+            for(DocumentUser docUs : doc.getUsers()){
+                if(docUs.getUser() == p2){
+                    documentsByP2.add(doc);
+                }
+            }
+        }
+        assert(documentsByP2.isEmpty());
+
+        User s = userService.getByName("Andrey Velo");
+        User v = userService.getByName("Veronika Rama");
+        User p3 = userService.getByName("Elvira Espindola");
+
+        assert(bookingService.getWaitingList(d3).get(0) == s);
+        assert(bookingService.getWaitingList(d3).get(1) == v);
+        assert(bookingService.getWaitingList(d3).get(2) == p3);
 
         deleteVseK_huyam();
     }
 
     @Test
     public void test9() throws Exception {
+        //init
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         initialState();
+        test6();
+        User p1 = userService.getByName("Sergey Afonso");
 
+        User p2 = userService.getByName("Nadia Teixeira");
+        User s = userService.getByName("Andrey Velo");
+        User v = userService.getByName("Veronika Rama");
+        User p3 = userService.getByName("Elvira Espindola");
+        Document d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
 
+        //action
+        bookingService.renewDocument(d3, p1);
+
+        //checks
+        DocumentUser docuser = null;
+        LinkedList<Document> documentsByP1 = new LinkedList<>();
+        for(Document doc : documentRepository.findAll()){
+            for(DocumentUser docUs : doc.getUsers()){
+                if(docUs.getUser() == p1){
+                    documentsByP1.add(doc);
+                    docuser = docUs;
+                }
+            }
+        }
+        assert(documentsByP1.contains(d3));
+        assert(bookingService.getDueDate(docuser) == simpleDateFormat.parse("2018-04-30"));
+        assert(bookingService.getWaitingList(d3).get(0) == s);
+        assert(bookingService.getWaitingList(d3).get(1) == v);
+        assert(bookingService.getWaitingList(d3).get(2) == p3);
+        
         deleteVseK_huyam();
     }
 
