@@ -486,8 +486,57 @@ public class Delivery3Tests {
 
     @Test
     public void test10() throws Exception {
+        // init
         initialState();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        User p1 = userService.getByName("Sergey Afonso");
+        Document d1 = documentService.getByName("Introduction to Algorithms");
+        User v = userService.getByName("Veronika Rama");
 
+        bookingService.book(d1, p1);
+        bookingService.checkOut(d1, p1, simpleDateFormat.parse("2018-03-26"));
+        d1 = documentService.getByName("Introduction to Algorithms");
+        bookingService.renewDocument(d1, p1, simpleDateFormat.parse("2018-03-29"));
+
+        d1 = documentService.getByName("Introduction to Algorithms");
+        bookingService.book(d1, v);
+        bookingService.checkOut(d1, v, simpleDateFormat.parse("2018-03-26"));
+        d1 = documentService.getByName("Introduction to Algorithms");
+        bookingService.renewDocument(d1, v, simpleDateFormat.parse("2018-03-29"));
+
+        // action
+        d1 = documentService.getByName("Introduction to Algorithms");
+        bookingService.renewDocument(d1, p1);
+        d1 = documentService.getByName("Introduction to Algorithms");
+        bookingService.renewDocument(d1, v);
+        d1 = documentService.getByName("Introduction to Algorithms");
+
+        //checks
+        DocumentUser docuser = null;
+        LinkedList<Document> documentsByP1 = new LinkedList<>();
+        for(Document doc : documentRepository.findAll()){
+            for(DocumentUser docUs : doc.getUsers()){
+                if(docUs.getUser() == p1){
+                    documentsByP1.add(doc);
+                    docuser = docUs;
+                }
+            }
+        }
+        assert(documentsByP1.contains(d1));
+        assert(bookingService.getDueDate(docuser) == simpleDateFormat.parse("2018-04-26"));
+
+        docuser = null;
+        LinkedList<Document> documentsByV = new LinkedList<>();
+        for(Document doc : documentRepository.findAll()){
+            for(DocumentUser docUs : doc.getUsers()){
+                if(docUs.getUser() == v){
+                    documentsByV.add(doc);
+                    docuser = docUs;
+                }
+            }
+        }
+        assert(documentsByV.contains(d1));
+        assert(bookingService.getDueDate(docuser) == simpleDateFormat.parse("2018-04-05"));
 
         deleteVseK_huyam();
     }
