@@ -386,13 +386,20 @@ public class Delivery3Tests {
             System.out.println(e.getMessage());
         }
         d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
+        p1 = userService.getByName("Sergey Afonso");
+        p2 = userService.getByName("Nadia Teixeira");
+        s = userService.getByName("Andrey Velo");
+        v = userService.getByName("Veronika Rama");
 
         // checks
 
         assert(bookingService.getWaitingList(d3).size() == 3);
-        assert(bookingService.getWaitingList(d3).get(0).getId() == s.getId());
-        assert(bookingService.getWaitingList(d3).get(1).getId() == v.getId());
-        assert(bookingService.getWaitingList(d3).get(2).getId() == p3.getId());
+        assert(documentUserRepository.findByDocumentAndUser(d3, s) != null &&
+                documentUserRepository.findByDocumentAndUser(d3, s).getStatus().equals(documentUserRepository.findByDocumentAndUser(d3, s).getStatusNEW()));
+        assert(documentUserRepository.findByDocumentAndUser(d3, v) != null &&
+                documentUserRepository.findByDocumentAndUser(d3, v).getStatus().equals(documentUserRepository.findByDocumentAndUser(d3, v).getStatusNEW()));
+        assert(documentUserRepository.findByDocumentAndUser(d3, p3) != null &&
+                documentUserRepository.findByDocumentAndUser(d3, p3).getStatus().equals(documentUserRepository.findByDocumentAndUser(d3, p3).getStatusNEW()));
 
         deleteVseK_huyam();
     }
@@ -517,9 +524,12 @@ public class Delivery3Tests {
         v = userService.getByName("Veronika Rama");
         p3 = userService.getByName("Elvira Espindola");
 
-        assert(bookingService.getWaitingList(d3).get(0).getId() == s.getId());
-        assert(bookingService.getWaitingList(d3).get(1).getId() == v.getId());
-        assert(bookingService.getWaitingList(d3).get(2).getId() == p3.getId());
+        assert(documentUserRepository.findByDocumentAndUser(d3, s) != null &&
+                documentUserRepository.findByDocumentAndUser(d3, s).getStatus().equals(documentUserRepository.findByDocumentAndUser(d3, s).getStatusNEW()));
+        assert(documentUserRepository.findByDocumentAndUser(d3, v) != null &&
+                documentUserRepository.findByDocumentAndUser(d3, v).getStatus().equals(documentUserRepository.findByDocumentAndUser(d3, v).getStatusNEW()));
+        assert(documentUserRepository.findByDocumentAndUser(d3, p3) != null &&
+                documentUserRepository.findByDocumentAndUser(d3, p3).getStatus().equals(documentUserRepository.findByDocumentAndUser(d3, p3).getStatusNEW()));
 
         deleteVseK_huyam();
     }
@@ -580,13 +590,15 @@ public class Delivery3Tests {
         bookingService.renewDocument(d3, p1, simpleDateFormat.parse("2018-04-02"));
 
         //checks
-        DocumentUser documentUser = documentUserRepository.findByDocumentAndUser(d3, p1);
         assert (documentUserRepository.findAllByUser(p1).size() == 1);
         String date = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d3, p1)));
         assert(date.equals("2018-04-16"));
-        assert(bookingService.getWaitingList(d3).get(0).getId() == s.getId());
-        assert(bookingService.getWaitingList(d3).get(1).getId() == v.getId());
-        assert(bookingService.getWaitingList(d3).get(2).getId() == p3.getId());
+        assert(documentUserRepository.findByDocumentAndUser(d3, s) != null &&
+                documentUserRepository.findByDocumentAndUser(d3, s).getStatus().equals(documentUserRepository.findByDocumentAndUser(d3, s).getStatusNEW()));
+        assert(documentUserRepository.findByDocumentAndUser(d3, v) != null &&
+                documentUserRepository.findByDocumentAndUser(d3, v).getStatus().equals(documentUserRepository.findByDocumentAndUser(d3, v).getStatusNEW()));
+        assert(documentUserRepository.findByDocumentAndUser(d3, p3) != null &&
+                documentUserRepository.findByDocumentAndUser(d3, p3).getStatus().equals(documentUserRepository.findByDocumentAndUser(d3, p3).getStatusNEW()));
         
         deleteVseK_huyam();
     }
@@ -611,39 +623,22 @@ public class Delivery3Tests {
         d1 = documentService.getByName("Introduction to Algorithms");
         bookingService.renewDocument(d1, v, simpleDateFormat.parse("2018-03-29"));
 
-        // action
+        /* // action
         d1 = documentService.getByName("Introduction to Algorithms");
         bookingService.renewDocument(d1, p1);
         d1 = documentService.getByName("Introduction to Algorithms");
         bookingService.renewDocument(d1, v);
-        d1 = documentService.getByName("Introduction to Algorithms");
+        d1 = documentService.getByName("Introduction to Algorithms");*/
 
-        //checks
-        DocumentUser docuser = null;
-        LinkedList<Document> documentsByP1 = new LinkedList<>();
-        for(Document doc : documentRepository.findAll()){
-            for(DocumentUser docUs : doc.getUsers()){
-                if(docUs.getUser() == p1){
-                    documentsByP1.add(doc);
-                    docuser = docUs;
-                }
-            }
-        }
-        assert(documentsByP1.contains(d1));
-        assert(bookingService.getDueDate(docuser) == simpleDateFormat.parse("2018-04-26"));
+        // check
 
-        docuser = null;
-        LinkedList<Document> documentsByV = new LinkedList<>();
-        for(Document doc : documentRepository.findAll()){
-            for(DocumentUser docUs : doc.getUsers()){
-                if(docUs.getUser() == v){
-                    documentsByV.add(doc);
-                    docuser = docUs;
-                }
-            }
-        }
-        assert(documentsByV.contains(d1));
-        assert(bookingService.getDueDate(docuser) == simpleDateFormat.parse("2018-04-05"));
+        assert(documentUserRepository.findAllByUser(p1).size() == 1);
+        String date1 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d1, p1)));
+        assert(date1.equals("2018-04-26"));
+
+        assert(documentUserRepository.findAllByUser(v).size() == 1);
+        String date2 = simpleDateFormat.format(bookingService.getDueDate(documentUserRepository.findByDocumentAndUser(d1, v)));
+        assert(date2.equals("2018-04-05"));
 
         deleteVseK_huyam();
     }

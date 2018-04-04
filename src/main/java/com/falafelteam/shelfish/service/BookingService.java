@@ -152,7 +152,8 @@ public class BookingService {
         if (docUser.getStatus().equals(docUser.getStatusRENEWED()) && !docUser.getUser().getRole().equals("Visiting Professor")) {
             throw new Exception("Document was already renewed once");
         }
-        if (calculateFine(docUser) != 0) {
+        if (calculateFine(docUser, date) != 0) {
+            int fine = calculateFine(docUser);
             throw new Exception("The document is overdue, renew is forbidden");
         }
         docUser.setStatus(docUser.getStatusRENEWED());
@@ -215,6 +216,20 @@ public class BookingService {
         int fine = (int) (diffDays - docUser.getWeekNum() * 7) * 100;
         if (fine > docUser.getDocument().getPrice()) {
             return docUser.getDocument().getPrice();
+        }
+        return fine;
+    }
+
+    public int calculateFine(DocumentUser documentUser, Date date) {
+        long diff = date.getTime() - documentUser.getDate().getTime();
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        if (diffDays <= documentUser.getWeekNum() * 7) {
+            return 0;
+        }
+        int fine = (int) (diffDays - documentUser.getWeekNum() * 7) * 100;
+        if (fine > documentUser.getDocument().getPrice()) {
+            return documentUser.getDocument().getPrice();
         }
         return fine;
     }
