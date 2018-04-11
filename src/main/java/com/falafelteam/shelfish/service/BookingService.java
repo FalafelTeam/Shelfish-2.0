@@ -14,6 +14,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A service class for the booking system
+ */
 @Service
 public class BookingService {
 
@@ -30,6 +33,16 @@ public class BookingService {
         this.emailSendService = new EmailSendService();
     }
 
+    /**
+     * method for booking a document in the library
+     *
+     * @param document          - document that is to be booked
+     * @param user              - user who wants to book the document
+     * @param preferredWeeksNum - number of weeks for which the user prefers to book the document
+     * @throws Exception "The document is reference material"
+     *                   "Cannot book several copies of document"
+     *                   "The preferred number of weeks is too big"
+     */
     public void book(Document document, User user, Integer preferredWeeksNum) throws Exception {
         if (user.getRole().getPriority() == 0) {
             outstandingRequest(document);
@@ -53,16 +66,24 @@ public class BookingService {
         emailSendService.sendEmail(user, BOOKED_SUBJ, BOOKED_MESSAGE);
     }
 
+    /**
+     * method for booking a document in the library when the preferred number of weeks is not stated
+     *
+     * @param document - document that is to be booked
+     * @param user     - user who wants to book the document
+     * @throws Exception "The document is reference material"
+     *                   "Cannot book several copies of document"
+     */
     public void book(Document document, User user) throws Exception {
         book(document, user, maxWeeksNum(document, user));
     }
 
     /**
-     * supporting method that adds weeks to the date
+     * method that adds weeks to the date
      *
-     * @param date    the Date which has to be increased
-     * @param weekNum Integer number of weeks by which the date should be increased
-     * @return the increased Date
+     * @param date    - date which has to be increased
+     * @param weekNum - number of weeks by which the date should be increased
+     * @return the increased date
      */
     private Date addWeeks(Date date, Integer weekNum) {
         Calendar cal = Calendar.getInstance();
@@ -72,12 +93,12 @@ public class BookingService {
     }
 
     /**
-     * method that finds the maximum number of weeks the user can check out the document for
-     * works properly only for documents and users for whom it is possible to count maxWeeksNum
+     * method that finds the maximum number of weeks the user can check out the document for,
+     * works properly only for pairs of document and user for which it is possible to count maximum weeks number
      *
-     * @param document Document that is being checked out
-     * @param user     User who checks out the document
-     * @return Integer number of weeks
+     * @param document - document that is being checked out
+     * @param user     - user who checks out the document
+     * @return number of weeks
      */
     private Integer maxWeeksNum(Document document, User user) {
         if (user.getRole().getName().equals("Visiting Professor")) {
@@ -97,10 +118,31 @@ public class BookingService {
         }
     }
 
+    /**
+     * method for checking out a document
+     *
+     * @param document - document that is to be checked out
+     * @param user     - user who wants to check out the document
+     * @throws Exception "Document wasn't booked at all. Trying to cheat?"
+     *                   "Your booking has expired! You have been deleted from the queue."
+     *                   "Not yet available. Too far in a queue"
+     *                   "You have the document on hands! Don't cheat with us!"
+     */
     public void checkOut(Document document, User user) throws Exception {
         checkOut(document, user, new Date());
     }
 
+    /**
+     * method for checking out a document when the date of checking out is stated
+     *
+     * @param document - document that is to be checked out
+     * @param user     - user who wants to check out the document
+     * @param date     - the date of the checking out
+     * @throws Exception "Document wasn't booked at all. Trying to cheat?"
+     *                   "Your booking has expired! You have been deleted from the queue."
+     *                   "Not yet available. Too far in a queue"
+     *                   "You have the document on hands! Don't cheat with us!"
+     */
     public void checkOut(Document document, User user, Date date) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
         if (docUser == null) {
@@ -110,7 +152,7 @@ public class BookingService {
         if (docUser.getStatus().equals(docUser.getStatusNEW())) {
             if (checkIfAvailableToCheckOut(document, user)) {
                 docUser.setStatus(docUser.getStatusTAKEN());
-                if((new Date().getTime()-docUser.getDate().getTime()) / (24 * 60 * 60 * 1000) > 1){
+                if ((new Date().getTime() - docUser.getDate().getTime()) / (24 * 60 * 60 * 1000) > 1) {
                     docUser.getDocument().removeFromQueue(docUser);
                     throw new Exception("Your booking has expired! You have been deleted from the queue.");
                 }
@@ -125,22 +167,53 @@ public class BookingService {
         }
     }
 
+    /**
+     * method for returning a document
+     *
+     * @param document - document that is to be returned
+     * @param user     - user who wants to return the document
+     * @throws Exception "Document wasn't booked"
+     *                   "Cannot return the document. Pay a fine first."
+     */
     public void returnDocument(Document document, User user) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
         if (docUser.getStatus() == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
             throw new Exception("Document wasn't booked");
-        } else {
-            documentRepository.save(document);
-            userRepository.save(user);
-            documentUserRepository.deleteById(docUser.getId());
         }
+        if (calculateFine(docUser) != 0) {
+            throw new Exception("Cannot return the document. Pay a fine first.");
+        }
+        userRepository.save(user);
+        documentRepository.save(document);
+        documentUserRepository.deleteById(docUser.getId());
+
     }
 
+    /**
+     * method for renewing the document
+     *
+     * @param document - document that is to be renewed
+     * @param user     - user who wants to renew the document
+     * @throws Exception "Renew of the document is currently unavailable. Please return the document to the library as soon as possible"
+     *                   "Document wasn't booked"
+     *                   "Document was already renewed once"
+     *                   "The document is overdue, renew is forbidden"
+     */
     public void renewDocument(Document document, User user) throws Exception {
         renewDocument(document, user, new Date());
     }
 
-    // new feature: choose number of weeks to renew a document for
+    /**
+     * method for renewing the document when the date is stated
+     *
+     * @param document - document that is to be renewed
+     * @param user     - user who wants to renew the document
+     * @param date     - the date of the document renewal
+     * @throws Exception "Renew of the document is currently unavailable. Please return the document to the library as soon as possible"
+     *                   "Document wasn't booked"
+     *                   "Document was already renewed once"
+     *                   "The document is overdue, renew is forbidden"
+     */
     public void renewDocument(Document document, User user, Date date) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
         if (document.isHasOutstanding()) {
@@ -164,6 +237,11 @@ public class BookingService {
         emailSendService.sendEmail(user, RENEW_SUBJ, RENEW_MESSAGE);
     }
 
+    /**
+     * method for throwing an outstanding request
+     *
+     * @param document - document that is to be thrown an outstanding request on
+     */
     public void outstandingRequest(Document document) {
         LinkedList<User> deleted = getWaitingList(document);
         deleteNotTakenFromQueue(document);
@@ -174,6 +252,14 @@ public class BookingService {
         documentRepository.save(document);
     }
 
+    /**
+     * method for checking if the document is available to be checked out by the user
+     *
+     * @param document - document that is to be checked
+     * @param user     - user who is to be checked
+     * @return if the document is available to be checked out by the user
+     * @throws Exception "The user is not in the queue"
+     */
     private boolean checkIfAvailableToCheckOut(Document document, User user) throws Exception {
         int priority = user.getRole().getPriority();
         DocumentUser checkedDocumentUser = documentUserRepository.findByDocumentAndUser(document, user);
@@ -194,7 +280,12 @@ public class BookingService {
         } else return false;
     }
 
-
+    /**
+     * method for calculating available copies of the document
+     *
+     * @param document - document available copies of which are to be calculated
+     * @return number of available copies of the document
+     */
     public int availableCopies(Document document) {
         if (document.isReference()) {
             return 0;
@@ -206,6 +297,12 @@ public class BookingService {
                 documentUserRepository.findAllByDocumentAndStatus(document, "renewed").size();
     }
 
+    /**
+     * method for calculating fine
+     *
+     * @param docUser - document and user relation for which the fine is to be calculated
+     * @return fine in rubles
+     */
     public int calculateFine(DocumentUser docUser) {
         long diff = new Date().getTime() - docUser.getDate().getTime();
         long diffDays = diff / (24 * 60 * 60 * 1000);
@@ -220,6 +317,13 @@ public class BookingService {
         return fine;
     }
 
+    /**
+     * method for calculating fine when the date is stated
+     *
+     * @param documentUser - document and user relation for which the fine is to be calculated
+     * @param date         - date on which the fine is to be calculated
+     * @return fine in rubles
+     */
     public int calculateFine(DocumentUser documentUser, Date date) {
         long diff = date.getTime() - documentUser.getDate().getTime();
         long diffDays = diff / (24 * 60 * 60 * 1000);
@@ -234,23 +338,40 @@ public class BookingService {
         return fine;
     }
 
-    public Date getDueDate(DocumentUser docUser){
+    /**
+     * method for getting the due date
+     *
+     * @param docUser - document and user relation for which the due date is to be calculated
+     * @return the due date
+     */
+    public Date getDueDate(DocumentUser docUser) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(docUser.getDate());
-        calendar.add(Calendar.DAY_OF_YEAR, docUser.getWeekNum()*7);
+        calendar.add(Calendar.DAY_OF_YEAR, docUser.getWeekNum() * 7);
         return calendar.getTime();
     }
 
-    public LinkedList<User> getWaitingList(Document document){
+    /**
+     * method for getting the waiting list of the document
+     *
+     * @param document - document for which the waiting list is to be got
+     * @return the waiting list
+     */
+    public LinkedList<User> getWaitingList(Document document) {
         LinkedList<User> waitingList = new LinkedList<>();
-        for(DocumentUser docUs : document.getUsers()){
-            if(docUs.getStatus().equals(docUs.getStatusNEW())){
+        for (DocumentUser docUs : document.getUsers()) {
+            if (docUs.getStatus().equals(docUs.getStatusNEW())) {
                 waitingList.add(docUs.getUser());
             }
         }
         return waitingList;
     }
 
+    /**
+     * method for deleting the users who do not have the document on hands from the documentUser relations of the document
+     *
+     * @param document - document for which the users are to be deleted
+     */
     public void deleteNotTakenFromQueue(Document document) {
         LinkedList<DocumentUser> toBeDeleted = new LinkedList<>();
         for (DocumentUser documentUser : document.getUsers()) {
