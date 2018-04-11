@@ -5,6 +5,17 @@
         background: #f2f2f2 fixed;
         background-size: cover;
     }
+    .block1 {
+        width: 800px;
+        background: #ffffff;
+        padding: 5px;
+        float: center;
+        border: 3px solid rgb(90, 145, 194);
+        font-family: Arial;
+        font-size: 15px;
+        text-align: left;
+        overflow: scroll;
+    }
     ul {
         list-style-type: none;
         margin: 0;
@@ -51,27 +62,30 @@
         font-family: Arial;
         color : #5A91C2;
     }
+    .z{
+        font-size: 30px;
+    }
 </style>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title th:text="${user.name}">User Name</title>
-</head>na
+    <title th:text="${user.name}">User</title>
+</head>
 <body>
 <ul>
     <li><a>Shelfish</a></li>
     <li style="float:right"><a class="active">Exit</a></li>
 </ul>
-<div align="center">
-    <br>
-    <p th:text="'Name: '+${user.name}"></p>
-    <br>
-    <p th:text="'Login: '+${user.login}"></p>
-    <br>
-    <p th:text="'Address: '+${user.address}"></p>
-    <br>
-    <p th:text="'Phone Number: '+${user.phoneNumber}"></p>
-    <br>
-    <p th:text="'Role: '+${user.getRole().name}"></p>
+<br>
+<center>
+<div align="center" class="block1">
+    <font class="z" face="Arial" color = "#5A91C2">
+    <p th:text="'Name: '+${user.name}" align="center">Name</p>
+    <p th:text="'Login: '+${user.login}" align="center">Login</p>
+    <p th:text="'Address: '+${user.address}" align="center">Address</p>
+    <p th:text="'Phone Number: '+${user.phoneNumber}" align="center">Phone Number</p>
+    <p th:text="'Role: '+${user.getRole().name}" align="center">Role</p>
+    </font>
 </div>
+</center>
 </body>
 </html>
