@@ -97,7 +97,7 @@ public class Delivery3Tests {
 
         // users
 
-        userService.save(new User("Sergey Afonso", "s.afonso@inoopolis.ru", "123456",
+        userService.save(new User("Sergey Afonso", "k.saitov@innopolis.ru", "123456",
                 "Via Margutta, 3", "30001", roleService.getByName("Professor")));
         userService.save(new User("Nadia Teixeira", "n.teixeira@innopolis.ru", "123456",
                 "Via Sacra, 13", "30002", roleService.getByName("Professor")));

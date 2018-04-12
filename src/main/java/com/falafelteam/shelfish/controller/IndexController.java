@@ -55,7 +55,7 @@ public class IndexController {
     }
 
     @GetMapping("/addDocument")
-    public String addDocument(Model model) throws Exception {
+    public String addDocument(Model model) {
         DocumentForm form = new DocumentForm();
         model.addAttribute("document", form);
         model.addAttribute("types", documentTypeService.getAllTypes());

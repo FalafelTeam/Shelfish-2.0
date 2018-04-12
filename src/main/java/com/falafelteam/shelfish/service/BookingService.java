@@ -49,14 +49,14 @@ public class BookingService {
             return;
         }
         if (document.isReference()) {
-            throw new Exception("The document is reference material");
+            throw new Exception("The document is reference material. Don't dare to try to take this.");
         }
         if (documentUserRepository.findByDocumentAndUser(document, user) != null) {
-            throw new Exception("Cannot book several copies of the document");
+            throw new Exception("Cannot book several copies of the document. I mean really, why would you do that?");
         }
         int maxWeeksNum = maxWeeksNum(document, user);
         if (preferredWeeksNum > maxWeeksNum) {
-            throw new Exception("The preferred number of weeks is too big");
+            throw new Exception("The preferred number of weeks is too big. Hold on buddy, too much for you.");
         }
         DocumentUser documentUser = new DocumentUser(document, user, preferredWeeksNum);
         documentUserRepository.save(documentUser);
@@ -160,7 +160,7 @@ public class BookingService {
                 documentUserRepository.save(docUser);
                 emailSendService.sendEmail(user, CHECKOUT_SUBJ, CHECKOUT_MESSAGE);
             } else {
-                throw new Exception("Not yet available. Too far in a queue");
+                throw new Exception("Not yet available. Too far in a queue. Ya tolko sprosit'");
             }
         } else if (docUser.getStatus().equals(docUser.getStatusRENEWED()) || docUser.getStatus() == docUser.getStatusTAKEN()) {
             throw new Exception("You have the document on hands! Don't cheat with us!");
@@ -178,7 +178,7 @@ public class BookingService {
     public void returnDocument(Document document, User user) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
         if (docUser.getStatus() == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
-            throw new Exception("Document wasn't booked");
+            throw new Exception("Document wasn't booked. It's a simple pattern. Book-checkout-return");
         }
         if (calculateFine(docUser) != 0) {
             throw new Exception("Cannot return the document. Pay a fine first.");
@@ -220,14 +220,14 @@ public class BookingService {
             throw new Exception("Renew of the document is currently unavailable. Please return the document to the library as soon as possible");
         }
         if (docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
-            throw new Exception("Document wasn't booked");
+            throw new Exception("Document wasn't booked. It's a simple pattern. Book-checkout-return");
         }
         if (docUser.getStatus().equals(docUser.getStatusRENEWED()) && !docUser.getUser().getRole().equals("Visiting Professor")) {
-            throw new Exception("Document was already renewed once");
+            throw new Exception("Document was already renewed once. What takes you so long to read?");
         }
         if (calculateFine(docUser, date) != 0) {
             int fine = calculateFine(docUser);
-            throw new Exception("The document is overdue, renew is forbidden");
+            throw new Exception("The document is overdue, renew is forbidden. Hint: pay then book again. May work if you're lucky.");
         }
         docUser.setStatus(docUser.getStatusRENEWED());
         docUser.setWeekNum(maxWeeksNum(document, user));
@@ -264,7 +264,7 @@ public class BookingService {
         int priority = user.getRole().getPriority();
         DocumentUser checkedDocumentUser = documentUserRepository.findByDocumentAndUser(document, user);
         if (!checkedDocumentUser.getStatus().equals("new")) {
-            throw new Exception("The user is not in the queue");
+            throw new Exception("The user is not in the queue. Ya tolko sprosit' ");
         }
         List<DocumentUser> documentUsers = documentUserRepository.findAllByDocumentAndStatus(document, "new");
         List<DocumentUser> upper = new LinkedList<>();
@@ -393,31 +393,31 @@ public class BookingService {
             "which your booking will expire. Hurry up!\n\nKinds regards,\n\nShelfish Team";
 
     private final String CHECKOUT_SUBJ = "You have successfully checked out document!";
-    private final String CHECKOUT_MESSAGE = "Have a nice read! \\\\n\\nKinds regards,\\n\\nShelfish Team";
+    private final String CHECKOUT_MESSAGE = "Have a nice read! \n\nKinds regards,\n\nShelfish Team";
 
     private final String DAYTILLRETURN_SUBJ = "You have only 1 day left of reading!";
     private final String DAYTILLRETURN_MESSAGE = "Please come to return or renew your document tomorrow.\"+\n" +
-            "\\n\\nNote: In case you don't return or renew tomorrow, we will apply a fine of 100 rub" +
+            "\n\nNote: In case you don't return or renew tomorrow, we will apply a fine of 100 rub" +
             "per day\nNote: Maximum fine is the price of the book." +
-            "\\n\\nKinds regards,\\n\\nShelfish Team";
+            "\n\nKinds regards,\n\nShelfish Team";
 
     private final String FIRSTFINE_SUBJ = "Your first day of fine!";
-    private final String FIRSTFINE_MESSAGE = "Please return or renew your document as soon as possible.\\n\\nKinds regards,\\n\\nShelfish Team\"";
+    private final String FIRSTFINE_MESSAGE = "Please return or renew your document as soon as possible.\n\nKinds regards,\n\nShelfish Team\"";
 
     private final String RETURNED_SUBJ = "You have successfully returned your document to the library!";
     private final String RETURNED_MESSAGE = "Thank you for timing. Feel free to order new books soon!" +
-            "\\n\\nKinds regards,\\n\\nShelfish Team";
+            "\n\nKinds regards,\n\nShelfish Team";
 
     private final String RENEW_SUBJ = "You have successfully renewed your document!";
     private final String RENEW_MESSAGE = "Thank you for renewing your document! You now have more time to enjoy your document!" +
-            "\\n\\nKinds regards,\\n\\nShelfish Team";
+            "\n\nKinds regards,\n\nShelfish Team";
 
     private final String OUTSTANDING_SUBJ = "Outstanding request :( You have been deleted from the queue";
     private final String OUTSTANDING_MESSAGE = "An outstanding request has been sent, so everyone has been deleted from the queue" +
             "\n\n Don't worry! You will be able to book your document again soon." +
-            "\nSorry for the trouble.\\n\\nKinds regards,\\n\\nShelfish Team";
+            "\nSorry for the trouble.\n\nKinds regards,\n\nShelfish Team";
     private final String OUTSTAND_RETURN_REQUEST_SUBJ = "Outstanding request :( Please return the document immediately";
     private final String OUTSTAND_RETURN_REQUEST_MESSAGE = "The document that you have on hands is not going to be available anymore." +
-            " Please return it as soon as possible. \nSorry for the trouble.\\n\\nKinds regards,\\n\\nShelfish Team";
+            " Please return it as soon as possible. \nSorry for the trouble.\n\nKinds regards,\n\nShelfish Team";
 
 }
