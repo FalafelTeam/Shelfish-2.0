@@ -1,24 +1,18 @@
 package com.falafelteam.shelfish.controller;
 
 import com.falafelteam.shelfish.model.AuthorKinds.Author;
-import com.falafelteam.shelfish.repository.DocumentTypeRepository;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * type1 - Article
- * type2 - AV
- * type3 - Book
+ * Class for the form used in document addition and modification
  */
 @Data
 class DocumentForm {
@@ -40,6 +34,11 @@ class DocumentForm {
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date date;
 
+    /**
+     * method that gets the authors stored in the form as a list of Author class objects
+     *
+     * @return list of Author class objects
+     */
     public LinkedList<Author> getParsedAuthors() {
         LinkedList<Author> authors = new LinkedList<>();
         String[] authorsString = this.authors.split(", ");
@@ -49,6 +48,15 @@ class DocumentForm {
         return authors;
     }
 
+    /**
+     * method that validates the information stored in the form
+     *
+     * @throws Exception "Tags should be lower-case letters, in the format "tag1, tag2, tag3, tag4" "
+     *                   "Authors should be separated by a comma and a space"
+     *                   "There can be only ONE editor"
+     *                   "There can be only ONE publisher"
+     *                   "Too many bukaf"
+     */
     public void validate() throws Exception {
         Pattern tagPattern = Pattern.compile("[a-z]+(, s*[a-z]+)*");
         Matcher tagMatcher = tagPattern.matcher(tags);

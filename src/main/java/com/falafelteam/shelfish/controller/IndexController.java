@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Class that handles http requests
+ */
 @Controller
 @RequestMapping("/")
 public class IndexController {
@@ -89,6 +92,13 @@ public class IndexController {
         return "redirect:/document/" + id;
     }
 
+    /**
+     * method that forms Document instances out of the DocumentForm information
+     *
+     * @param documentForm - document where the information about the new object is stored
+     * @return object of type Document
+     * @throws Exception "Wrong document type"
+     */
     private Document documentFormToDocument(DocumentForm documentForm) throws Exception {
         Document document;
         DocumentType documentType = documentTypeService.getByName(documentForm.getType());
@@ -110,7 +120,8 @@ public class IndexController {
                         documentForm.getParsedAuthors(), new Publisher(documentForm.getPublisher()), documentType,
                         documentForm.getTags(), documentForm.getDate());
                 break;
-            default: throw new Exception("Wrong document type");
+            default:
+                throw new Exception("Wrong document type");
         }
         return document;
     }

@@ -9,11 +9,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Class for the publisher model
+ */
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
 public class Publisher {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -22,9 +26,4 @@ public class Publisher {
     public Publisher(String name) {
         this.name = name;
     }
-
-//    @Override
-//    public String toString(){
-//        return "";
-//    }
 }

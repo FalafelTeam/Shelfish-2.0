@@ -372,7 +372,7 @@ public class BookingService {
      *
      * @param document - document for which the users are to be deleted
      */
-    public void deleteNotTakenFromQueue(Document document) {
+    private void deleteNotTakenFromQueue(Document document) {
         LinkedList<DocumentUser> toBeDeleted = new LinkedList<>();
         for (DocumentUser documentUser : document.getUsers()) {
             if (documentUser.getStatus().equals(documentUser.getStatusNEW())) {

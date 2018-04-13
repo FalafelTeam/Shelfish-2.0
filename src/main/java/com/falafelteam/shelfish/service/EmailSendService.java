@@ -6,6 +6,9 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
 
+/**
+ * Service class that sends emails
+ */
 @Log
 public class EmailSendService {
     private String EMAIL = "shelfishlibrary@gmail.com";
@@ -13,6 +16,13 @@ public class EmailSendService {
     private int PORT = 465;
     private String HOST = "smtp.gmail.com";
 
+    /**
+     * method that sends emails
+     *
+     * @param user    - user the email is to be sent to
+     * @param subject - subject of the email that is to be sent
+     * @param message - message of the emil that is to be sent
+     */
     public void sendEmail(User user, String subject, String message) {
         try {
             Email email = new SimpleEmail();

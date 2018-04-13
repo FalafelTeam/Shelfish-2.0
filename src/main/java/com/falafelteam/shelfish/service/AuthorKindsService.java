@@ -48,7 +48,7 @@ public class AuthorKindsService {
      * method that saves author to the database
      * does not save if such author already exists
      *
-     * @param author - author that is being saved
+     * @param author - author that is to be saved
      */
     Author saveAuthor(Author author) {
         if (authorRepository.findByName(author.getName()) == null) {
@@ -63,7 +63,7 @@ public class AuthorKindsService {
      * method that saves editor to the database
      * does not add if such editor already exists
      *
-     * @param editor - editor that is being saved
+     * @param editor - editor that is to be saved
      */
     Editor saveEditor(Editor editor) {
         if (editorRepository.findByName(editor.getName()) == null) {
@@ -78,7 +78,7 @@ public class AuthorKindsService {
      * method that saves publisher to the database
      * does not add if such publisher already exists
      *
-     * @param publisher - publisher that is being saved
+     * @param publisher - publisher that is to be saved
      */
     Publisher savePublisher(Publisher publisher) {
         if (publisherRepository.findByName(publisher.getName()) == null) {
@@ -92,9 +92,9 @@ public class AuthorKindsService {
     /**
      * method that checks and deletes redundant entities
      *
-     * @param authors   - authors that are being checked
-     * @param editor    - editor that is being checked
-     * @param publisher - publisher that is being checked
+     * @param authors   - authors that are to be checked
+     * @param editor    - editor that is to be checked
+     * @param publisher - publisher that is to be checked
      */
     void deleteRedundant(List<Author> authors, Editor editor, Publisher publisher) {
         for (Author author : authors) {

@@ -9,11 +9,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Class for the document type model
+ */
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
 public class DocumentType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
@@ -22,9 +26,4 @@ public class DocumentType {
     public DocumentType(String name) {
         this.name = name;
     }
-
-//    @Override
-//    public String toString(){
-//        return "";
-//    }
 }

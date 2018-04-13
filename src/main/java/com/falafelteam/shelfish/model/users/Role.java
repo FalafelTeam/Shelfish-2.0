@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * Class for the role entity
+ * Class for the role model
  *
  * Priority of roles:
  * 0 - "Librarian"
@@ -20,7 +20,6 @@ import javax.persistence.Id;
  * 4 - "Visiting Professor"
  * 5 - "Professor"
  */
-
 @Entity
 @NoArgsConstructor
 @Getter

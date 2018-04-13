@@ -8,9 +8,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Configuration class for Spring Security
+ */
 @EnableWebSecurity
 public class WebSecurityConfig implements WebMvcConfigurer {
 
+    /**
+     * Configuration for in-memory users of the application
+     */
     @Bean
     public UserDetailsService userDetailsService() throws Exception {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
@@ -18,6 +24,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return manager;
     }
 
+    /**
+     * Configuration for different requests permission depending on the role of the user
+     */
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()

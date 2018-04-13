@@ -31,7 +31,7 @@ public class DocumentService {
      *
      * @param id - id of the document
      * @return document with stated id
-     * @throws Exception if there is no document with such id
+     * @throws Exception "Document not found"
      */
     public Document getById(int id) throws Exception {
         if (documentRepository.findById(id) != null) {
@@ -39,6 +39,13 @@ public class DocumentService {
         } else throw new Exception("Document not found");
     }
 
+    /**
+     * method that gets document with stated name
+     *
+     * @param name - name of the document
+     * @return document with stated name
+     * @throws Exception "Document not found"
+     */
     public Document getByName(String name) throws Exception {
         if (documentRepository.findByName(name) != null) {
             return documentRepository.findByName(name);
@@ -48,7 +55,7 @@ public class DocumentService {
     /**
      * method that adds document to the database
      *
-     * @param document - the document that is being added
+     * @param document - the document that to be added
      */
     public void add(Document document) {
         if (document.getAuthors() != null) {
@@ -75,7 +82,7 @@ public class DocumentService {
     /**
      * method that modifies the document
      *
-     * @param document    - the document that is being modified
+     * @param document    - the document that is to be modified
      * @param newDocument - document that has attributes that are being assigned to the modified document
      */
     public void modify(Document document, Document newDocument) {
@@ -99,9 +106,9 @@ public class DocumentService {
     }
 
     /**
-     * method that deletes the document
+     * method that deletes the document by its id
      *
-     * @param id - id of the document that is being deleted
+     * @param id - id of the document that is to be deleted
      */
     public void deleteById(int id) {
         Document found = documentRepository.findById(id);

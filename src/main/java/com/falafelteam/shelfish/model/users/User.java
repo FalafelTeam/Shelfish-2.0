@@ -6,11 +6,15 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Class for the user model
+ */
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -30,9 +34,4 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.role = role;
     }
-
-//    @Override
-//    public String toString(){
-//        return "";
-//    }
 }

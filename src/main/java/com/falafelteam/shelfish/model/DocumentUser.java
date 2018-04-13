@@ -9,11 +9,15 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * Class for the document and user relation model
+ */
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
 public class DocumentUser {
+
     private final String statusNEW = "new";
     private final String statusTAKEN = "taken";
     private final String statusRENEWED = "renewed";
@@ -38,15 +42,13 @@ public class DocumentUser {
         this.weekNum = weekNum;
     }
 
+    /**
+     * method for removing connections to other objects before removal of the object
+     */
     @PreRemove
     private void preRemove() {
         this.document.getUsers().remove(this);
         this.document = null;
         this.user = null;
     }
-
-//    @Override
-//    public String toString(){
-//        return "";
-//    }
 }
