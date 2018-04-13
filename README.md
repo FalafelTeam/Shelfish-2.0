@@ -21,6 +21,9 @@ For our project, we decided to use:
 
 Our application is a web application. Our idea is that the system is going to be used by both users and librarians. A user goes to the website, searches for a document he wants, then books it. After that, he physically goes to the library, says that he has a booking, librarian then hands out the document to a user and changes the order status to “taken”. If user brings the document back before the time has expired, he is free to go (and librarian deletes the order) or he can renew the document (and librarian changes order status to “renewed”); if his document is overdue, he is forced to pay a fine.
 
+# Class Diagram
+<img src="tmp/Shelfish Diagram.png" width="1000">
+
 # How to install the project
  * Install MySql ([help here](https://dev.mysql.com/doc/workbench/en/wb-installing.html)) and run the server.
  * Install any Spring-compatible Java IDE (we suggest JetBrains IntelliJ IDEA, which will be used in this guide ([Download here](https://www.jetbrains.com/idea/download)))
