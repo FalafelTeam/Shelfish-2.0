@@ -6,6 +6,8 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
 
+import java.io.IOException;
+
 /**
  * Service class that sends emails
  */
@@ -23,7 +25,7 @@ public class EmailSendService {
      * @param subject - subject of the email that is to be sent
      * @param message - message of the emil that is to be sent
      */
-    public void sendEmail(User user, String subject, String message) {
+    public void sendEmail(User user, String subject, String message) throws IOException {
         try {
             Email email = new SimpleEmail();
             email.setHostName(HOST);
@@ -37,6 +39,8 @@ public class EmailSendService {
             email.send();
         } catch (Exception e) {
             log.warning("Unable to send email");
+            LoggingService loggingService = new LoggingService();
+            loggingService.failedToSendEmailLog(user, subject);
         }
     }
 }

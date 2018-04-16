@@ -1,0 +1,4 @@
+[2018.04.16 20:46:03] User id: 6 booked document id: 4
+[2018.04.16 20:46:05] User id: 6 checked out document id: 4
+[2018.04.16 20:46:06] User id: 6 renewed document id: 4
+[2018.04.16 20:46:08] User id: 6 returned document id: 4

@@ -9,6 +9,7 @@ import com.falafelteam.shelfish.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -24,13 +25,15 @@ public class BookingService {
     private final DocumentRepository documentRepository;
     private final UserRepository userRepository;
     private final EmailSendService emailSendService;
+    private final LoggingService logService;
 
     @Autowired
-    public BookingService(DocumentUserRepository documentUserRepository, DocumentRepository documentRepository, UserRepository userRepository) {
+    public BookingService(DocumentUserRepository documentUserRepository, DocumentRepository documentRepository, UserRepository userRepository) throws IOException {
         this.documentUserRepository = documentUserRepository;
         this.documentRepository = documentRepository;
         this.userRepository = userRepository;
         this.emailSendService = new EmailSendService();
+        this.logService = new LoggingService();
     }
 
     /**
@@ -64,6 +67,8 @@ public class BookingService {
         documentRepository.save(document);
 
         emailSendService.sendEmail(user, BOOKED_SUBJ, BOOKED_MESSAGE);
+        logService.bookLog(user, document);
+
     }
 
     /**
@@ -159,6 +164,7 @@ public class BookingService {
                 docUser.setDate(date);
                 documentUserRepository.save(docUser);
                 emailSendService.sendEmail(user, CHECKOUT_SUBJ, CHECKOUT_MESSAGE);
+                logService.checkOutLog(user, document);
             } else {
                 throw new Exception("Not yet available. Too far in a queue. Ya tolko sprosit'");
             }
@@ -183,6 +189,9 @@ public class BookingService {
         if (calculateFine(docUser) != 0) {
             throw new Exception("Cannot return the document. Pay a fine first.");
         }
+        emailSendService.sendEmail(user, RETURNED_SUBJ, RETURNED_MESSAGE);
+        logService.returnLog(user, document);
+
         userRepository.save(user);
         documentRepository.save(document);
         documentUserRepository.deleteById(docUser.getId());
@@ -235,6 +244,7 @@ public class BookingService {
         documentUserRepository.save(docUser);
 
         emailSendService.sendEmail(user, RENEW_SUBJ, RENEW_MESSAGE);
+        logService.renewLog(user, document);
     }
 
     /**
@@ -242,12 +252,17 @@ public class BookingService {
      *
      * @param document - document that is to be thrown an outstanding request on
      */
-    public void outstandingRequest(Document document) {
+    public void outstandingRequest(Document document) throws IOException {
         LinkedList<User> deleted = getWaitingList(document);
         deleteNotTakenFromQueue(document);
         document.setHasOutstanding(true);
+        logService.outstandingLog(document);
         for (User user : deleted) {
             emailSendService.sendEmail(user, OUTSTANDING_SUBJ, OUTSTANDING_MESSAGE);
+
+        }
+        for (DocumentUser docUser : document.getUsers()){
+            emailSendService.sendEmail(docUser.getUser(), OUTSTAND_RETURN_REQUEST_SUBJ, OUTSTAND_RETURN_REQUEST_MESSAGE);
         }
         documentRepository.save(document);
     }

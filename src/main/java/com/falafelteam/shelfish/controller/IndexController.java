@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 /**
  * Class that handles http requests
  */
@@ -24,15 +26,17 @@ public class IndexController {
     private final BookingService bookingService;
     private final DocumentTypeService documentTypeService;
     private final RoleService roleService;
+    private final LoggingService loggingService;
 
     @Autowired
     public IndexController(DocumentService documentService, UserService userService, BookingService bookingService,
-                           DocumentTypeService documentTypeService, RoleService roleService) {
+                           DocumentTypeService documentTypeService, RoleService roleService) throws IOException {
         this.documentService = documentService;
         this.userService = userService;
         this.bookingService = bookingService;
         this.documentTypeService = documentTypeService;
         this.roleService = roleService;
+        this.loggingService = new LoggingService();
     }
 
     @GetMapping("/")
@@ -71,6 +75,7 @@ public class IndexController {
         Document document = documentFormToDocument(documentForm);
         documentService.add(document);
         document = documentService.getByName(document.getName());
+        loggingService.newDocumentLog(document);
         return "redirect:/document/" + document.getId();
     }
 
@@ -89,6 +94,7 @@ public class IndexController {
         documentForm.validate();
         Document document = documentFormToDocument(documentForm);
         documentService.modify(oldDocument, document);
+        loggingService.modifiedDocumentLog(document);
         return "redirect:/document/" + id;
     }
 
@@ -127,8 +133,9 @@ public class IndexController {
     }
 
     @GetMapping("/deleteDocument/{id}")
-    public String deleteDocument(@PathVariable("id") int id) {
+    public String deleteDocument(@PathVariable("id") int id) throws Exception {
         documentService.deleteById(id);
+        loggingService.deletedDocument(documentService.getById(id));
         return "redirect:/";
     }
 
@@ -147,6 +154,7 @@ public class IndexController {
         User user = new User(form.getName(), form.getLogin(), form.getPassword(), form.getAddress(),
                 form.getPhoneNumber(), role);
         userService.save(user);
+        loggingService.signUpLog(user);
         return "redirect:/user" + user.getId();
     }
 
@@ -154,11 +162,13 @@ public class IndexController {
     public String modifyUsers(@PathVariable("id") int id, Model model) throws Exception {
         model.addAttribute("user", userService.getById(id));
         userService.save(userService.getById(id));
+        loggingService.modifiedUserLog(userService.getById(id));
         return "redirect:/user/" + id;
     }
 
     @GetMapping("/deleteUser/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
+    public String deleteUser(@PathVariable("id") int id) throws Exception {
+        loggingService.deletedUserLog(userService.getById(id));
         userService.deleteById(id);
         return "redirect:/";
     }
