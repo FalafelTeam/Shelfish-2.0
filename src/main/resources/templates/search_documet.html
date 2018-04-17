@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:dt="http://www.thymeleaf.org/dandelion/datatables">
+
+
+<head>
+    <title>Shelfish</title>
+</head>
+
+<style>
+    body {
+        background: #f2f2f2 fixed;
+        background-size: cover;
+    }
+
+    input[type=submit] {
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        padding: .8em 1em calc(.8em + 3px);
+        border-radius: 3px;
+        background: #5A91C2;
+        box-shadow: 0 -3px rgb(41, 93, 139) inset;
+        transition: 0.2s;
+        font-size:15px;
+    }
+    input[type=submit]:hover { background: rgb(41, 93, 139); }
+    input[type=submit]:active {
+        background: rgb(41, 93, 139);
+        box-shadow: 0 3px rgb(41, 93, 139) inset;
+    }
+
+    input[type=reset] {
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        padding: .8em 1em calc(.8em + 3px);
+        border-radius: 3px;
+        background: #5A91C2;
+        box-shadow: 0 -3px rgb(41, 93, 139) inset;
+        transition: 0.2s;
+        font-size:15px;
+    }
+    input[type=reset]:hover { background: rgb(41, 93, 139); }
+    input[type=reset]:active {
+        background: rgb(41, 93, 139);
+        box-shadow: 0 3px rgb(41, 93, 139) inset;
+    }
+
+    input[type=text] {
+        padding:3px;
+        font-size:15px;
+        border: solid #5A91C2;
+        -webkit-border-radius: 3px;
+        border-radius: 5px;
+    }
+
+    select {
+        font-size:15px;
+        width: 100%;
+        padding: 16px 20px;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even){background-color: #ffffff}
+
+    th {
+        background-color: #5A91C2;
+        color: white;
+    }
+    .container {
+        overflow: scroll;
+        font-family: Arial;
+        font-size: 20px;
+        color: #5A91C2;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgb(90, 145, 194);
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        background-color: rgb(41, 93, 139);
+    }
+    .active {
+        background-color: rgb(90, 145, 194);
+    }
+    #footer {
+        position: fixed;
+        left: 0; bottom: 0;
+        padding: 10px;
+        background: #5A91C2;
+        color: #fff;
+        width: 100%;
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+
+</style>
+
+<ul>
+    <li><a href="">To search</a></li>
+    <li><a href="">My profile</a></li>
+    <li style="float:right"><a class="active">Log Out</a></li>
+</ul>
+<center>
+<form action="handler.php" method="post" accept-charset="utf-8">
+    <select name="mediatype" style="width: 120px;" id="FilterMedia">
+        <option value="">All</option>
+        <option value="4">Audio/Video</option>
+        <option value="1">Books</option>
+        <option value="3">Journal Articles</option>
+    </select>
+    <select name="field" style="width: 90px;" id="FilterField">
+        <option value="">Default</option>
+        <option value="title">Title</option>
+        <option value="author">Author</option>
+        <option value="publisher">Publisher</option>
+        <option value="date">Date</option>
+    </select>
+    <input name="search" tabindex="0" autofocus="autofocus" type="text" value="" id="FilterRequest">
+    <input type="submit" value="Search">
+    <input type="reset" value="Clear"></p>
+</form>
+</center>
+
+
+
+<body>
+<div class="container">
+    <table id="myTableId" dt:table="true">
+        <tr th:each="document : ${documents}">
+            <th th:text="${document?.name}">Title</th>
+            <th th:text="${document?.dat}">Date</th>
+            <th th:text="${document?.authorNames}">Authors</th>
+            <th th:text="${document?.publisherName}">Publisher</th>
+            <th th:text="${document?.type}">Type</th>
+            <th th:text="${document?.copies}">Copies</th>
+        </tr>
+    </table>
+</div>
+<div id="footer">
+    &copy; FalafelTeam
+</div>
+</body>
+
+</html>
