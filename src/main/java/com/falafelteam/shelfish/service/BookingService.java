@@ -259,14 +259,16 @@ public class BookingService {
         if (docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
             throw new Exception("Document wasn't booked. It's a simple pattern. Book-checkout-return");
         }
-        if (docUser.getStatus().equals(docUser.getStatusRENEWED()) && !docUser.getUser().getRole().equals("Visiting Professor")) {
+        if (docUser.getStatus().equals(docUser.getStatusRENEWED())) {
             throw new Exception("Document was already renewed once. What takes you so long to read?");
         }
         if (calculateFine(docUser, date) != 0) {
             int fine = calculateFine(docUser);
             throw new Exception("The document is overdue, renew is forbidden. Hint: pay then book again. May work if you're lucky.");
         }
-        docUser.setStatus(docUser.getStatusRENEWED());
+        if (!docUser.getUser().getRole().equals("Visiting Professor")) {
+            docUser.setStatus(docUser.getStatusRENEWED());
+        }
         docUser.setWeekNum(maxWeeksNum(document, user));
         docUser.setDate(date);
         documentUserRepository.save(docUser);
