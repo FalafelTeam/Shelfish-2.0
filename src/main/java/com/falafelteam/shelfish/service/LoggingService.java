@@ -2,6 +2,7 @@ package com.falafelteam.shelfish.service;
 
 import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.model.users.User;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,6 +13,7 @@ import java.util.Date;
 /**
  * A logger class. By default logs everything to /tmp/log.txt
  */
+@Service
 public class LoggingService {
     private final String logFileName = "tmp/log.txt" ;
     private FileWriter tempWriter;

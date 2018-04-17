@@ -30,13 +30,14 @@ public class IndexController {
 
     @Autowired
     public IndexController(DocumentService documentService, UserService userService, BookingService bookingService,
-                           DocumentTypeService documentTypeService, RoleService roleService) throws IOException {
+                           DocumentTypeService documentTypeService, RoleService roleService, LoggingService loggingService)
+            throws IOException {
         this.documentService = documentService;
         this.userService = userService;
         this.bookingService = bookingService;
         this.documentTypeService = documentTypeService;
         this.roleService = roleService;
-        this.loggingService = new LoggingService();
+        this.loggingService = loggingService;
     }
 
     @GetMapping("/")
@@ -134,8 +135,8 @@ public class IndexController {
 
     @GetMapping("/deleteDocument/{id}")
     public String deleteDocument(@PathVariable("id") int id) throws Exception {
-        documentService.deleteById(id);
         loggingService.deletedDocument(documentService.getById(id));
+        documentService.deleteById(id);
         return "redirect:/";
     }
 

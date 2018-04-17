@@ -13,7 +13,7 @@ import javax.persistence.Id;
  * Class for the role model
  *
  * Priority of roles:
- * 0 - "Librarian"
+ * 0 - "Librarian"/"Admin"
  * 1 - "Student"
  * 2 - "Instructor"
  * 3 - "TA"

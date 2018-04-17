@@ -15,7 +15,6 @@ import java.util.*;
  * Class for the document model
  */
 @Entity
-@Table
 @NoArgsConstructor
 @Getter
 @Setter

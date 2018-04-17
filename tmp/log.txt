@@ -2,3 +2,12 @@
 [2018.04.16 20:46:05] User id: 6 checked out document id: 4
 [2018.04.16 20:46:06] User id: 6 renewed document id: 4
 [2018.04.16 20:46:08] User id: 6 returned document id: 4
+[2018.04.17 21:12:10] User id: 24 booked document id: 15
+[2018.04.17 21:12:11] User id: 24 checked out document id: 15
+[2018.04.17 21:12:13] User id: 27 booked document id: 21
+[2018.04.17 21:12:14] User id: 27 checked out document id: 21
+[2018.04.17 21:12:16] User id: 28 booked document id: 21
+[2018.04.17 21:12:17] User id: 28 checked out document id: 21
+[2018.04.17 21:12:18] User id: 24 renewed document id: 15
+[2018.04.17 21:12:20] User id: 27 renewed document id: 21
+[2018.04.17 21:12:21] User id: 28 renewed document id: 21

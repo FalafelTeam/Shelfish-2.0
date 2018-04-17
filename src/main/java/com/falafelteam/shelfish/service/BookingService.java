@@ -7,6 +7,7 @@ import com.falafelteam.shelfish.repository.DocumentRepository;
 import com.falafelteam.shelfish.repository.DocumentUserRepository;
 import com.falafelteam.shelfish.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -34,6 +35,14 @@ public class BookingService {
         this.userRepository = userRepository;
         this.emailSendService = new EmailSendService();
         this.logService = new LoggingService();
+    }
+
+    /**
+     * method that runs "scripts" at 4AM every day
+     */
+    @Scheduled(cron = "0 0 4 * * *")
+    private void scheduled() {
+        deleteOverdueBookings();
     }
 
     /**
@@ -81,6 +90,25 @@ public class BookingService {
      */
     public void book(Document document, User user) throws Exception {
         book(document, user, maxWeeksNum(document, user));
+    }
+
+    /**
+     * method that deletes all overdue bookings from the database
+     */
+    private void deleteOverdueBookings() {
+        Iterable<DocumentUser> documentUsers = documentUserRepository.findAll();
+        for (DocumentUser documentUser: documentUsers) {
+            if (documentUser.getStatus().equals(documentUser.getStatusNEW())) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(documentUser.getDate());
+                cal.add(Calendar.DATE, 1);
+                if (cal.getTime().before(new Date())) {
+                    userRepository.save(documentUser.getUser());
+                    documentRepository.save(documentUser.getDocument());
+                    documentUserRepository.delete(documentUser);
+                }
+            }
+        }
     }
 
     /**
