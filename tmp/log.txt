@@ -11,3 +11,7 @@
 [2018.04.17 21:12:18] User id: 24 renewed document id: 15
 [2018.04.17 21:12:20] User id: 27 renewed document id: 21
 [2018.04.17 21:12:21] User id: 28 renewed document id: 21
+[2018.04.22 18:00:27] User id 1 signed up
+[2018.04.22 18:05:23] User id 1 signed up
+[2018.04.22 18:25:47] User id 1 signed up
+[2018.04.22 20:20:14] User id 1 signed up

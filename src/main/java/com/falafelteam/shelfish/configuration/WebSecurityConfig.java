@@ -21,6 +21,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     public UserDetailsService userDetailsService() throws Exception {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(User.withDefaultPasswordEncoder().username("shelfishuser").password("shelfish").roles("Admin").build());
+
         return manager;
     }
 
@@ -37,4 +38,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                     .loginPage("/login")
                     .permitAll();
     }
+
+
 }

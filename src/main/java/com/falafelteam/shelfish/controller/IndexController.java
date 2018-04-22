@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * Class that handles http requests
@@ -55,6 +56,11 @@ public class IndexController {
     public String getUser(@PathVariable("id") int id, Model model) throws Exception {
         model.addAttribute("user", userService.getById(id));
         return "user";
+    }
+
+    @GetMapping("/myProfile")
+    public String myProfile(Principal principal) throws Exception {
+        return "redirect:/user/" + principal.getName();
     }
 
     @GetMapping("/addDocument")
@@ -151,7 +157,7 @@ public class IndexController {
                 form.getPhoneNumber(), role);
         userService.save(user);
         loggingService.signUpLog(user);
-        return "redirect:/user" + user.getId();
+        return "redirect:/user/" + user.getId();
     }
 
     @PostMapping("/modifyUser/{id}")
@@ -186,6 +192,11 @@ public class IndexController {
     public String searchUser(Model model) {
         model.addAttribute("form", new SearchByIdForm());
         return "search_user";
+    }
+
+    @PostMapping("searchUser")
+    public String searchUser(@ModelAttribute("form") SearchByIdForm form) {
+        return "redirect:/user/" + form.getId();
     }
 
     @PostMapping("/book")

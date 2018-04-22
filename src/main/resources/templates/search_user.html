@@ -73,8 +73,8 @@
 <div align="center">
     <h1 class="log">Search user</h1>
     <p>Enter the user's id:</p>
-    <form action="#" th:action="@{'/user/'+${form.id}}" th:object="${form}" method="get">
-        <input type="number" style="width: 300px;" th:field="*{id}" name="price">
+    <form action="#" th:action="@{/searchUser}" th:object="${form}" method="post">
+        <input type="number" style="width: 300px;" th:field="*{id}" name="id">
         <br><br>
         <input type="submit" style="width: 90px;" value="Submit">
     </form>
