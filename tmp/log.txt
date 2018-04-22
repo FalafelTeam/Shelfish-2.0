@@ -40,3 +40,4 @@
 [2018.04.23 01:48:24] Document id 1 created
 [2018.04.23 01:50:11] Document id 1 created
 [2018.04.23 01:52:57] Document id 1 created
+[2018.04.23 02:19:01] User id 1 signed up

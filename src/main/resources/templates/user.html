@@ -88,6 +88,22 @@
         font-size: 20px;
         color: #5A91C2;
     }
+    input[type=submit] {
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        padding: .8em 1em calc(.8em + 3px);
+        border-radius: 3px;
+        background: #D8473B;
+        box-shadow: 0 -3px rgb(41, 93, 139) inset;
+        transition: 0.2s;
+        font-size:15px;
+    }
+    input[type=submit]:hover { background: rgb(41, 93, 139); }
+    input[type=submit]:active {
+        background: rgb(41, 93, 139);
+        box-shadow: 0 3px rgb(41, 93, 139) inset;
+    }
 </style>
 
 <head>
@@ -108,33 +124,40 @@
 
 <br>
 <center>
-<div align="center" class="block1">
-    <font class="z" face="Arial" color = "#5A91C2">
-    <p th:text="'Name: '+${user.name}" align="center">Name</p>
-    <p th:text="'Login: '+${user.login}" align="center">Login</p>
-    <p th:text="'Address: '+${user.address}" align="center">Address</p>
-    <p th:text="'Phone Number: '+${user.phoneNumber}" align="center">Phone Number</p>
-    <p th:text="'Role: '+${user.getRole().name}" align="center">Role</p>
-    </font>
-    <div class="container">
-        <table id="myTableId" th:table="true">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Days left</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="document : ${documents}">
-                <th th:text="${document.getDocument().name}">Title</th>
-                <th th:text="${document.status}">Status</th>
-                <th th:text="${bookingService.getDueDate(${document}).toString()}">Days left</th>
-            </tr>
-            </tbody>
-        </table>
+    <div align="center" class="block1">
+        <font class="z" face="Arial" color = "#5A91C2">
+            <p th:text="'Name: '+${user.name}" align="center">Name</p>
+            <p th:text="'Login: '+${user.login}" align="center">Login</p>
+            <p th:text="'Address: '+${user.address}" align="center">Address</p>
+            <p th:text="'Phone Number: '+${user.phoneNumber}" align="center">Phone Number</p>
+            <p th:text="'Role: '+${user.getRole().name}" align="center">Role</p>
+        </font>
+        <div class="container">
+            <table id="myTableId" th:table="true">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Days left</th>
+                    <th>Renew</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="document : ${documents}">
+                    <th th:text="${document.getDocument().name}">Title</th>
+                    <th th:text="${document.status}">Status</th>
+                    <th th:text="${bookingService.getDueDate(${document}).toString()}">Days left</th>
+                    <th>
+                        <form method="POST" action="/order-lables-print">
+                            <input type="hidden" name="product_id" value="<?php echo $row->product_id; ?>"/>
+                            <input type="submit" value="Renew"/>
+                        </form>
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </center>
 </body>
 
