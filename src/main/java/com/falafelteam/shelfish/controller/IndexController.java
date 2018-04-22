@@ -42,13 +42,8 @@ public class IndexController {
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "redirect:/searchDocument";
     }
-
-    /*@GetMapping("/allDocuments")
-    public String allDocuments() {
-        return "all_documents";
-    }*/
 
     @GetMapping("/document/{id}")
     public String getDocument(@PathVariable("id") int id, Model model) throws Exception {
@@ -140,15 +135,15 @@ public class IndexController {
         return "redirect:/";
     }
 
-    @GetMapping("/signUp")
+    @GetMapping("/addUser")
     public String signUp(Model model) {
         UserForm form = new UserForm();
         model.addAttribute("user", form);
         model.addAttribute("roles", roleService.getAllRoles());
-        return "sign_up";
+        return "add_user";
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("/addUser")
     public String signUp(@ModelAttribute("user") UserForm form) throws Exception {
         form.validate();
         Role role = roleService.getByName(form.getRole());
@@ -174,12 +169,6 @@ public class IndexController {
         return "redirect:/";
     }
 
-    @GetMapping("/searchById")
-    public String searchById(Model model) {
-        model.addAttribute("form", new SearchByIdForm());
-        return "search_by_id";
-    }
-
     @GetMapping("/searchDocument")
     public String searchDocument(Model model) {
         model.addAttribute("documents", documentService.getAll());
@@ -194,7 +183,8 @@ public class IndexController {
     }
 
     @GetMapping("/searchUser")
-    public String searchUser() {
+    public String searchUser(Model model) {
+        model.addAttribute("form", new SearchByIdForm());
         return "search_user";
     }
 
