@@ -181,16 +181,21 @@ public class IndexController {
     }
 
     @GetMapping("/searchDocument")
-    public String searchDocument(Model model){
+    public String searchDocument(Model model) {
         model.addAttribute("documents", documentService.getAll());
         model.addAttribute("types", documentTypeService.getAllTypes());
         return "search_document";
     }
 
     @PostMapping("/searchDocument")
-    public String searchDocument(){
+    public String searchDocument() {
         //
         return "search_document";
+    }
+
+    @GetMapping("/searchUser")
+    public String searchUser() {
+        return "search_user";
     }
 
     @PostMapping("/book")

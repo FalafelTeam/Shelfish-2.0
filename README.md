@@ -46,13 +46,11 @@ Our application is a web application. Our idea is that the system is going to be
  * Launch MySQL under the created user (login: shelfishuser, password: shelfish)
    * type `use shelfish`
  * launch main/java/com.FalafelTeam.Shelfish/ShelfishApplication.java
- * In MySQL command line:
-   * type `source 'full path to init.sql (in project root)'`
  
  
 # How to add a new type of user
-* In init.sql script:
-  * Put your new type of user into the second line, as well as its priority.
+* In src/main/resources/data.sql script:
+  * Put your new type of user, as well as his priority.
 
 # How to add a new type of document
 * In init.sql script:
