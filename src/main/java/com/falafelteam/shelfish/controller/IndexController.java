@@ -45,10 +45,10 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/allDocuments")
+    /*@GetMapping("/allDocuments")
     public String allDocuments() {
         return "all_documents";
-    }
+    }*/
 
     @GetMapping("/document/{id}")
     public String getDocument(@PathVariable("id") int id, Model model) throws Exception {
@@ -174,15 +174,23 @@ public class IndexController {
         return "redirect:/";
     }
 
-    @GetMapping("/search")
-    public String search() {
-        return "search";
-    }
-
     @GetMapping("/searchById")
     public String searchById(Model model) {
         model.addAttribute("form", new SearchByIdForm());
         return "search_by_id";
+    }
+
+    @GetMapping("/searchDocument")
+    public String searchDocument(Model model){
+        model.addAttribute("documents", documentService.getAll());
+        model.addAttribute("types", documentTypeService.getAllTypes());
+        return "search_document";
+    }
+
+    @PostMapping("/searchDocument")
+    public String searchDocument(){
+        //
+        return "search_document";
     }
 
     @PostMapping("/book")

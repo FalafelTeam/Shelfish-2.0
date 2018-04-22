@@ -130,50 +130,66 @@
 
 </style>
 
+<body>
+
 <ul>
-    <li><a href="">To search</a></li>
-    <li><a href="">My profile</a></li>
+    <li><a th:href="@{/searchDocument}">To search</a></li>
+    <li ><a th:href="@{/}">My profile</a></li>
     <li style="float:right"><a class="active">Log Out</a></li>
 </ul>
-<center>
-<form action="handler.php" method="post" accept-charset="utf-8">
-    <select name="mediatype" style="width: 120px;" id="FilterMedia">
-        <option value="">All</option>
-        <option value="4">Audio/Video</option>
-        <option value="1">Books</option>
-        <option value="3">Journal Articles</option>
-    </select>
-    <select name="field" style="width: 90px;" id="FilterField">
-        <option value="">Default</option>
-        <option value="title">Title</option>
-        <option value="author">Author</option>
-        <option value="publisher">Publisher</option>
-        <option value="date">Date</option>
-    </select>
-    <input name="search" tabindex="0" autofocus="autofocus" type="text" value="" id="FilterRequest">
-    <input type="submit" value="Search">
-    <input type="reset" value="Clear"></p>
-</form>
-</center>
 
-
-
-<body>
 <div class="container">
-    <table id="myTableId" dt:table="true">
-        <tr th:each="document : ${documents}">
-            <th th:text="${document?.name}">Title</th>
-            <th th:text="${document?.dat}">Date</th>
-            <th th:text="${document?.authorNames}">Authors</th>
-            <th th:text="${document?.publisherName}">Publisher</th>
-            <th th:text="${document?.type}">Type</th>
-            <th th:text="${document?.copies}">Copies</th>
+    <center>
+        <form action="handler.php" method="post" accept-charset="utf-8">
+            <select name="mediatype" style="width: 120px;" id="FilterMedia">
+                <option value="">All</option>
+                <option th:each="t : ${types}"
+                        th:value="${t}"
+                        th:utext="${t}">Type</option>
+            </select>
+            <select name="field" style="width: 90px;" id="FilterField">
+                <option value="">Default</option>
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+                <option value="publisher">Publisher</option>
+                <option value="date">Date</option>
+            </select>
+            <input name="search" tabindex="0" autofocus="autofocus" type="text" value="" id="FilterRequest">
+            <input type="submit" value="Search">
+            <input type="reset" value="Clear">
+        </form>
+    </center>
+</div>
+
+<div class="container">
+    <table id="myTableId" th:table="true">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Publishing date</th>
+            <th>Authors</th>
+            <th>Publisher</th>
+            <th>Type</th>
+            <th>Copies</th>
         </tr>
+        </thead>
+        <tbody>
+        <tr th:each="document : ${documents}">
+            <th th:text="${document.name}">Title</th>
+            <th th:text="${document.publishingDate}">Date</th>
+            <th th:text="${document.authorsToString()}">Authors</th>
+            <th th:text="${document.publisher.getName()}">Publisher</th>
+            <th th:text="${document.type.getName()}">Type</th>
+            <th th:text="${document.copies}">Copies</th>
+        </tr>
+        </tbody>
     </table>
 </div>
+
 <div id="footer">
     &copy; FalafelTeam
 </div>
+
 </body>
 
 </html>

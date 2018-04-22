@@ -52,6 +52,10 @@ public class DocumentService {
         } else throw new Exception("Document not found");
     }
 
+    public Iterable<Document> getAll() {
+        return documentRepository.findAll();
+    }
+
     /**
      * method that adds document to the database
      *
