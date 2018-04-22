@@ -48,9 +48,58 @@
         background-color: #ffffff;
     }
     .log{
-        font-size: 60px;
+        font-size: 20px;
         font-family: Arial;
         color : #5A91C2;
+    }
+    .block1 {
+        width: 80%;
+        background: #ffffff;
+        padding: 5px;
+        float: center;
+        border: 3px solid rgb(90, 145, 194);
+        font-family: Arial;
+        font-size: 13px;
+        text-align: left;
+        overflow: scroll;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even){background-color: #ffffff}
+
+    th {
+        background-color: rgb(90, 145, 194);
+        color: white;
+    }
+    .container {
+        overflow: scroll;
+        font-family: Arial;
+        font-size: 20px;
+        color: #5A91C2;
+    }
+    .button {
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        padding: .8em 1em calc(.8em + 3px);
+        border-radius: 3px;
+        background: rgb(90, 145, 194);
+        box-shadow: 0 -3px rgb(41, 93, 139) inset;
+        transition: 0.2s;
+        font-size:15px;
+    }
+    .button:hover {
+        background: rgb(41, 93, 139);
     }
 </style>
 
@@ -72,27 +121,55 @@
 
 <div align="center">
     <br>
-    <p th:text="'Name: '+${document.name}"></p>
-    <p th:text="'Description: '+${document.description}"></p>
-    <p th:text="'Type: '+${document.type.name}"></p>
-    <div th:switch="${document.type.name}">
-        <p th:case="'Book'" th:text="'Is Bestseller: '+(${document.bestseller}?'Yes':'No')"></p>
-        <p th:case="*" th:text="'Is Bestseller: '+'The document cannot be a bestseller'" ></p>
+    <font size = "15" face="Arial" color = "5A91C2">
+    <p th:text="${document.name}"></p>
+    </font>
+    <div class="container">
+        <table id="myTableId" th:table="true">
+            <thead>
+            <tr>
+                <th>Type</th>
+                <th>Is Bestseller</th>
+                <th>Tags</th>
+                <th>Authors</th>
+                <th>Publisher</th>
+                <th>Editor</th>
+                <th>Publishing Date</th>
+                <th>Is Reference</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th th:text="${document.type.name}"></th>
+                <div th:switch="${document.type.name}">
+                    <th th:case="'Book'" th:text="${document.bestseller}?'Yes':'No'"></th>
+                    <th th:case="*" th:text="'The document cannot be a bestseller'" ></th>
+                </div>
+                <th th:text="${document.tagsToString}"></th>
+                <th th:text="${document.authorsToString()}"></th>
+                <div th:switch="${document.type.name}">
+                    <th th:case="'Article'" th:text="${document.publisher.name}"></th>
+                    <th th:case="'Book'" th:text="${document.publisher.name}"></th>
+                    <th th:case="*" th:text="'The document has no ublisher'"></th>
+                </div>
+                <div th:switch="${document.type.name}">
+                    <th th:case="'Article'" th:text="${document.editor.name}"></th>
+                    <th th:case="*" th:text="'The document has no editor'"></th>
+                </div>
+                <th th:text="${document.publishingDate.toString()}"></th>
+                <th th:text="${document.reference}?'Yes':'No'"></th>
+                <th th:text="${document.price}+' rub'"></th>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <p th:text="'Tags: '+${document.tagsToString}"></p>
-    <p th:text="'Authors: '+${document.authorsToString()}"></p>
-    <div th:switch="${document.type.name}">
-        <p th:case="'Article'" th:text="'Publisher: '+${document.publisher.name}"></p>
-        <p th:case="'Book'" th:text="'Publisher: '+${document.publisher.name}"></p>
-        <p th:case="*" th:text="'Publisher: '+'The document has no ublisher'"></p>
+    <div class="block1">
+        <div class="log">
+    <p th:text="${document.description}"></p>
+        </div>
     </div>
-    <div th:switch="${document.type.name}">
-        <p th:case="'Article'" th:text="'Editor: '+${document.editor.name}"></p>
-        <p th:case="*" th:text="'Editor: '+'The document has no editor'"></p>
-    </div>
-    <p th:text="'Publishing Date: '+${document.publishingDate.toString()}"></p>
-    <p th:text="'Is Reference: '+(${document.reference}?'Yes':'No')"></p>
-    <p th:text="'Price: '+${document.price}+' rub'"></p>
+    <p align = "center"><button class="button">Book</button></p>
     <br>
     <!--<form action="#" th:action="@{/book}" method="post">
         <input type="submit" style="width: 190px;" value="Book">

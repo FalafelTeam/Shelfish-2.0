@@ -66,6 +66,28 @@
     .z{
         font-size: 30px;
     }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even){background-color: #ffffff}
+
+    th {
+        background-color: #5A91C2;
+        color: white;
+    }
+    .container {
+        overflow: scroll;
+        font-family: Arial;
+        font-size: 20px;
+        color: #5A91C2;
+    }
 </style>
 
 <head>
@@ -94,6 +116,24 @@
     <p th:text="'Phone Number: '+${user.phoneNumber}" align="center">Phone Number</p>
     <p th:text="'Role: '+${user.getRole().name}" align="center">Role</p>
     </font>
+    <div class="container">
+        <table id="myTableId" th:table="true">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Days left</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="document : ${documents}">
+                <th th:text="${document.getDocument().name}">Title</th>
+                <th th:text="${document.status}">Status</th>
+                <th th:text="${bookingService.getDueDate(${document}).toString()}">Days left</th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </center>
 </body>

@@ -2,6 +2,7 @@ package com.falafelteam.shelfish.controller;
 
 import com.falafelteam.shelfish.model.AuthorKinds.Editor;
 import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
+import com.falafelteam.shelfish.model.DocumentUser;
 import com.falafelteam.shelfish.model.documents.Document;
 import com.falafelteam.shelfish.model.documents.DocumentType;
 import com.falafelteam.shelfish.model.users.Role;
@@ -24,6 +25,7 @@ public class IndexController {
 
     private final DocumentService documentService;
     private final UserService userService;
+    private final DocumentUserService documentUserService;
     private final BookingService bookingService;
     private final DocumentTypeService documentTypeService;
     private final RoleService roleService;
@@ -31,7 +33,8 @@ public class IndexController {
 
     @Autowired
     public IndexController(DocumentService documentService, UserService userService, BookingService bookingService,
-                           DocumentTypeService documentTypeService, RoleService roleService, LoggingService loggingService)
+                           DocumentTypeService documentTypeService, RoleService roleService, LoggingService loggingService,
+                           DocumentUserService documentUserService)
             throws IOException {
         this.documentService = documentService;
         this.userService = userService;
@@ -39,6 +42,7 @@ public class IndexController {
         this.documentTypeService = documentTypeService;
         this.roleService = roleService;
         this.loggingService = loggingService;
+        this.documentUserService = documentUserService;
     }
 
     @GetMapping("/")
@@ -55,6 +59,8 @@ public class IndexController {
     @GetMapping("/user/{id}")
     public String getUser(@PathVariable("id") int id, Model model) throws Exception {
         model.addAttribute("user", userService.getById(id));
+        model.addAttribute("documents", documentUserService.getByUser(userService.getById(id)));
+        model.addAttribute(bookingService);
         return "user";
     }
 
