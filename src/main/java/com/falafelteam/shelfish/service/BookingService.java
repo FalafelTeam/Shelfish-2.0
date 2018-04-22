@@ -29,7 +29,8 @@ public class BookingService {
     private final LoggingService logService;
 
     @Autowired
-    public BookingService(DocumentUserRepository documentUserRepository, DocumentRepository documentRepository, UserRepository userRepository) throws IOException {
+    public BookingService(DocumentUserRepository documentUserRepository, DocumentRepository documentRepository,
+                          UserRepository userRepository) throws IOException {
         this.documentUserRepository = documentUserRepository;
         this.documentRepository = documentRepository;
         this.userRepository = userRepository;
@@ -75,9 +76,8 @@ public class BookingService {
         document.addToQueue(documentUser);
         documentRepository.save(document);
 
-        emailSendService.sendEmail(user, BOOKED_SUBJ, BOOKED_MESSAGE);
+        emailSendService.sendEmail(user, emailSendService.getBOOKED_SUBJ(), emailSendService.getBOOKED_MESSAGE());
         logService.bookLog(user, document);
-
     }
 
     /**
@@ -187,18 +187,21 @@ public class BookingService {
                 docUser.setStatus(docUser.getStatusTAKEN());
                 if ((new Date().getTime() - docUser.getDate().getTime()) / (24 * 60 * 60 * 1000) > 1) {
                     docUser.getDocument().removeFromQueue(docUser);
-                    throw new Exception("Your booking has expired! You have been deleted from the queue.");
+                    throw new Exception("Client's booking has expired! The client has been deleted from the queue.");
                 }
+                document.setAvailableCopies(document.getAvailableCopies()-1);
                 docUser.setDate(date);
                 documentUserRepository.save(docUser);
-                emailSendService.sendEmail(user, CHECKOUT_SUBJ, CHECKOUT_MESSAGE);
+                emailSendService.sendEmail(user, emailSendService.getCHECKOUT_SUBJ(), emailSendService.getCHECKOUT_MESSAGE());
                 logService.checkOutLog(user, document);
             } else {
-                throw new Exception("Not yet available. Too far in a queue. Ya tolko sprosit'");
+                throw new Exception("Not yet available. Too far in a queue.");
             }
-        } else if (docUser.getStatus().equals(docUser.getStatusRENEWED()) || docUser.getStatus() == docUser.getStatusTAKEN()) {
-            throw new Exception("You have the document on hands! Don't cheat with us!");
+        } else if (docUser.getStatus().equals(docUser.getStatusRENEWED()) ||
+                docUser.getStatus().equals(docUser.getStatusTAKEN())) {
+            throw new Exception("Client has the document on hands.");
         }
+
     }
 
     /**
@@ -217,9 +220,9 @@ public class BookingService {
         if (calculateFine(docUser) != 0) {
             throw new Exception("Cannot return the document. Pay a fine first.");
         }
-        emailSendService.sendEmail(user, RETURNED_SUBJ, RETURNED_MESSAGE);
+        emailSendService.sendEmail(user, emailSendService.getRETURNED_SUBJ(), emailSendService.getRETURNED_MESSAGE());
         logService.returnLog(user, document);
-
+        document.setAvailableCopies(document.getAvailableCopies()+1);
         userRepository.save(user);
         documentRepository.save(document);
         documentUserRepository.deleteById(docUser.getId());
@@ -231,7 +234,8 @@ public class BookingService {
      *
      * @param document - document that is to be renewed
      * @param user     - user who wants to renew the document
-     * @throws Exception "Renew of the document is currently unavailable. Please return the document to the library as soon as possible"
+     * @throws Exception "Renew of the document is currently unavailable. Please return the document to the library as
+     *                      soon as possible"
      *                   "Document wasn't booked"
      *                   "Document was already renewed once"
      *                   "The document is overdue, renew is forbidden"
@@ -246,7 +250,8 @@ public class BookingService {
      * @param document - document that is to be renewed
      * @param user     - user who wants to renew the document
      * @param date     - the date of the document renewal
-     * @throws Exception "Renew of the document is currently unavailable. Please return the document to the library as soon as possible"
+     * @throws Exception "Renew of the document is currently unavailable. Please return the document to the library as
+     *                      soon as possible"
      *                   "Document wasn't booked"
      *                   "Document was already renewed once"
      *                   "The document is overdue, renew is forbidden"
@@ -254,7 +259,8 @@ public class BookingService {
     public void renewDocument(Document document, User user, Date date) throws Exception {
         DocumentUser docUser = documentUserRepository.findByDocumentAndUser(document, user);
         if (document.isHasOutstanding()) {
-            throw new Exception("Renew of the document is currently unavailable. Please return the document to the library as soon as possible");
+            throw new Exception("Renew of the document is currently unavailable. Please return the document to the " +
+                                     "library as soon as possible");
         }
         if (docUser == null || docUser.getStatus().equals(docUser.getStatusNEW())) {
             throw new Exception("Document wasn't booked. It's a simple pattern. Book-checkout-return");
@@ -264,7 +270,8 @@ public class BookingService {
         }
         if (calculateFine(docUser, date) != 0) {
             int fine = calculateFine(docUser);
-            throw new Exception("The document is overdue, renew is forbidden. Hint: pay then book again. May work if you're lucky.");
+            throw new Exception("The document is overdue, renew is forbidden. Hint: pay then book again. " +
+                                     "May work if you're lucky.");
         }
         if (!docUser.getUser().getRole().equals("Visiting Professor")) {
             docUser.setStatus(docUser.getStatusRENEWED());
@@ -273,7 +280,7 @@ public class BookingService {
         docUser.setDate(date);
         documentUserRepository.save(docUser);
 
-        emailSendService.sendEmail(user, RENEW_SUBJ, RENEW_MESSAGE);
+        emailSendService.sendEmail(user, emailSendService.getRENEW_SUBJ(), emailSendService.getRENEW_MESSAGE());
         logService.renewLog(user, document);
     }
 
@@ -288,11 +295,11 @@ public class BookingService {
         document.setHasOutstanding(true);
         logService.outstandingLog(document);
         for (User user : deleted) {
-            emailSendService.sendEmail(user, OUTSTANDING_SUBJ, OUTSTANDING_MESSAGE);
+            emailSendService.sendEmail(user, emailSendService.getOUTSTANDING_SUBJ(), emailSendService.getOUTSTANDING_MESSAGE());
 
         }
         for (DocumentUser docUser : document.getUsers()){
-            emailSendService.sendEmail(docUser.getUser(), OUTSTAND_RETURN_REQUEST_SUBJ, OUTSTAND_RETURN_REQUEST_MESSAGE);
+            emailSendService.sendEmail(docUser.getUser(), emailSendService.getOUTSTAND_RETURN_REQUEST_SUBJ(), emailSendService.getOUTSTAND_RETURN_REQUEST_MESSAGE());
         }
         documentRepository.save(document);
     }
@@ -332,14 +339,10 @@ public class BookingService {
      * @return number of available copies of the document
      */
     public int availableCopies(Document document) {
-        if (document.isReference()) {
+        if (document.isReference() || document.isHasOutstanding()) {
             return 0;
         }
-        if (document.isHasOutstanding()) {
-            return 0;
-        }
-        return document.getCopies() - documentUserRepository.findAllByDocumentAndStatus(document, "taken").size() -
-                documentUserRepository.findAllByDocumentAndStatus(document, "renewed").size();
+        return document.getAvailableCopies();
     }
 
     /**
@@ -413,7 +416,8 @@ public class BookingService {
     }
 
     /**
-     * method for deleting the users who do not have the document on hands from the documentUser relations of the document
+     * method for deleting the users who do not have the document on hands from the documentUser relations of the
+     * document
      *
      * @param document - document for which the users are to be deleted
      */
@@ -427,42 +431,5 @@ public class BookingService {
         document.getUsers().removeAll(toBeDeleted);
         documentRepository.save(document);
     }
-
-    private final String BOOKED_SUBJ = "Document booking";
-    private final String BOOKED_MESSAGE = "Dear customer, \n\nYou've successfully booked a book in Shelfish library! \n" +
-            "When you will be able to take the document, we will send you a message." +
-            "you will have only 1 day to pick it up. \n\n Kind regards,\n\nShelfish Team";
-
-    private final String AVAIL_SUBJ = "Time to take your book!";
-    private final String AVAIL_MESSAGE = "Document that you booked is available! So come take it :) \n\nNote: You have only one day, after" +
-            "which your booking will expire. Hurry up!\n\nKinds regards,\n\nShelfish Team";
-
-    private final String CHECKOUT_SUBJ = "You have successfully checked out document!";
-    private final String CHECKOUT_MESSAGE = "Have a nice read! \n\nKinds regards,\n\nShelfish Team";
-
-    private final String DAYTILLRETURN_SUBJ = "You have only 1 day left of reading!";
-    private final String DAYTILLRETURN_MESSAGE = "Please come to return or renew your document tomorrow.\"+\n" +
-            "\n\nNote: In case you don't return or renew tomorrow, we will apply a fine of 100 rub" +
-            "per day\nNote: Maximum fine is the price of the book." +
-            "\n\nKinds regards,\n\nShelfish Team";
-
-    private final String FIRSTFINE_SUBJ = "Your first day of fine!";
-    private final String FIRSTFINE_MESSAGE = "Please return or renew your document as soon as possible.\n\nKinds regards,\n\nShelfish Team\"";
-
-    private final String RETURNED_SUBJ = "You have successfully returned your document to the library!";
-    private final String RETURNED_MESSAGE = "Thank you for timing. Feel free to order new books soon!" +
-            "\n\nKinds regards,\n\nShelfish Team";
-
-    private final String RENEW_SUBJ = "You have successfully renewed your document!";
-    private final String RENEW_MESSAGE = "Thank you for renewing your document! You now have more time to enjoy your document!" +
-            "\n\nKinds regards,\n\nShelfish Team";
-
-    private final String OUTSTANDING_SUBJ = "Outstanding request :( You have been deleted from the queue";
-    private final String OUTSTANDING_MESSAGE = "An outstanding request has been sent, so everyone has been deleted from the queue" +
-            "\n\n Don't worry! You will be able to book your document again soon." +
-            "\nSorry for the trouble.\n\nKinds regards,\n\nShelfish Team";
-    private final String OUTSTAND_RETURN_REQUEST_SUBJ = "Outstanding request :( Please return the document immediately";
-    private final String OUTSTAND_RETURN_REQUEST_MESSAGE = "The document that you have on hands is not going to be available anymore." +
-            " Please return it as soon as possible. \nSorry for the trouble.\n\nKinds regards,\n\nShelfish Team";
 
 }

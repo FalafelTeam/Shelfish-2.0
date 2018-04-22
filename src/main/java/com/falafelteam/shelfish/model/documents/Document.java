@@ -44,6 +44,7 @@ public class Document {
     private Editor editor;
     private int edition;
     private Date publishingDate;
+    private int availableCopies;
 
     /**
      * constructor for the document of type "Article"
@@ -63,6 +64,7 @@ public class Document {
         this.tags = tags;
         this.publishingDate = publishingDate;
         this.hasOutstanding = false;
+        this.availableCopies = copies;
     }
 
     /**
@@ -82,6 +84,7 @@ public class Document {
         this.users = new LinkedList<>();
         this.tags = tags;
         this.hasOutstanding = false;
+        this.availableCopies = copies;
     }
 
     /**
@@ -103,6 +106,7 @@ public class Document {
         this.tags = tags;
         this.publishingDate = publishingDate;
         this.hasOutstanding = false;
+        this.availableCopies = copies;
     }
 
     /**
