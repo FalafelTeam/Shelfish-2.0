@@ -52,6 +52,12 @@
         font-family: Arial;
         color : #5A91C2;
     }
+    #footer {
+        position: fixed;
+        left: 0; bottom: 0;
+        font-family: Arial;
+        font-size: 20px;
+    }
 </style>
 
 <head>
@@ -87,6 +93,9 @@
         <p>Phone number:<input type="text" style="width: 90px;" th:field="*{phoneNumber}" name="name"/></p>
         <p><input type="submit" style="width: 90px;" value="Submit"></p>
     </form>
+</div>
+<div id="footer">
+    &copy; FalafelTeam
 </div>
 
 </body>

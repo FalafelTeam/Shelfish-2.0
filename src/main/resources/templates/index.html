@@ -51,6 +51,12 @@
         font-family: Arial;
         color : #5A91C2;
     }
+    #footer {
+        position: fixed;
+        left: 0; bottom: 0;
+        font-family: Arial;
+        font-size: 20px;
+    }
 </style>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -74,6 +80,9 @@
     <form action="#" th:action="@{/searchById}" method="get">
         <input type="submit" style="width: 190px;" value="Search By Id">
     </form>
+</div>
+<div id="footer">
+    &copy; FalafelTeam
 </div>
 </body>
 </html>
