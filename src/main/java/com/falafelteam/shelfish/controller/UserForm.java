@@ -42,7 +42,7 @@ public class UserForm {
         Pattern phonePattern = Pattern.compile("[+][0-9]{11}");
         Matcher phoneMatcher = phonePattern.matcher(phoneNumber);
         if (!phoneMatcher.matches()) {
-            throw new Exception("Your phone number should start with + and contain only digits 0-9");
+            throw new Exception("Your phone number should start with + and contain 11 digits 0-9");
         }
     }
 

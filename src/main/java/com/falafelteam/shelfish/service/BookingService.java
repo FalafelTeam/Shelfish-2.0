@@ -41,11 +41,36 @@ public class BookingService {
     /**
      * method that runs "scripts" at 4AM every day
      */
-    @Scheduled(cron = "0 0 4 * * *")
-    private void scheduled() {
+    @Scheduled(cron = "0 20 4 * * *")
+    private void scheduled() throws Exception {
+        sendOneDayLeftEmails();
+        sendFirstFineEmails();
+        sendAvailableToCheckOutEmails();
         deleteOverdueBookings();
     }
 
+    private void sendOneDayLeftEmails() throws IOException {
+        for(DocumentUser docUser : documentUserRepository.findAll()){
+            if(getDueDate(docUser).getTime() >= new Date().getTime()-86400000){
+                emailSendService.sendEmail(docUser.getUser(), emailSendService.getDAYTILLRETURN_SUBJ(), emailSendService.getDAYTILLRETURN_MESSAGE());
+            }
+        }
+    }
+
+    private void sendFirstFineEmails() throws IOException {
+        for(DocumentUser docUser : documentUserRepository.findAll()){
+            if(getDueDate(docUser).getTime() >= new Date().getTime() && getDueDate(docUser).getTime() <= new Date().getTime()+86400000){
+                emailSendService.sendEmail(docUser.getUser(), emailSendService.getFIRSTFINE_SUBJ(), emailSendService.getFIRSTFINE_MESSAGE());
+            }
+        }
+    }
+    private void sendAvailableToCheckOutEmails() throws Exception {
+        for(DocumentUser docUser : documentUserRepository.findAll()){
+            if(checkIfAvailableToCheckOut(docUser.getDocument(), docUser.getUser())){
+                emailSendService.sendEmail(docUser.getUser(), emailSendService.getAVAIL_SUBJ(), emailSendService.getAVAIL_MESSAGE());
+            }
+        }
+    }
     /**
      * method for booking a document in the library
      *

@@ -150,18 +150,18 @@
                 <th th:text="${document.type.name}"></th>
                 <div th:switch="${document.type.name}">
                     <th th:case="'Book'" th:text="${document.bestseller}?'Yes':'No'"></th>
-                    <th th:case="*" th:text="'The document cannot be a bestseller'" ></th>
+                    <th th:case="*" th:text="'Cannot be a bestseller'" ></th>
                 </div>
                 <th th:text="${document.tagsToString}"></th>
                 <th th:text="${document.authorsToString()}"></th>
                 <div th:switch="${document.type.name}">
                     <th th:case="'Article'" th:text="${document.publisher.name}"></th>
                     <th th:case="'Book'" th:text="${document.publisher.name}"></th>
-                    <th th:case="*" th:text="'The document has no ublisher'"></th>
+                    <th th:case="*" th:text="'No publisher'"></th>
                 </div>
                 <div th:switch="${document.type.name}">
                     <th th:case="'Article'" th:text="${document.editor.name}"></th>
-                    <th th:case="*" th:text="'The document has no editor'"></th>
+                    <th th:case="*" th:text="'No editor'"></th>
                 </div>
                 <th th:text="${document.publishingDate.toString()}"></th>
                 <th th:text="${document.reference}?'Yes':'No'"></th>
