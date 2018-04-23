@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+    body {
+        background: #f2f2f2 fixed;
+        background-size: cover;
+    }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: rgb(90, 145, 194);
+        font-family: Arial;
+        font-size: 20px;
+    }
+
+    li {
+        float: left;
+    }
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover {
+        background-color: rgb(41, 93, 139);
+    }
+    .active {
+        background-color: rgb(90, 145, 194);
+    }
+    select {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    input {
+        font-size:15px;
+        width: 100%;
+        border: solid #5A91C2;
+        border-radius: 5px;
+        background-color: #ffffff;
+    }
+    .log{
+        font-size: 60px;
+        font-family: Arial;
+        color : #5A91C2;
+    }
+</style>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Modify user</title>
+</head>
+
+<body>
+
+<ul>
+    <li><a th:href="@{/searchDocument}">Search document</a></li>
+    <li><a th:href="@{/addDocument}">Add document</a></li>
+    <li><a th:href="@{/searchUser}">Search user</a></li>
+    <li><a th:href="@{/addUser}">Add user</a></li>
+    <li style="float:right"><a th:href="@{'/login?logout'}">Log out</a></li>
+    <li style="float:right"><a th:href="@{/}">My profile</a></li>
+</ul>
+
+<div align="center">
+    <h1 class="log">Modify user</h1>
+    <form action="#" th:action="@{/addUser}" th:object="${user}" method="post">
+        <p>Name:<input type="text" style="width: 90px;" th:field="*{name}" th:value="${old.name}" name="name"/></p>
+        <p>Login:<input type="text" style="width: 90px;" th:field="*{login}" th:value="${old.login}" name="name"/></p>
+        <p>Password:<input type="text" style="width: 90px;" th:field="*{password}" th:value="${old.password}" name="name"/></p>
+        <p>Role:
+            <select name="type" style="width: 120px;" th:field="*{role}">
+                <option th:each="r : ${roles}"
+                        th:value="${r}"
+                        th:utext="${r}">Type</option>
+            </select>
+        </p>
+        <p>Address:<input type="text" style="width: 90px;" th:field="*{address}" th:value="${old.address}" name="name"/></p>
+        <p>Phone number:<input type="text" style="width: 90px;" th:field="*{phoneNumber}" th:value="${old.phoneNumber}" name="name"/></p>
+        <p><input type="submit" style="width: 90px;" value="Submit"></p>
+    </form>
+</div>
+
+</body>
+
+</html>
