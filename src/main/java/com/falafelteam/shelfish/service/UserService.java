@@ -66,4 +66,11 @@ public class UserService {
             return found;
         } else throw new Exception("User not found");
     }
+
+    public User getByLogin(String login) throws Exception {
+        User found = userRepository.findByLogin(login);
+        if (found != null) {
+            return found;
+        } else throw new Exception("User not found");
+    }
 }

@@ -17,14 +17,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     /**
      * Configuration for different requests permission depending on the role of the user
      */
-    protected void configure(HttpSecurity http) throws Exception {
+    /*protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    //.antMatchers("/signUp").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
+                .anyRequest().authenticated()
+                .and()
                 .formLogin()
-                    .loginPage("/login")
-                    .permitAll();
-    }
+                .loginPage("/login")
+                .permitAll();
+    }*/
+
 }

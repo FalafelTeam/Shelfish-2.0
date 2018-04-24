@@ -57,16 +57,24 @@ public class IndexController {
     }
 
     @GetMapping("/user/{id}")
-    public String getUser(@PathVariable("id") int id, Model model) throws Exception {
+    public String getUser(@PathVariable("id") int id, Model model, Principal principal) throws Exception {
         model.addAttribute("user", userService.getById(id));
         model.addAttribute("documents", documentUserService.getByUser(userService.getById(id)));
         model.addAttribute(bookingService);
-        return "user";
+        if (principal.getName().equals("shelfishuser") || userService.getByLogin(principal.getName()).getId().equals(id)) {
+            return "user";
+        } else {
+            if (userService.getByLogin(principal.getName()).getRole().getName().contains("Librarian")){
+                return "user";
+            } else {
+                return "redirect:/error";
+            }
+        }
     }
 
     @GetMapping("/myProfile")
     public String myProfile(Principal principal) throws Exception {
-        return "redirect:/user/" + principal.getName();
+        return "redirect:/user/" + userService.getByLogin(principal.getName()).getId();
     }
 
     @GetMapping("/addDocument")
