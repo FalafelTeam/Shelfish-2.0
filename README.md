@@ -39,6 +39,10 @@ Our application is a web application. Our idea is that the system is going to be
     GRANT ALL PRIVILEGES ON Shelfish.* TO 'shelfishuser'@'localhost';
     ```
  * launch main/java/com.FalafelTeam.Shelfish/ShelfishApplication.java;
+ * Stop the application
+ * Go to Application.properties
+ * Change "create" to "none" in the second line
+ * Change "always" to "never" in the 8th line
  
  _**Note:** Easier process of installation is being worked on._
  
