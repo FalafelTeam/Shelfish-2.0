@@ -214,10 +214,10 @@ public class IndexController {
     }
 
     @PostMapping("/book")
-    public String book(@ModelAttribute("document") Document document, @ModelAttribute("weeksNum") int weeksNum,
-                       Principal principal) throws Exception {
+    public String book(@ModelAttribute("document") Document document, Principal principal) throws Exception {
         User user = userService.getByLogin(principal.getName());
-        bookingService.book(document, user, weeksNum);
+        document = documentService.getById(document.getId());
+        bookingService.book(document, user);
         return "redirect:/user/" + user.getId();
     }
 

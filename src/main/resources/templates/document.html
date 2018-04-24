@@ -147,7 +147,7 @@
             </thead>
             <tbody>
             <tr>
-                <th th:text="${document.type.name}"></th>
+                <th th:text="${document.type.name}"></th>she
                 <div th:switch="${document.type.name}">
                     <th th:case="'Book'" th:text="${document.bestseller}?'Yes':'No'"></th>
                     <th th:case="*" th:text="'-'" ></th>
@@ -175,11 +175,11 @@
     <p th:text="${document.description}"></p>
         </div>
     </div>
-    <p align = "center"><button class="button">Book</button></p>
+    <form action="#" th:action="@{/book}" method="post" id="bookform" th:object="${document}" hidden>
+        <input type="number" th:field="*{id}" name="id">
+    </form>
+    <p align = "center"><button class="button" type="submit" th:form="bookform" th:value="submit">Book</button></p>
     <br>
-    <!--<form action="#" th:action="@{/book}" method="post">
-        <input type="submit" style="width: 190px;" value="Book">
-    </form>!-->
 </div>
 <div id="footer">
     &copy; FalafelTeam
