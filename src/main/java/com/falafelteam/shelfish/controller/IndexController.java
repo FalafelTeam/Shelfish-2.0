@@ -214,9 +214,31 @@ public class IndexController {
     }
 
     @PostMapping("/book")
-    public String book(@ModelAttribute("document") Document document, @ModelAttribute("user") User user,
-                       @ModelAttribute("weeksNum") int weeksNum) throws Exception {
+    public String book(@ModelAttribute("document") Document document, @ModelAttribute("weeksNum") int weeksNum,
+                       Principal principal) throws Exception {
+        User user = userService.getByLogin(principal.getName());
         bookingService.book(document, user, weeksNum);
+        return "redirect:/user/" + user.getId();
+    }
+
+    @PostMapping("/checkOut")
+    public String checkOut(@ModelAttribute("document") Document document, @ModelAttribute("user") User user
+                           ) throws Exception {
+        bookingService.checkOut(document, user);
+        return "redirect:/user/" + user.getId();
+    }
+
+    @PostMapping("/returnDocument")
+    public String returnDocument(@ModelAttribute("document") Document document, @ModelAttribute("user") User user
+                            ) throws Exception {
+        bookingService.returnDocument(document, user);
+        return "redirect:/user/" + user.getId();
+    }
+
+    @PostMapping("renewDocument")
+    public String renewDocument(@ModelAttribute("document") Document document, @ModelAttribute("user") User user
+                            ) throws Exception {
+        bookingService.renewDocument(document, user);
         return "redirect:/user/" + user.getId();
     }
 }

@@ -314,7 +314,7 @@ public class BookingService {
      *
      * @param document - document that is to be thrown an outstanding request on
      */
-    public void outstandingRequest(Document document) throws IOException {
+    private void outstandingRequest(Document document) throws IOException {
         LinkedList<User> deleted = getWaitingList(document);
         deleteNotTakenFromQueue(document);
         document.setHasOutstanding(true);

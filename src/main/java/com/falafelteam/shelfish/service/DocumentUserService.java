@@ -22,4 +22,8 @@ public class DocumentUserService {
     public List<DocumentUser> getByUser(User user) {
         return documentUserRepository.findAllByUser(user);
     }
+
+    public DocumentUser getByDocumentAndUser(Document document, User user) {
+        return documentUserRepository.findByDocumentAndUser(document, user);
+    }
 }
