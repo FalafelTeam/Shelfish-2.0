@@ -26,7 +26,6 @@ public class User {
     @OneToOne(cascade = CascadeType.DETACH)
     private Role role;
 
-
     public User(String name, String login, String password, String address, String phoneNumber, Role role) {
         this.name = name;
         this.login = login;

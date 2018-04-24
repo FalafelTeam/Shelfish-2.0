@@ -3,6 +3,7 @@ package com.falafelteam.shelfish.model.users;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,5 +36,10 @@ public class Role {
     public Role(String name, int priority) {
         this.name = name;
         this.priority = priority;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }

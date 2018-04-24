@@ -1,43 +1,46 @@
 package com.falafelteam.shelfish.configuration;
 
+import com.falafelteam.shelfish.service.UserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-/**
- * Configuration class for Spring Security
- */
-@EnableWebSecurity
-public class WebSecurityConfig implements WebMvcConfigurer {
+@Configuration
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /**
-     * Configuration for in-memory users of the application
-     */
+    @Autowired
+    UserDetailsService userDetailsService;
+
+    /*@Autowired
+    public initialize(AuthenticationManagerBuilder builder, DataSource dataSource) {
+        builder.jdbcAuthentication().dataSource(dataSource).withUser("dave")
+                .password("secret").roles("USER");
+    }*/
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+        auth.inMemoryAuthentication().withUser("shelfishuser").password("$2a$11$Mm4ulz9XgtA6bpsvCR2Eb.uHc6I2.folFUljUwT3jcFtri1XkfNRa").authorities("Admin");
+    }
+
     @Bean
-    public UserDetailsService userDetailsService() throws Exception {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withDefaultPasswordEncoder().username("shelfishuser").password("shelfish").roles("Admin").build());
-
-        return manager;
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider
+                = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(encoder());
+        return authProvider;
     }
 
-    /**
-     * Configuration for different requests permission depending on the role of the user
-     */
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                    //.antMatchers("/signUp").permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll();
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder(11);
     }
-
 
 }

@@ -161,7 +161,7 @@ public class IndexController {
         Role role = roleService.getByName(form.getRole());
         User user = new User(form.getName(), form.getLogin(), form.getPassword(), form.getAddress(),
                 form.getPhoneNumber(), role);
-        userService.save(user);
+        userService.register(user);
         loggingService.signUpLog(user);
         return "redirect:/user/" + user.getId();
     }
