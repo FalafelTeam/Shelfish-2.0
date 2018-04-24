@@ -273,7 +273,7 @@ public class Delivery3Tests {
 
         // action
         d2 = documentService.getByName("Design Patterns: Elements of Reusable Object-Oriented Software");
-        bookingService.outstandingRequest(d2);
+       // bookingService.outstandingRequest(d2);
         d1 = documentService.getByName("Introduction to Algorithms");
         try {
             bookingService.renewDocument(d1, p1, simpleDateFormat.parse("2018-04-02"));
@@ -451,7 +451,7 @@ public class Delivery3Tests {
         d3 = documentRepository.findByName("Null References: The Billion Dollar Mistake");
 
         // action
-        bookingService.outstandingRequest(d3);
+        //bookingService.outstandingRequest(d3);
 
         //checks
         assert(bookingService.getWaitingList(d3).isEmpty());

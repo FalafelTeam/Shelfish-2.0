@@ -146,6 +146,8 @@
                     <th>Status</th>
                     <th>Days left</th>
                     <th>Renew</th>
+                    <th>Chech out</th>
+                    <th>Return</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -153,6 +155,18 @@
                     <th th:text="${document.getDocument().name}">Title</th>
                     <th th:text="${document.status}">Status</th>
                     <th th:text="${bookingService.getDueDate(${document}).toString()}">Days left</th>
+                    <th>
+                        <form method="POST" action="/order-lables-print">
+                            <input type="hidden" name="product_id" value="<?php echo $row->product_id; ?>"/>
+                            <input type="submit" value="Renew"/>
+                        </form>
+                    </th>
+                    <th>
+                        <form method="POST" action="/order-lables-print">
+                            <input type="hidden" name="product_id" value="<?php echo $row->product_id; ?>"/>
+                            <input type="submit" value="Renew"/>
+                        </form>
+                    </th>
                     <th>
                         <form method="POST" action="/order-lables-print">
                             <input type="hidden" name="product_id" value="<?php echo $row->product_id; ?>"/>
