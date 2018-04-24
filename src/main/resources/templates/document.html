@@ -53,7 +53,7 @@
         color : #5A91C2;
     }
     .block1 {
-        width: 80%;
+        width: 884px;
         background: #ffffff;
         padding: 5px;
         float: center;
@@ -65,9 +65,10 @@
     }
     table {
         border-collapse: collapse;
-        width: 100%;
+        width: 900px;
         font-family: Arial;
         font-size: 20px;
+        table-layout: fixed;
     }
 
     th, td {
@@ -124,24 +125,23 @@
     <li style="float:right"><a th:href="@{'/login?logout'}">Log out</a></li>
     <li style="float:right"><a th:href="@{/}">My profile</a></li>
 </ul>
-
 <div align="center">
     <br>
     <font size = "15" face="Arial" color = "5A91C2">
     <p th:text="${document.name}"></p>
     </font>
-    <div class="container">
-        <table id="myTableId" th:table="true">
+    <div>
+        <table id="myTableId" th:table="true" width="814">
             <thead>
             <tr>
                 <th>Type</th>
-                <th>Is Bestseller</th>
+                <th>Bestseller</th>
                 <th>Tags</th>
                 <th>Authors</th>
                 <th>Publisher</th>
                 <th>Editor</th>
-                <th>Publishing Date</th>
-                <th>Is Reference</th>
+                <th>Date</th>
+                <th>Reference</th>
                 <th>Price</th>
             </tr>
             </thead>
@@ -150,18 +150,18 @@
                 <th th:text="${document.type.name}"></th>
                 <div th:switch="${document.type.name}">
                     <th th:case="'Book'" th:text="${document.bestseller}?'Yes':'No'"></th>
-                    <th th:case="*" th:text="'Cannot be a bestseller'" ></th>
+                    <th th:case="*" th:text="'-'" ></th>
                 </div>
                 <th th:text="${document.tagsToString}"></th>
                 <th th:text="${document.authorsToString()}"></th>
                 <div th:switch="${document.type.name}">
                     <th th:case="'Article'" th:text="${document.publisher.name}"></th>
                     <th th:case="'Book'" th:text="${document.publisher.name}"></th>
-                    <th th:case="*" th:text="'No publisher'"></th>
+                    <th th:case="*" th:text="'No'"></th>
                 </div>
                 <div th:switch="${document.type.name}">
                     <th th:case="'Article'" th:text="${document.editor.name}"></th>
-                    <th th:case="*" th:text="'No editor'"></th>
+                    <th th:case="*" th:text="'No'"></th>
                 </div>
                 <th th:text="${document.publishingDate.toString()}"></th>
                 <th th:text="${document.reference}?'Yes':'No'"></th>
