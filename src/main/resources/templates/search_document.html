@@ -120,6 +120,7 @@
         font-family: Arial;
         font-size: 20px;
     }
+
 </style>
 
 <body>
@@ -170,7 +171,7 @@
         </thead>
         <tbody>
         <tr th:each="document : ${documents}">
-            <th th:text="${document.name}">Title</th>
+            <th><a th:text="${document.name}" th:href="'/document/' + ${document.id}">Title</a></th>
             <th th:text="${document.publishingDate}">Date</th>
             <th th:text="${document.authorsToString()}">Authors</th>
             <th th:text="${document.publisher.getName()}">Publisher</th>
@@ -188,3 +189,4 @@
 </body>
 
 </html>
+
