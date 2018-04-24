@@ -146,7 +146,7 @@
                     <th>Status</th>
                     <th>Days left</th>
                     <th>Renew</th>
-                    <th>Chech out</th>
+                    <th>Check out</th>
                     <th>Return</th>
                 </tr>
                 </thead>
@@ -164,13 +164,13 @@
                     <th>
                         <form method="POST" action="/order-lables-print">
                             <input type="hidden" name="product_id" value="<?php echo $row->product_id; ?>"/>
-                            <input type="submit" value="Renew"/>
+                            <input type="submit" value="Check out"/>
                         </form>
                     </th>
                     <th>
                         <form method="POST" action="/order-lables-print">
                             <input type="hidden" name="product_id" value="<?php echo $row->product_id; ?>"/>
-                            <input type="submit" value="Renew"/>
+                            <input type="submit" value="Return"/>
                         </form>
                     </th>
                 </tr>
