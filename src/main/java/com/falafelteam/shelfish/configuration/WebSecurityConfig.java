@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .hasAnyRole("LibrarianPriv3", "Admin")
                     .antMatchers("/book")
                         .not().hasRole("LibrarianPriv1")
-                    .antMatchers("/checkout", "/returnDocument", "renewDocument")
+                    .antMatchers("/checkOut", "/returnDocument", "renewDocument")
                         .hasAnyRole("LibrarianPriv1", "LibrarianPriv2", "LibrarianPriv3", "Admin")
                     .anyRequest().authenticated()
                     .and()

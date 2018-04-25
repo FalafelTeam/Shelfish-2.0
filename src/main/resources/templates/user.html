@@ -88,7 +88,7 @@
         font-size: 20px;
         color: #5A91C2;
     }
-    input[type=submit] {
+    .button {
         font-weight: 700;
         color: white;
         text-decoration: none;
@@ -99,8 +99,8 @@
         transition: 0.2s;
         font-size:15px;
     }
-    input[type=submit]:hover { background: rgb(41, 93, 139); }
-    input[type=submit]:active {
+    .button:hover { background: rgb(41, 93, 139); }
+    .button:active {
         background: rgb(41, 93, 139);
         box-shadow: 0 3px rgb(41, 93, 139) inset;
     }
@@ -154,23 +154,26 @@
                 <tr th:each="document : ${documents}">
                     <th th:text="${document.getDocument().name}">Title</th>
                     <th th:text="${document.status}">Status</th>
-                    <th th:text="${bookingService.getDueDate(${document}).toString()}">Days left</th>
+                    <th th:text="${bookingService.getDueDate(document).toString()}">Days left</th>
                     <th>
-                        <form method="POST" action="/order-lables-print">
-                            <input type="hidden" name="product_id" value="<?php echo $row->product_id; ?>"/>
-                            <input type="submit" value="Renew"/>
+                        <form action="#" th:action="@{/renewDocument}" method="post" th:object="${form}">
+                            <input type="number" th:value="${document.document.id}" name="documentId" hidden>
+                            <input type="number" th:value="${user.id}" name="userId" hidden>
+                            <button class="button" type="submit" th:value="submit">Renew</button>
                         </form>
                     </th>
                     <th>
-                        <form method="POST" action="/order-lables-print">
-                            <input type="hidden" name="product_id" value="<?php echo $row->product_id; ?>"/>
-                            <input type="submit" value="Check out"/>
+                        <form action="#" th:action="@{/checkOut}" method="post" th:object="${form}">
+                            <input type="number" th:value="${document.document.id}" name="documentId" hidden>
+                            <input type="number" th:value="${user.id}" name="userId" hidden>
+                            <button class="button" type="submit" th:value="submit">Check Out</button>
                         </form>
                     </th>
                     <th>
-                        <form method="POST" action="/order-lables-print">
-                            <input type="hidden" name="product_id" value="<?php echo $row->product_id; ?>"/>
-                            <input type="submit" value="Return"/>
+                        <form action="#" th:action="@{/returnDocument}" method="post" th:object="${form}">
+                            <input type="number" th:value="${document.document.id}" name="documentId" hidden>
+                            <input type="number" th:value="${user.id}" name="userId" hidden>
+                            <button class="button" type="submit" th:value="submit">Return</button>
                         </form>
                     </th>
                 </tr>

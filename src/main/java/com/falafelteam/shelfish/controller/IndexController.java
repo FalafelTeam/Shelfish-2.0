@@ -60,6 +60,7 @@ public class IndexController {
     public String getUser(@PathVariable("id") int id, Model model, Principal principal) throws Exception {
         model.addAttribute("user", userService.getById(id));
         model.addAttribute("documents", documentUserService.getByUser(userService.getById(id)));
+        model.addAttribute("form", new BookingForm());
         model.addAttribute(bookingService);
         if (principal.getName().equals("shelfishuser") || userService.getByLogin(principal.getName()).getId().equals(id)) {
             return "user";
@@ -222,22 +223,25 @@ public class IndexController {
     }
 
     @PostMapping("/checkOut")
-    public String checkOut(@ModelAttribute("document") Document document, @ModelAttribute("user") User user
-                           ) throws Exception {
+    public String checkOut(@ModelAttribute("form") BookingForm form) throws Exception {
+        Document document = documentService.getById(form.getDocumentId());
+        User user = userService.getById(form.getUserId());
         bookingService.checkOut(document, user);
         return "redirect:/user/" + user.getId();
     }
 
     @PostMapping("/returnDocument")
-    public String returnDocument(@ModelAttribute("document") Document document, @ModelAttribute("user") User user
-                            ) throws Exception {
+    public String returnDocument(@ModelAttribute("form") BookingForm form) throws Exception {
+        Document document = documentService.getById(form.getDocumentId());
+        User user = userService.getById(form.getUserId());
         bookingService.returnDocument(document, user);
         return "redirect:/user/" + user.getId();
     }
 
     @PostMapping("renewDocument")
-    public String renewDocument(@ModelAttribute("document") Document document, @ModelAttribute("user") User user
-                            ) throws Exception {
+    public String renewDocument(@ModelAttribute("form") BookingForm form) throws Exception {
+        Document document = documentService.getById(form.getDocumentId());
+        User user = userService.getById(form.getUserId());
         bookingService.renewDocument(document, user);
         return "redirect:/user/" + user.getId();
     }
