@@ -71,14 +71,17 @@
         table-layout: fixed;
     }
 
-    th, td {
+    td, th, tbody {
         text-align: left;
         padding: 8px;
     }
 
-    tr:nth-child(even){background-color: #ffffff}
+    tbody {
+        background-color: rgb(255, 255, 255);
+        color: rgb(90, 145, 194);
+    }
 
-    th {
+    thead {
         background-color: rgb(90, 145, 194);
         color: white;
     }
@@ -147,7 +150,7 @@
             </thead>
             <tbody>
             <tr>
-                <th th:text="${document.type.name}"></th>she
+                <th th:text="${document.type.name}"></th>
                 <div th:switch="${document.type.name}">
                     <th th:case="'Book'" th:text="${document.bestseller}?'Yes':'No'"></th>
                     <th th:case="*" th:text="'-'" ></th>

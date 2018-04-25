@@ -171,7 +171,7 @@
         </thead>
         <tbody>
         <tr th:each="document : ${documents}">
-            <th><a th:text="${document.name}" th:href="'/document/' + ${document.id}">Title</a></th>
+            <th><a style = "color: #cc0000" th:text="${document.name}" th:href="'/document/' + ${document.id}">Title</a></th>
             <th th:text="${document.publishingDate}">Date</th>
             <th th:text="${document.authorsToString()}">Authors</th>
             <th th:text="${document.publisher.getName()}">Publisher</th>
