@@ -136,21 +136,21 @@
 <br>
 <div class="container">
     <center>
-        <form action="handler.php" method="post" accept-charset="utf-8">
-            <select name="mediatype" style="width: 120px;" id="FilterMedia">
-                <option value="">All</option>
+        <form action="#" th:action="@{/searchDocument}" th:object="${form}" method="post">
+            <select name="type" th:field="*{type}" style="width: 120px;" id="FilterMedia">
+                <option value="All">All</option>
                 <option th:each="t : ${types}"
                         th:value="${t}"
                         th:utext="${t}">Type</option>
             </select>
-            <select name="field" style="width: 90px;" id="FilterField">
-                <option value="">Default</option>
-                <option value="title">Title</option>
-                <option value="author">Author</option>
-                <option value="publisher">Publisher</option>
-                <option value="date">Date</option>
+            <select name="field" th:field="*{searchCriteria}" style="width: 90px;" id="FilterField">
+                <option value="Default">Default</option>
+                <option value="Title">Title</option>
+                <option value="Author">Author</option>
+                <option value="Publisher">Publisher</option>
+                <option value="Date">Date</option>
             </select>
-            <input name="search" tabindex="0" autofocus="autofocus" type="text" value="" id="FilterRequest">
+            <input name="search" th:field="*{search}" tabindex="0" autofocus="autofocus" type="text" value="" id="FilterRequest">
             <input type="submit" value="Search">
             <input type="reset" value="Clear">
         </form>

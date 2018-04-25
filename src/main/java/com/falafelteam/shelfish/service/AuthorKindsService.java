@@ -36,12 +36,20 @@ public class AuthorKindsService {
         return authorRepository.findByName(name);
     }
 
+    Author getAuthorByNameContatinig(String name) {
+        return authorRepository.findByNameContaining(name);
+    }
+
     Editor getEditorByName(String name) {
         return editorRepository.findByName(name);
     }
 
     Publisher getPublisherByName(String name) {
         return publisherRepository.findByName(name);
+    }
+
+    Publisher getPublisherByNameContaining(String name) {
+        return publisherRepository.findByNameContaining(name);
     }
 
     /**

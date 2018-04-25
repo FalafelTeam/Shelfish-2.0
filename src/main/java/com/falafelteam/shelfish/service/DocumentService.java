@@ -4,10 +4,12 @@ import com.falafelteam.shelfish.model.AuthorKinds.Author;
 import com.falafelteam.shelfish.model.AuthorKinds.Editor;
 import com.falafelteam.shelfish.model.AuthorKinds.Publisher;
 import com.falafelteam.shelfish.model.documents.Document;
+import com.falafelteam.shelfish.model.documents.DocumentType;
 import com.falafelteam.shelfish.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,11 +21,13 @@ public class DocumentService {
 
     private final DocumentRepository documentRepository;
     private final AuthorKindsService authorKindsService;
+    private final DocumentTypeService documentTypeService;
 
     @Autowired
-    public DocumentService(DocumentRepository documentRepository, AuthorKindsService authorKindsService) {
+    public DocumentService(DocumentRepository documentRepository, AuthorKindsService authorKindsService, DocumentTypeService documentTypeService) {
         this.documentRepository = documentRepository;
         this.authorKindsService = authorKindsService;
+        this.documentTypeService = documentTypeService;
     }
 
     /**
@@ -121,5 +125,46 @@ public class DocumentService {
         Publisher publisher = found.getPublisher();
         authorKindsService.deleteRedundant(authors, editor, publisher);
         documentRepository.delete(found);
+    }
+
+    public List<Document> searchByName(String name, String type){
+        DocumentType docType = documentTypeService.getByName(type);
+        return documentRepository.findAllByNameContainingAndType(name, docType);
+    }
+
+    public List<Document> searchByName(String name){
+        return documentRepository.findAllByNameContaining(name);
+    }
+
+    public List<Document> searchByAuthor(String authors, String type){
+        DocumentType docType = documentTypeService.getByName(type);
+        return documentRepository.findAllByAuthorsContainingAndType(authors, docType);
+    }
+
+    public List<Document> searchByAuthor(String authors){
+        return documentRepository.findAllByAuthorsContaining(authors);
+    }
+
+    public List<Document> searchByPublishingDate(Date date, String type){
+        DocumentType docType = documentTypeService.getByName(type);
+        return documentRepository.findAllByPublishingDateAndType(date, docType);
+    }
+
+    public List<Document> searchByPublishingDate(Date date){
+        return documentRepository.findAllByPublishingDate(date);
+    }
+
+    public List<Document> searchByPublisher(Publisher publisher, String type){
+        DocumentType docType = documentTypeService.getByName(type);
+        return documentRepository.findAllByPublisherAndType(publisher, docType);
+    }
+    public List<Document> searchByPublisher(Publisher publisher){
+        return documentRepository.findAllByPublisher(publisher);
+    }
+
+    public List<Document> searchByAll(String search) {
+        Author author = authorKindsService.getAuthorByNameContatinig(search);
+        Publisher publisher = authorKindsService.getPublisherByNameContaining(search);
+        return documentRepository.findAllByNameContainingOrAuthorsContainingOrPublisherContaining(search, author, publisher);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Class that handles http requests
@@ -194,12 +195,29 @@ public class IndexController {
     public String searchDocument(Model model) {
         model.addAttribute("documents", documentService.getAll());
         model.addAttribute("types", documentTypeService.getAllTypes());
+        model.addAttribute("form", new DocumentSearchForm());
         return "search_document";
     }
 
     @PostMapping("/searchDocument")
-    public String searchDocument() {
-        //
+    public String searchDocument(Model model, @ModelAttribute("form") DocumentSearchForm form) {
+        List<Document> docs;
+//        switch(form.getSearchCriteria()){
+//            case "Title":
+//                if(form.getType().equals("All")) docs = documentService.searchByName(form.getSearch());
+//                else docs = documentService.searchByName(form.getSearch(), form.getType());
+//                break;
+//            case "Author":
+//                if(form.getType().equals("All")) docs = documentService.searchByName(form.getSearch());
+//                else docs = documentService.searchByName(form.getSearch(), form.getType());
+//            case "Publisher":
+//
+//            default:
+//        }
+        docs = documentService.searchByName(form.getSearch());
+        model.addAttribute("documents", docs);
+        model.addAttribute("types", documentTypeService.getAllTypes());
+        model.addAttribute("form", new DocumentSearchForm());
         return "search_document";
     }
 
